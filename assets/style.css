@@ -264,3 +264,23 @@ input[type="number"] {
 /* Silme Butonu Stili */
 .btn-danger { background-color: #e74c3c; }
 .btn-danger:hover { background-color: #c0392b; }
+
+
+/*registiration card */
+
+.register-card {
+  width: 380px;
+  padding: 30px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.85);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  backdrop-filter: blur(8px);
+}
+
+.register-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+

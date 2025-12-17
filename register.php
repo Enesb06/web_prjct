@@ -35,24 +35,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<h2>Kayıt Ol</h2>
-<p>Bitkilerinizi takip etmeye başlamak için bir hesap oluşturun.</p>
+<div class="register-page">
+  <div class="register-card">
 
-<?php if ($error): ?>
-    <div class="message error"><?php echo $error; ?></div>
-<?php endif; ?>
+    <h2>Kayıt Ol</h2>
+    <p>Bitkilerinizi takip etmeye başlamak için bir hesap oluşturun.</p>
 
-<form action="register.php" method="POST">
-    <label for="username">Kullanıcı Adı:</label>
-    <input type="text" id="username" name="username" required>
+    <?php if ($error): ?>
+        <div class="message error"><?php echo $error; ?></div>
+    <?php endif; ?>
 
-    <label for="email">E-posta:</label>
-    <input type="email" id="email" name="email" required>
+    <form action="register.php" method="POST">
+        <label for="username">Kullanıcı Adı:</label>
+        <input type="text" id="username" name="username" required>
 
-    <label for="password">Şifre:</label>
-    <input type="password" id="password" name="password" required>
+        <label for="email">E-posta:</label>
+        <input type="email" id="email" name="email" required>
 
-    <button type="submit">Kayıt Ol</button>
-</form>
+        <label for="password">Şifre:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Kayıt Ol</button>
+    </form>
+
+  </div>
+</div>
+
 
 <?php include_once 'includes/footer.php'; ?>
