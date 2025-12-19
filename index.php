@@ -45,24 +45,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<h2>Giriş Yap</h2>
+<div class="login-page">
+  <div class="login-card">
 
-<?php if ($error): ?>
-    <div class="message error"><?php echo $error; ?></div>
-<?php endif; ?>
-<?php if ($success): ?>
-    <div class="message success"><?php echo $success; ?></div>
-<?php endif; ?>
+    <h2>Giriş Yap</h2>
 
-<form action="index.php" method="POST">
-    <label for="email">E-posta:</label>
-    <input type="email" id="email" name="email" required>
+    <?php if ($error): ?>
+        <div class="message error"><?php echo $error; ?></div>
+    <?php endif; ?>
+    <?php if ($success): ?>
+        <div class="message success"><?php echo $success; ?></div>
+    <?php endif; ?>
 
-    <label for="password">Şifre:</label>
-    <input type="password" id="password" name="password" required>
+    <form action="index.php" method="POST">
+        <label for="email">E-posta:</label>
+        <input type="email" id="email" name="email" required>
 
-    <button type="submit">Giriş Yap</button>
-</form>
-<p>Hesabınız yok mu? <a href="register.php">Buradan kayıt olun</a>.</p>
+        <label for="password">Şifre:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Giriş Yap</button>
+    </form>
+
+    <p style="text-align:center; margin-top:12px;">
+        Hesabınız yok mu?
+        <a href="register.php" style="color:#27ae60; font-weight:bold;">
+            Kayıt olun
+        </a>
+    </p>
+
+  </div>
+</div>
+
 
 <?php include_once 'includes/footer.php'; ?>
