@@ -349,7 +349,7 @@ body::after {
     position: fixed;
     top: 0;
     bottom: 0;
-    width: 200px;
+    width: 280px;
     z-index: 9999;
     pointer-events: none;
     background-image: url('images/ivy.jpeg');
