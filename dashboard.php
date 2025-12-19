@@ -71,13 +71,18 @@ if ($plants && count($plants) > 0) {
                         <span><strong>💧 Sulama:</strong> <?php echo $plant['watering_interval']; ?> günde bir</span>
                         <span><strong>📅 Son Sulama:</strong> <?php echo $plant['last_watered_date'] ? date('d M Y', strtotime($plant['last_watered_date'])) : 'Belirtilmemiş'; ?></span>
                         
-                        <!-- =================== YENİ İPUCU ALANI =================== -->
+                        <!-- YENİ GÜBRELEME BİLGİLERİ -->
+                        <?php if (!empty($plant['fertilizing_interval'])): ?>
+                            <span><strong>🌱 Gübreleme:</strong> <?php echo $plant['fertilizing_interval']; ?> günde bir</span>
+                            <span><strong>🗓️ Son Gübreleme:</strong> <?php echo $plant['last_fertilized_date'] ? date('d M Y', strtotime($plant['last_fertilized_date'])) : 'Belirtilmemiş'; ?></span>
+                        <?php endif; ?>
+
                         <?php if (!empty($plant['care_tip'])): ?>
                             <span class="care-tip"><strong>💡 İpucu:</strong> <?php echo htmlspecialchars($plant['care_tip']); ?></span>
                         <?php endif; ?>
-                        <!-- ========================================================= -->
                     </div>
 
+                    <!-- SULAMA DURUMU -->
                     <div class="watering-status">
                         <?php
                         if ($plant['last_watered_date']) {
@@ -100,16 +105,40 @@ if ($plants && count($plants) > 0) {
                         ?>
                     </div>
 
+                    <!-- YENİ GÜBRELEME DURUMU -->
+                    <div class="fertilizing-status">
+                         <?php
+                        if (!empty($plant['last_fertilized_date']) && !empty($plant['fertilizing_interval'])) {
+                            $today = new DateTime();
+                            $last_fertilized = new DateTime($plant['last_fertilized_date']);
+                            $next_fertilizing = (clone $last_fertilized)->modify('+' . $plant['fertilizing_interval'] . ' days');
+                            
+                            $interval = $today->diff($next_fertilizing);
+                            $days_diff = (int)$interval->format('%r%a');
+
+                            if ($days_diff < 0) {
+                                echo '<p class="status-overdue">Gübreleme ' . abs($days_diff) . ' gün gecikti!</p>';
+                            } elseif ($days_diff == 0) {
+                                echo '<p class="status-today">Bugün gübreleme günü!</p>';
+                            } else {
+                                echo '<p class="status-ok">Sonraki gübrelemeye ' . $days_diff . ' gün kaldı.</p>';
+                            }
+                        } else if (!empty($plant['fertilizing_interval'])) {
+                            echo '<p class="status-unknown">Gübreleme durumu için son gübreleme tarihini girin.</p>';
+                        }
+                        ?>
+                    </div>
+
                     <div class="plant-actions">
-    <?php
-        // Bitki tür adından parantezli kısımları temizle ve slugify yap
-        $species_name_clean = preg_replace('/\s*\(.*\)/', '', $plant['species']);
-        $plant_encyclopedia_slug = slugify($species_name_clean);
-    ?>
-    <a href="encyclopedia.php?plant=<?php echo $plant_encyclopedia_slug; ?>" class="btn btn-info">Detaylar</a>
-    <a href="edit_plant.php?id=<?php echo $plant['id']; ?>" class="btn btn-secondary">Düzenle</a>
-    <a href="delete_plant.php?id=<?php echo $plant['id']; ?>" class="btn btn-danger" onclick="return confirm('Bu bitkiyi silmek istediğinizden emin misiniz?');">Sil</a>
-</div>
+                        <?php
+                            // Bitki tür adından parantezli kısımları temizle ve slugify yap
+                            $species_name_clean = preg_replace('/\s*\(.*\)/', '', $plant['species']);
+                            $plant_encyclopedia_slug = slugify($species_name_clean);
+                        ?>
+                        <a href="encyclopedia.php?plant=<?php echo $plant_encyclopedia_slug; ?>" class="btn btn-info">Detaylar</a>
+                        <a href="edit_plant.php?id=<?php echo $plant['id']; ?>" class="btn btn-secondary">Düzenle</a>
+                        <a href="delete_plant.php?id=<?php echo $plant['id']; ?>" class="btn btn-danger" onclick="return confirm('Bu bitkiyi silmek istediğinizden emin misiniz?');">Sil</a>
+                    </div>
                 </div>
             </div>
         <?php endforeach; ?>

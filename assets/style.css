@@ -636,3 +636,11 @@ body:has(.login-page),
 body:has(.register-page) {
   background: none !important;
 }
+.fertilizing-status p {
+    padding: 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-align: center;
+    margin: 5px 0 10px 0; /* Üst, sağ/sol, alt */
+    font-size: 0.9em;
+}
