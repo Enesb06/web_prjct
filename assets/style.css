@@ -522,3 +522,14 @@ body:has(.register-page) .container {
     cursor: pointer;
     color: #666;
 }
+/* ================================== */
+/*          Bakım İpucu Stili         */
+/* ================================== */
+.plant-info .care-tip {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #f0f0f0;
+    font-size: 0.85em;
+    color: #556b2f; /* Koyu yeşil tonu */
+    font-style: italic;
+}
