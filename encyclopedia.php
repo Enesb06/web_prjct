@@ -35,16 +35,22 @@ $plants = json_decode($encyclopedia_json, true);
                     </span>
                     <h3><?php echo htmlspecialchars($plant['name']); ?></h3>
 
-                    <div class="plant-details-list">
-                        <div><strong>💧 Sulama:</strong> <span><?php echo $plant['watering_interval_days']; ?> günde ~<?php echo $plant['water_amount_ml']; ?>ml</span></div>
-                        <div><strong>☀️ Işık:</strong> <span><?php echo htmlspecialchars($plant['light']); ?></span></div>
-                        <div><strong>📍 Ortam:</strong> <span><?php echo htmlspecialchars($plant['environment']); ?></span></div>
-                        <div><strong>🐾 Evcil Hayvan:</strong> 
-                            <span class="<?php echo $plant['pet_friendly'] ? 'pet-safe' : 'pet-toxic'; ?>">
-                                <?php echo $plant['pet_friendly'] ? 'Güvenli' : 'Toksik'; ?>
-                            </span>
-                        </div>
-                    </div>
+                   <div class="plant-details-list">
+    <div><strong>💧 Sulama:</strong> <span><?php echo $plant['watering_interval_days']; ?> günde ~<?php echo $plant['water_amount_ml']; ?>ml</span></div>
+    
+    <!-- YENİ GÜBRELEME SATIRI -->
+    <?php if (isset($plant['fertilizing_interval_days'])): ?>
+        <div><strong>🌱 Gübreleme:</strong> <span><?php echo $plant['fertilizing_interval_days']; ?> günde bir</span></div>
+    <?php endif; ?>
+
+    <div><strong>☀️ Işık:</strong> <span><?php echo htmlspecialchars($plant['light']); ?></span></div>
+    <div><strong>📍 Ortam:</strong> <span><?php echo htmlspecialchars($plant['environment']); ?></span></div>
+    <div><strong>🐾 Evcil Hayvan:</strong> 
+        <span class="<?php echo $plant['pet_friendly'] ? 'pet-safe' : 'pet-toxic'; ?>">
+            <?php echo $plant['pet_friendly'] ? 'Güvenli' : 'Toksik'; ?>
+        </span>
+    </div>
+</div>
                     <p class="plant-notes"><?php echo htmlspecialchars($plant['notes']); ?></p>
                 </div>
             </div>
