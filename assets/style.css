@@ -626,3 +626,13 @@ button:hover {
 }
 .btn-info { background-color: #5bc0de; }
 .btn-info:hover { background-color: #31b0d5; }
+/* LOGIN DIŞINDAKİ TÜM SAYFALAR ARKA PLAN */
+body {
+  background: url('images/deneme.jpg') no-repeat center center fixed;
+  background-size: cover;
+}
+/* LOGIN / REGISTER SAYFALARINDA KAPAT */
+body:has(.login-page),
+body:has(.register-page) {
+  background: none !important;
+}
