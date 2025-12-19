@@ -283,29 +283,4 @@ input[type="number"] {
     align-items: center;
     min-height: 80vh;
 }
-body::before,
-body::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  width: 90px;
-  height: 100vh;
-  background-image: url("../assets/images/ivy.png");
-  background-repeat: repeat-y;
-  background-size: contain;
-  pointer-events: none;
-  z-index: 9999;
-}
-
-body::before { left: 0; }
-
-body::after {
-  right: 0;
-  transform: scaleX(-1);
-}
-body{
-  padding-left: 100px;
-  padding-right: 100px;
-}
-
 
