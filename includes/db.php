@@ -16,7 +16,8 @@ function supabase_api_request($method, $path, $data = [], $token = null) {
     $headers = [
         'Content-Type: application/json',
         'apikey: ' . $supabase_key,
-        'Authorization: Bearer ' . ($token ?? $supabase_key)
+        'Authorization: Bearer ' . ($token ?? $supabase_key),
+        'Prefer: return=representation' // <--- BU SATIRI EKLEDİK: Başarılı POST işlemlerinde veriyi geri döndürür.
     ];
 
     $ch = curl_init();
@@ -29,8 +30,8 @@ function supabase_api_request($method, $path, $data = [], $token = null) {
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
             break;
+        // ... (diğer case yapıları aynı kalacak)
         case 'GET':
-            // Veriyi URL'e ekle
             if (!empty($data)) {
                 $url .= '?' . http_build_query($data);
                 curl_setopt($ch, CURLOPT_URL, $url);
@@ -49,12 +50,11 @@ function supabase_api_request($method, $path, $data = [], $token = null) {
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
     
-    // Hata kontrolü
-    if ($http_code >= 400) {
-        // echo "Supabase API Hatası: " . $response; // Hata ayıklama için
-        return null;
+    // Eğer HTTP kodu 200 veya 201 ise (başarılıysa) veriyi döndür
+    if ($http_code >= 200 && $http_code < 300) {
+        return json_decode($response, true);
     }
 
-    return json_decode($response, true);
+    return null; // Sadece gerçek hata durumlarında (400+) null döndürür
 }
 ?>
