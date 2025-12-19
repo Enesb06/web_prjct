@@ -102,16 +102,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const plantId = manageCard.dataset.plantId;
         const cooldownMinutes = parseFloat(manageCard.dataset.cooldownMinutes);
         
-        if (!cooldownMinutes || cooldownMinutes <= 0) {
-            // Cooldown süresi olmayan normal bitkiler için bu blok boş kalır ve kod çalışmaz.
-        } else {
-            // Cooldown süresi olan özel sunum bitkileri için bu blok çalışır.
+        if (cooldownMinutes && cooldownMinutes > 0) {
             const waterButton = document.getElementById('water-button');
             const fertilizeButton = document.getElementById('fertilize-button');
             const cooldownMs = cooldownMinutes * 60 * 1000;
 
             const checkAndApplyCooldown = (button, actionType) => {
-                if (!button) return; // Buton yoksa devam etme
+                if (!button) return;
                 const originalText = button.innerHTML;
                 const storageKey = `plant_${plantId}_${actionType}_lockout`;
                 const lockoutTime = localStorage.getItem(storageKey);
@@ -137,17 +134,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
             checkAndApplyCooldown(waterButton, 'water');
             checkAndApplyCooldown(fertilizeButton, 'fertilize');
-
-            const form = waterButton.closest('form');
-            form.addEventListener('submit', () => {
-                const action = document.activeElement.value;
-                if (action === 'water') {
-                    localStorage.setItem(`plant_${plantId}_water_lockout`, new Date().getTime());
-                } else if (action === 'fertilize') {
-                    localStorage.setItem(`plant_${plantId}_fertilize_lockout`, new Date().getTime());
-                }
-            });
         }
+    }
+
+    // =========================================================
+    //          BAKIM İŞLEMİ SONRASI LOTTIE ANİMASYONU
+    // =========================================================
+    const manageForm = document.querySelector('.plant-manage-actions form');
+    const animationOverlay = document.getElementById('animation-overlay');
+    const waterPlayer = document.getElementById('lottie-water-player');
+    const fertilizePlayer = document.getElementById('lottie-fertilize-player');
+    const allAnimations = document.querySelectorAll('.lottie-animation');
+
+    if (manageForm && animationOverlay && waterPlayer && fertilizePlayer) {
+        manageForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const action = document.activeElement.value;
+            let activePlayer = null;
+
+            allAnimations.forEach(anim => anim.style.display = 'none');
+
+            if (action === 'water') {
+                activePlayer = waterPlayer;
+            } else if (action === 'fertilize') {
+                activePlayer = fertilizePlayer;
+            }
+
+            if (activePlayer) {
+                activePlayer.style.display = 'block';
+                animationOverlay.classList.add('active');
+                activePlayer.seek(0);
+                activePlayer.play();
+
+                const animationDuration = 2000; // Animasyon süresi (ms)
+
+                // Geri sayım mantığını Lottie animasyonuna entegre et
+                const plantId = manageCard.dataset.plantId;
+                const cooldownMinutes = parseFloat(manageCard.dataset.cooldownMinutes);
+                if (cooldownMinutes && cooldownMinutes > 0) {
+                    if (action === 'water') {
+                        localStorage.setItem(`plant_${plantId}_water_lockout`, new Date().getTime());
+                    } else if (action === 'fertilize') {
+                        localStorage.setItem(`plant_${plantId}_fertilize_lockout`, new Date().getTime());
+                    }
+                }
+
+                setTimeout(() => {
+                    e.target.submit();
+                }, animationDuration);
+            } else {
+                e.target.submit();
+            }
+        });
     }
 
 }); // --- TEK BİR DOMContentLoaded OLAY DİNLEYİCİSİNİN KAPANIŞI ---
