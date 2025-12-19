@@ -36,6 +36,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <div class="register-page">
+
+<!-- YENİ PLANTA STİLİ HEADER -->
+    <div class="auth-header-wrapper">
+        <nav class="auth-nav-card">
+            <a href="index.php" class="auth-logo">PlantCare.com</a>
+            
+            <div class="auth-nav-links">
+                <a href="index.php" class="auth-link">Giriş Yap</a>
+                <a href="register.php" class="auth-btn-register">Kayıt Ol</a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Mevcut Form Kartın (Login Card / Register Card) -->
+
   <div class="register-card">
 
     <h2>Kayıt Ol</h2>

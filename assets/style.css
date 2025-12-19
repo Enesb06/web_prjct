@@ -1,4 +1,4 @@
-/* Genel Sayfa Yapısı */
+/* --- Genel Sayfa Yapısı --- */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f9;
@@ -21,24 +21,36 @@ body {
     flex-grow: 1;
 }
 
-/* Header & Nav */
+/* --- Header Tasarımı (Kart Görünümü) --- */
 header {
     background-color: #6db788;
     color: #ecf0f1;
-    padding: 1rem 0;
+    padding: 1.5rem 0;
     text-align: center;
+    
+    /* Kart Görünümü Ayarları */
+    width: 90%;
+    max-width: 1160px; /* Container ile uyumlu */
+    margin: 40px auto 20px auto; /* Üstten 40px boşluk */
+    border-radius: 15px; /* Yumuşak kenarlar */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Hafif gölge */
 }
 
 header h1 {
     margin: 0;
 }
 
+/* --- Navigasyon Barı --- */
 nav ul {
     list-style-type: none;
     padding: 0;
     background-color: #34495e;
     overflow: hidden;
     text-align: center;
+    width: 90%;
+    max-width: 1160px;
+    margin: 0 auto 20px auto;
+    border-radius: 8px; /* Navigasyon kenarları yumuşatıldı */
 }
 
 nav ul li {
@@ -58,7 +70,45 @@ nav ul li a:hover {
     background-color: #1abc9c;
 }
 
-/* Hata ve Başarı Mesajları (Genel) */
+/* --- Login ve Register Sayfa Arka Planları --- */
+/* Bu kısmı style.css'de bul ve değiştir */
+.login-page, .register-page {
+    position: relative; /* fixed yerine relative yapalım */
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center; /* İçerideki kartı yatayda ortalar */
+    align-items: center;     /* İçerideki kartı dikeyde ortalar */
+    background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), 
+                url('images/arkaplan.png') no-repeat center center fixed;
+    background-size: cover;
+    z-index: 1000; /* Modal'ın 10000 z-index'i bunun her zaman üstünde kalacaktır */
+}
+
+/* Modalların göründüğünden emin olalım */
+.auth-overlay.active {
+    display: flex !important; /* JS ile eklendiğinde kesinlikle görünmesi için */
+}
+
+.login-card, .register-card {
+    background: rgba(255, 255, 255, 0.9); /* Kartın kendisi yarı saydam */
+    backdrop-filter: blur(5px); /* Arka planı bulanıklaştırma */
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.login-card {
+    width: 100%;
+    max-width: 300px;
+    padding: 20px;
+}
+
+.register-card {
+    width: 380px;
+    padding: 30px;
+}
+
+/* --- Hata ve Başarı Mesajları --- */
 .message {
     padding: 15px;
     margin-bottom: 20px;
@@ -68,7 +118,7 @@ nav ul li a:hover {
 .error { background-color: #f8d7da; color: #721c24; }
 .success { background-color: #d4edda; color: #155724; }
 
-/* Dashboard Sayfası Stilleri */
+/* --- Dashboard Sayfası Stilleri --- */
 .dashboard-header {
     display: flex;
     justify-content: space-between;
@@ -95,7 +145,53 @@ nav ul li a:hover {
     background-color: #2ecc71;
 }
 
-/* Bitki Kartları (Tüm Stiller) */
+/* --- Dashboard Özet Paneli --- */
+.summary-panel {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.summary-card {
+    flex: 1;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    border-left: 5px solid #6db788;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.summary-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.summary-card h3 {
+    margin: 0;
+    font-size: 2.8em;
+    color: #34495e;
+}
+
+.summary-card p {
+    margin: 5px 0 0;
+    color: #7f8c8d;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.summary-card.status-today {
+    border-left-color: #f1c40f;
+    background-color: #fffaf0;
+}
+.summary-card.status-overdue {
+    border-left-color: #e74c3c;
+    background-color: #fff5f5;
+}
+
+/* --- Bitki Kartları --- */
 .plant-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -173,6 +269,8 @@ nav ul li a:hover {
     display: flex;
     gap: 10px;
 }
+
+/* --- Butonlar --- */
 .btn {
     flex-grow: 1;
     text-align: center;
@@ -186,7 +284,9 @@ nav ul li a:hover {
 .btn-secondary { background-color: #3498db; }
 .btn-secondary:hover { background-color: #2980b9; }
 
-/* Boş Dashboard Mesajı */
+.btn-danger { background-color: #e74c3c; }
+.btn-danger:hover { background-color: #c0392b; }
+
 .no-plants-message {
     text-align: center;
     padding: 50px;
@@ -195,6 +295,7 @@ nav ul li a:hover {
     border-radius: 8px;
     grid-column: 1 / -1;
 }
+
 .btn-add-plant-big {
     display: inline-block;
     background-color: #27ae60;
@@ -207,7 +308,7 @@ nav ul li a:hover {
     margin-top: 20px;
 }
 
-/* Formlar (Genel ve Register/Login ile İlgili Alanlar) */
+/* --- Form Elemanları --- */
 form {
     display: flex;
     flex-direction: column;
@@ -216,7 +317,9 @@ form {
 
 input[type="text"],
 input[type="email"],
-input[type="password"] {
+input[type="password"],
+input[type="date"],
+input[type="number"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
@@ -238,206 +341,184 @@ button:hover {
     background-color: #16a085;
 }
 
-input[type="date"],
-input[type="number"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
+/* --- Sarmaşık Efektleri Silindi --- */
 
-
-.btn-danger { background-color: #e74c3c; }
-.btn-danger:hover { background-color: #c0392b; }
-
-/* Add_Plant Formuna Özel Alanlar */
-input[type="date"],
-input[type="number"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-/* Silme Butonu Stili */
-.btn-danger { background-color: #e74c3c; }
-.btn-danger:hover { background-color: #c0392b; }
-
-
-/*registiration card */
-
-.register-card {
-  width: 380px;
-  padding: 30px;
-  border-radius: 16px;
-  background: rgba(255,255,255,0.85);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-  backdrop-filter: blur(8px);
-}
-
-.register-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-}
-/* ================================
-   IVY – TRANSPARAN, OYNAR, GLOBAL
-   ================================ */
-
-body {
-  padding-left: 110px;
-  padding-right: 110px;
-}
-
-/* Ortak ayarlar */
-body::before,
-body::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  width: 90px;
-  height: 100vh;
-
-  background-image: url("assets/images/ivy.png");
-  background-repeat: repeat-y;
-  background-size: contain;
-
-  pointer-events: none;
-  z-index: 9999;
-
-  transform-origin: top center;
-}
-
-/* SOL */
-body::before {
-  left: 0;
-  animation: ivyLeft 4s ease-in-out infinite;
-}
-
-/* SAĞ (ayna + oynar) */
-body::after {
-  right: 0;
-  animation: ivyRight 4s ease-in-out infinite;
-}
-
-/* Sol animasyon */
-@keyframes ivyLeft {
-  0%, 100% {
-    transform: translateY(0) rotate(-1deg);
-  }
-  50% {
-    transform: translateY(-6px) rotate(1deg);
-  }
-}
-
-/* Sağ animasyon */
-@keyframes ivyRight {
-  0%, 100% {
-    transform: scaleX(-1) translateY(0) rotate(-1deg);
-  }
-  50% {
-    transform: scaleX(-1) translateY(-6px) rotate(1deg);
-  }
-}
-
-/* Sayfa Kenarı Sarmaşıkları */
-/* Sayfa Kenarı Sarmaşıkları */
-.ivy-overlay {
-    position: fixed;
+/* Giriş ve Kayıt sayfalarındaki ana beyaz kutuyu temizle */
+.login-page, .register-page {
+    position: fixed; /* Arka planın tüm ekranı kaplamasını sağlar */
     top: 0;
-    bottom: 0;
-    width: 280px;
-    z-index: 9999;
-    pointer-events: none;
-    background-image: url('images/ivy.jpeg');
-    background-repeat: repeat-y;
-    background-size: contain;
-    
-    /* 1. ÇÖZÜM: Beyaz arka planı yok etmek için harmanlama modu */
-    /* Eğer sarmaşığın yeşil/koyu renkli ve arka planı beyazsa, 
-       bu kod beyaz kısımları tamamen şeffaf yapar. */
-    mix-blend-mode: multiply;
-
-    /* 2. DÜZELTME: Opacity değerini 1 yapıyoruz. 
-       Daha önce 0.9 verdiğimiz için beyaz kısımlar yarı saydam beyaz görünüyordu. */
-    opacity: 1; 
-}
-
-.ivy-left {
     left: 0;
-}
-
-.ivy-right {
-    right: 0;
-    transform: scaleX(-1);
-}
-
-.login-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 75vh;
-}
-
-.login-card {
     width: 100%;
-    max-width: 300px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 14px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+    z-index: 10; /* En üstte görünmesi için */
 }
-/* ================================== */
-/*        Dashboard Özet Paneli       */
-/* ================================== */
 
-.summary-panel {
-    display: flex; /* Elemanları yan yana dizmek için flexbox kullanıyoruz */
-    justify-content: space-between; /* Kartlar arasında boşluk bırakır */
-    gap: 20px; /* Kartlar arasındaki boşluğu ayarlar */
+/* Giriş ve kayıt sayfalarında container'ın beyazlığını ve gölgesini kaldır */
+body:has(.login-page) .container, 
+body:has(.register-page) .container {
+    background-color: transparent;
+    box-shadow: none;
+    border: none;
+}
+
+
+/* --- Planta Stili Yeni Header --- */
+.auth-header-wrapper {
+    position: fixed;
+    top: 30px; /* Üstten boşluk */
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Kartı ortalar */
+    z-index: 1000;
+}
+
+.auth-nav-card {
+    background-color: #ffffff;
+    width: 90%;
+    max-width: 1000px;
+    height: 80px;
+    border-radius: 50px; /* Köşeleri tamamen yuvarlak (Soft köşeler) */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 35px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Hafif derinlik gölgesi */
+}
+
+.auth-logo {
+    font-family: 'Arial Black', sans-serif;
+    font-size: 26px;
+    font-weight: 900;
+    color: #1b4332; /* Görseldeki o koyu yeşil tonu */
+    text-decoration: none;
+    letter-spacing: -1px;
+}
+
+.auth-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+/* Giriş Yap Linki */
+.auth-link {
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    font-size: 15px;
+    transition: color 0.3s ease;
+}
+
+.auth-link:hover {
+    color: #1b4332;
+}
+
+/* Kayıt Ol Butonu (Görseldeki Download Butonu gibi) */
+.auth-btn-register {
+    background-color: #1b4332; /* Koyu yeşil */
+    color: white !important;
+    padding: 12px 28px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.auth-btn-register:hover {
+    background-color: #2d5a44;
+    transform: scale(1.05); /* Üzerine gelince hafif büyüme */
+}
+
+/* Mobil ayar: Ekran küçülünce logo ve butonun sıkışmaması için */
+@media (max-width: 600px) {
+    .auth-nav-card { height: 60px; padding: 0 20px; }
+    .auth-logo { font-size: 20px; }
+    .auth-btn-register { padding: 8px 18px; font-size: 13px; }
+}
+
+/* Giriş Yap Butonu (Şeffaf/Blur Efektli) */
+.nav-btn-login {
+    color: white;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.nav-btn-login:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Kayıt Ol Butonu (Yeşil Tonlu) */
+.nav-btn-register {
+    background-color: #1abc9c;
+    color: white;
+    box-shadow: 0 4px 15px rgba(26, 188, 156, 0.3);
+}
+
+.nav-btn-register:hover {
+    background-color: #16a085;
+    transform: translateY(-2px);
+}
+
+
+/* --- Hero (Karşılama) Metni Alanı --- */
+.hero-container {
+    position: relative;
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 180px; /* Header'dan aşağı indirmek için */
+    z-index: 5;
+}
+
+.hero-content {
+    max-width: 600px;
+    text-align: left;
+    color: #1b4332;
+}
+
+.hero-content h1 {
+    font-size: clamp(40px, 8vw, 85px); /* Ekran boyutuna göre büyüyen devasa başlık */
+    font-weight: 800;
+    line-height: 0.9;
+    margin-bottom: 30px;
+    letter-spacing: -2px;
+}
+
+.hero-content p {
+    font-size: 20px;
+    line-height: 1.6;
+    color: #2d5a44;
     margin-bottom: 40px;
 }
 
-.summary-card {
-    flex: 1; /* Her kartın mevcut alanı eşit olarak paylaşmasını sağlar */
-    background-color: #f8f9fa;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    border-left: 5px solid #6db788; /* Ana yeşil renk */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    transition: transform 0.2s, box-shadow 0.2s;
+/* --- Modal (Kartların Gizli Hali) --- */
+.auth-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* Arkayı hafif karartır */
+    backdrop-filter: blur(8px); /* Arkayı bulanıklaştırır */
+    display: none; /* BAŞLANGIÇTA GİZLİ */
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
 }
 
-.summary-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+/* Modal aktif olduğunda görünecek sınıf */
+.auth-overlay.active {
+    display: flex;
 }
 
-.summary-card h3 {
-    margin: 0;
-    font-size: 2.8em;
-    color: #34495e;
+/* Kartların içindeki kapatma butonu için ek stil */
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
 }
-
-.summary-card p {
-    margin: 5px 0 0;
-    color: #7f8c8d;
-    font-weight: bold;
-    font-size: 0.9em;
-}
-
-/* Renkleri durumlarla eşleştirelim */
-.summary-card.status-today {
-    border-left-color: #f1c40f; /* Sarı */
-    background-color: #fffaf0; /* Çok açık sarı */
-}
-.summary-card.status-overdue {
-    border-left-color: #e74c3c; /* Kırmızı */
-    background-color: #fff5f5; /* Çok açık kırmızı */
-}
-
-
