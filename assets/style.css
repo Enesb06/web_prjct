@@ -390,5 +390,54 @@ body::after {
     border-radius: 14px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.12);
 }
+/* ================================== */
+/*        Dashboard Özet Paneli       */
+/* ================================== */
+
+.summary-panel {
+    display: flex; /* Elemanları yan yana dizmek için flexbox kullanıyoruz */
+    justify-content: space-between; /* Kartlar arasında boşluk bırakır */
+    gap: 20px; /* Kartlar arasındaki boşluğu ayarlar */
+    margin-bottom: 40px;
+}
+
+.summary-card {
+    flex: 1; /* Her kartın mevcut alanı eşit olarak paylaşmasını sağlar */
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    border-left: 5px solid #6db788; /* Ana yeşil renk */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.summary-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.summary-card h3 {
+    margin: 0;
+    font-size: 2.8em;
+    color: #34495e;
+}
+
+.summary-card p {
+    margin: 5px 0 0;
+    color: #7f8c8d;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+/* Renkleri durumlarla eşleştirelim */
+.summary-card.status-today {
+    border-left-color: #f1c40f; /* Sarı */
+    background-color: #fffaf0; /* Çok açık sarı */
+}
+.summary-card.status-overdue {
+    border-left-color: #e74c3c; /* Kırmızı */
+    background-color: #fff5f5; /* Çok açık kırmızı */
+}
 
 

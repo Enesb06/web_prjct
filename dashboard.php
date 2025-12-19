@@ -1,16 +1,50 @@
 <?php
 include_once 'includes/header.php';
 
-// Giriş yapmamış kullanıcıyı engelle
+
 if (!isset($_SESSION['user_id'])) {
     header('Location: index.php');
     exit();
 }
 
-// Kullanıcının bitkilerini veritabanından çek (en yeniden eskiye sıralı)
+
 $user_id = $_SESSION['user_id'];
 $plants = supabase_api_request('GET', 'plants', ['user_id' => 'eq.' . $user_id, 'order' => 'created_at.desc']);
 
+
+
+$total_plants = 0;
+$plants_to_water_today = 0;
+$plants_overdue = 0;
+
+if ($plants && count($plants) > 0) {
+    
+    $total_plants = count($plants);
+    
+    
+    $today = new DateTime();
+    
+    foreach ($plants as $plant) {
+       
+        if (!empty($plant['last_watered_date'])) {
+            $last_watered = new DateTime($plant['last_watered_date']);
+            $next_watering = (clone $last_watered)->modify('+' . $plant['watering_interval'] . ' days');
+            
+            
+            $interval = $today->diff($next_watering);
+            $days_diff = (int)$interval->format('%r%a'); 
+
+            if ($days_diff < 0) {
+               
+                $plants_overdue++;
+            } elseif ($days_diff == 0) {
+               
+                $plants_to_water_today++;
+            }
+        }
+    }
+}
+// ======================= YENİ KOD: ÖZET HESAPLAMALARI BİTİŞ =======================
 ?>
 
 <div class="dashboard-header">
@@ -19,6 +53,24 @@ $plants = supabase_api_request('GET', 'plants', ['user_id' => 'eq.' . $user_id, 
 </div>
 
 <p>Merhaba, <strong><?php echo htmlspecialchars($_SESSION['username']); ?></strong>! İşte bitkilerinin güncel durumu.</p>
+
+<!-- ======================= YENİ KOD: ÖZET PANELİ HTML BAŞLANGIÇ ======================= -->
+<div class="summary-panel">
+    <div class="summary-card">
+        <h3><?php echo $total_plants; ?></h3>
+        <p>Toplam Bitki</p>
+    </div>
+    <div class="summary-card status-today">
+        <h3><?php echo $plants_to_water_today; ?></h3>
+        <p>Bugün Sulanacak</p>
+    </div>
+    <div class="summary-card status-overdue">
+        <h3><?php echo $plants_overdue; ?></h3>
+        <p>Sulama Gecikmiş</p>
+    </div>
+</div>
+<!-- ======================= YENİ KOD: ÖZET PANELİ HTML BİTİŞ ======================= -->
+
 
 <div class="plant-list">
     <?php if ($plants && count($plants) > 0): ?>
@@ -37,12 +89,11 @@ $plants = supabase_api_request('GET', 'plants', ['user_id' => 'eq.' . $user_id, 
                     <div class="watering-status">
                         <?php
                         if ($plant['last_watered_date']) {
-                            $today = new DateTime();
+                            // Bu hesaplama zaten yukarıda yapıldı, burada tekrar kullanıyoruz.
                             $last_watered = new DateTime($plant['last_watered_date']);
                             $next_watering = (clone $last_watered)->modify('+' . $plant['watering_interval'] . ' days');
-                            
-                            $interval = $today->diff($next_watering);
-                            $days_diff = (int)$interval->format('%r%a'); // %r ile negatif/pozitif alır, %a ile gün sayısını
+                            $interval = (new DateTime())->diff($next_watering);
+                            $days_diff = (int)$interval->format('%r%a');
 
                             if ($days_diff < 0) {
                                 echo '<p class="status-overdue">Sulama ' . abs($days_diff) . ' gün gecikti!</p>';
