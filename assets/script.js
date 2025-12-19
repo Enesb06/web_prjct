@@ -103,3 +103,64 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
 }); // DOMContentLoaded olay dinleyicisinin kapanışı
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const loginModal = document.getElementById('loginModal');
+    const registerModal = document.getElementById('registerModal');
+    const showLogin = document.getElementById('showLogin');
+    const showRegister = document.getElementById('showRegister');
+    const switchToRegister = document.getElementById('switchToRegister');
+    const switchToLogin = document.getElementById('switchToLogin');
+    const closeBtns = document.querySelectorAll('.close-btn');
+
+    // GİRİŞ MODALINI AÇ (Üst menüdeki buton)
+    if (showLogin && loginModal) {
+        showLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            if(registerModal) registerModal.classList.remove('active');
+            loginModal.classList.add('active');
+        });
+    }
+
+    // KAYIT MODALINI AÇ (Üst menüdeki buton)
+    if (showRegister && registerModal) {
+        showRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            if(loginModal) loginModal.classList.remove('active');
+            registerModal.classList.add('active');
+        });
+    }
+
+    // MODALLAR ARASI GEÇİŞ (Giriş'ten Kayıt'a)
+    if (switchToRegister && loginModal && registerModal) {
+        switchToRegister.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginModal.classList.remove('active');
+            registerModal.classList.add('active');
+        });
+    }
+
+    // MODALLAR ARASI GEÇİŞ (Kayıt'tan Giriş'e)
+    if (switchToLogin && loginModal && registerModal) {
+        switchToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            registerModal.classList.remove('active');
+            loginModal.classList.add('active');
+        });
+    }
+
+    // KAPATMA BUTONLARI (Tüm modallar için)
+    closeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            if(loginModal) loginModal.classList.remove('active');
+            if(registerModal) registerModal.classList.remove('active');
+        });
+    });
+
+    // DIŞARI TIKLAYINCA KAPAT (Tüm modallar için)
+    window.addEventListener('click', (e) => {
+        if (loginModal && e.target == loginModal) loginModal.classList.remove('active');
+        if (registerModal && e.target == registerModal) registerModal.classList.remove('active');
+    });
+});
