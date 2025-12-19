@@ -16,6 +16,9 @@ include_once 'db.php';
     <header>
         <h1>Bitki Bakım Takipçisi</h1>
     </header>
+    <!-- Sarmaşık Efektleri -->
+<div class="ivy-overlay ivy-left"></div>
+<div class="ivy-overlay ivy-right"></div>
     <nav>
         <ul>
             <?php if (isset($_SESSION['user_id'])): ?>

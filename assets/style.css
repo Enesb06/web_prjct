@@ -343,3 +343,34 @@ body::after {
   }
 }
 
+/* Sayfa Kenarı Sarmaşıkları */
+/* Sayfa Kenarı Sarmaşıkları */
+.ivy-overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 200px;
+    z-index: 9999;
+    pointer-events: none;
+    background-image: url('images/ivy.jpeg');
+    background-repeat: repeat-y;
+    background-size: contain;
+    
+    /* 1. ÇÖZÜM: Beyaz arka planı yok etmek için harmanlama modu */
+    /* Eğer sarmaşığın yeşil/koyu renkli ve arka planı beyazsa, 
+       bu kod beyaz kısımları tamamen şeffaf yapar. */
+    mix-blend-mode: multiply;
+
+    /* 2. DÜZELTME: Opacity değerini 1 yapıyoruz. 
+       Daha önce 0.9 verdiğimiz için beyaz kısımlar yarı saydam beyaz görünüyordu. */
+    opacity: 1; 
+}
+
+.ivy-left {
+    left: 0;
+}
+
+.ivy-right {
+    right: 0;
+    transform: scaleX(-1);
+}
