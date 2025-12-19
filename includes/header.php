@@ -9,6 +9,8 @@ include_once 'db.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Online Bitki Bakım Takipçisi</title>
     <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
     <header>

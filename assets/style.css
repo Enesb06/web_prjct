@@ -283,4 +283,63 @@ input[type="number"] {
     align-items: center;
     min-height: 80vh;
 }
+/* ================================
+   IVY – TRANSPARAN, OYNAR, GLOBAL
+   ================================ */
+
+body {
+  padding-left: 110px;
+  padding-right: 110px;
+}
+
+/* Ortak ayarlar */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  width: 90px;
+  height: 100vh;
+
+  background-image: url("assets/images/ivy.png");
+  background-repeat: repeat-y;
+  background-size: contain;
+
+  pointer-events: none;
+  z-index: 9999;
+
+  transform-origin: top center;
+}
+
+/* SOL */
+body::before {
+  left: 0;
+  animation: ivyLeft 4s ease-in-out infinite;
+}
+
+/* SAĞ (ayna + oynar) */
+body::after {
+  right: 0;
+  animation: ivyRight 4s ease-in-out infinite;
+}
+
+/* Sol animasyon */
+@keyframes ivyLeft {
+  0%, 100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(1deg);
+  }
+}
+
+/* Sağ animasyon */
+@keyframes ivyRight {
+  0%, 100% {
+    transform: scaleX(-1) translateY(0) rotate(-1deg);
+  }
+  50% {
+    transform: scaleX(-1) translateY(-6px) rotate(1deg);
+  }
+}
 
