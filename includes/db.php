@@ -57,4 +57,5 @@ function supabase_api_request($method, $path, $data = [], $token = null) {
 
     return null; // Sadece gerçek hata durumlarında (400+) null döndürür
 }
+include_once 'functions.php'; 
 ?>

@@ -24,6 +24,7 @@ include_once 'db.php';
             <?php if (isset($_SESSION['user_id'])): ?>
                 <li><a href="dashboard.php">Ana Sayfa</a></li>
                 <li><a href="add_plant.php">Bitki Ekle</a></li>
+                 <li><a href="encyclopedia.php">Bitki Ansiklopedisi</a></li> 
                 <li><a href="forum.php">Forum</a></li>
                 <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
                     <li><a href="admin.php">Admin Paneli</a></li>

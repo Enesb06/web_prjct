@@ -101,9 +101,15 @@ if ($plants && count($plants) > 0) {
                     </div>
 
                     <div class="plant-actions">
-                        <a href="edit_plant.php?id=<?php echo $plant['id']; ?>" class="btn btn-secondary">Düzenle</a>
-                        <a href="delete_plant.php?id=<?php echo $plant['id']; ?>" class="btn btn-danger" onclick="return confirm('Bu bitkiyi silmek istediğinizden emin misiniz?');">Sil</a>
-                    </div>
+    <?php
+        // Bitki tür adından parantezli kısımları temizle ve slugify yap
+        $species_name_clean = preg_replace('/\s*\(.*\)/', '', $plant['species']);
+        $plant_encyclopedia_slug = slugify($species_name_clean);
+    ?>
+    <a href="encyclopedia.php?plant=<?php echo $plant_encyclopedia_slug; ?>" class="btn btn-info">Detaylar</a>
+    <a href="edit_plant.php?id=<?php echo $plant['id']; ?>" class="btn btn-secondary">Düzenle</a>
+    <a href="delete_plant.php?id=<?php echo $plant['id']; ?>" class="btn btn-danger" onclick="return confirm('Bu bitkiyi silmek istediğinizden emin misiniz?');">Sil</a>
+</div>
                 </div>
             </div>
         <?php endforeach; ?>

@@ -1,4 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    console.log("Script dosyası başarıyla yüklendi.");
+
+    // ===============================================
+    //          MODAL (GİRİŞ/KAYIT) KODLARI
+    // ===============================================
     const loginModal = document.getElementById('loginModal');
     const registerModal = document.getElementById('registerModal');
     const showLogin = document.getElementById('showLogin');
@@ -7,13 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const switchToLogin = document.getElementById('switchToLogin');
     const closeBtns = document.querySelectorAll('.close-btn');
 
-    console.log("Script yüklendi...");
-
     // GİRİŞ MODALINI AÇ
     if (showLogin && loginModal) {
         showLogin.addEventListener('click', (e) => {
             e.preventDefault();
-            console.log("Giriş açılıyor");
             if(registerModal) registerModal.classList.remove('active');
             loginModal.classList.add('active');
         });
@@ -23,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (showRegister && registerModal) {
         showRegister.addEventListener('click', (e) => {
             e.preventDefault();
-            console.log("Kayıt açılıyor");
             if(loginModal) loginModal.classList.remove('active');
             registerModal.classList.add('active');
         });
@@ -59,4 +61,45 @@ document.addEventListener('DOMContentLoaded', () => {
         if (loginModal && e.target == loginModal) loginModal.classList.remove('active');
         if (registerModal && e.target == registerModal) registerModal.classList.remove('active');
     });
-});
+
+
+    // ===============================================
+    //          ANSİKLOPEDİ ARAMA VE ODAKLANMA
+    // ===============================================
+    const searchInput = document.getElementById('encyclopedia-search');
+    const plantCards = document.querySelectorAll('.encyclopedia-card');
+
+    // Bu kodların sadece ansiklopedi sayfasında çalışmasını sağlar
+    if (searchInput && plantCards.length > 0) {
+        
+        // Arama Çubuğu Fonksiyonu
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            plantCards.forEach(card => {
+                const plantName = card.dataset.name;
+                if (plantName.includes(searchTerm)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Direkt Link ile Odaklanma Fonksiyonu
+        const params = new URLSearchParams(window.location.search);
+        const plantToFocus = params.get('plant');
+
+        if (plantToFocus) {
+            const targetCard = document.getElementById(plantToFocus);
+            if (targetCard) {
+                targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Vurgu efekti ekle
+                targetCard.classList.add('highlight');
+                setTimeout(() => {
+                    targetCard.classList.remove('highlight');
+                }, 2500); // 2.5 saniye sonra vurguyu kaldır
+            }
+        }
+    }
+    
+}); // DOMContentLoaded olay dinleyicisinin kapanışı

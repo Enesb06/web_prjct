@@ -1,0 +1,510 @@
+[
+  {
+    "name": "Deve Tabanı",
+    "care_level": "Kolay",
+    "watering_interval_days": 7,
+    "water_amount_ml": 300,
+    "light": "Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Evcil hayvanlar için toksiktir."
+  },
+  {
+    "name": "Paşa Kılıcı",
+    "care_level": "Kolay",
+    "watering_interval_days": 14,
+    "water_amount_ml": 200,
+    "light": "Düşük / Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Dayanıklı, az su ister."
+  },
+  {
+    "name": "Kurdele Çiçeği",
+    "care_level": "Kolay",
+    "watering_interval_days": 5,
+    "water_amount_ml": 250,
+    "light": "Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": true,
+    "notes": "Evcil hayvanlar için güvenlidir."
+  },
+  {
+    "name": "Kauçuk Çiçeği",
+    "care_level": "Orta",
+    "watering_interval_days": 7,
+    "water_amount_ml": 300,
+    "light": "Parlak Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Lateks içerir."
+  },
+  {
+    "name": "Para Ağacı",
+    "care_level": "Kolay",
+    "watering_interval_days": 10,
+    "water_amount_ml": 250,
+    "light": "Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Aşırı sulamadan kaçınılmalıdır."
+  },
+  {
+    "name": "Barış Çiçeği",
+    "care_level": "Orta",
+    "watering_interval_days": 5,
+    "water_amount_ml": 300,
+    "light": "Düşük / Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Yaprak sarkması susuzluk belirtisidir."
+  },
+  {
+    "name": "Aşk Merdiveni",
+    "care_level": "Orta",
+    "watering_interval_days": 4,
+    "water_amount_ml": 250,
+    "light": "Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": true,
+    "notes": "Nemli ortamları sever."
+  },
+  {
+    "name": "Zebra Çiçeği",
+    "care_level": "Orta",
+    "watering_interval_days": 6,
+    "water_amount_ml": 250,
+    "light": "Parlak Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Dekoratif yapraklara sahiptir."
+  },
+  {
+    "name": "Salon Sarmaşığı",
+    "care_level": "Kolay",
+    "watering_interval_days": 6,
+    "water_amount_ml": 250,
+    "light": "Düşük / Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Sarmaşık türleri toksik olabilir."
+  },
+  {
+    "name": "Orkide",
+    "care_level": "Zor",
+    "watering_interval_days": 10,
+    "water_amount_ml": 200,
+    "light": "Parlak Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": true,
+    "notes": "Köklerin hava alması önemlidir."
+  },
+
+  {
+    "name": "Sukulent",
+    "care_level": "Kolay",
+    "watering_interval_days": 14,
+    "water_amount_ml": 150,
+    "light": "Güneşli",
+    "environment": "İç / Dış Mekan",
+    "pet_friendly": true,
+    "notes": "Toprak tamamen kuruduğunda sulanır."
+  },
+  {
+    "name": "Kaktüs",
+    "care_level": "Kolay",
+    "watering_interval_days": 21,
+    "water_amount_ml": 120,
+    "light": "Tam Güneş",
+    "environment": "İç / Dış Mekan",
+    "pet_friendly": true,
+    "notes": "Kışın çok seyrek sulanır."
+  },
+  {
+    "name": "Yeşim Bitkisi",
+    "care_level": "Kolay",
+    "watering_interval_days": 12,
+    "water_amount_ml": 200,
+    "light": "Parlak Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Evcil hayvanlar için zararlıdır."
+  },
+  {
+    "name": "Dua Çiçeği",
+    "care_level": "Orta",
+    "watering_interval_days": 5,
+    "water_amount_ml": 250,
+    "light": "Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": true,
+    "notes": "Yapraklar gece kapanır."
+  },
+  {
+    "name": "Aloe Vera",
+    "care_level": "Kolay",
+    "watering_interval_days": 14,
+    "water_amount_ml": 200,
+    "light": "Güneşli",
+    "environment": "İç / Dış Mekan",
+    "pet_friendly": false,
+    "notes": "Aşırı sulama kök çürümesine yol açar."
+  },
+
+  {
+    "name": "Benjamin",
+    "care_level": "Orta",
+    "watering_interval_days": 6,
+    "water_amount_ml": 300,
+    "light": "Parlak Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Yer değişikliğini sevmez."
+  },
+  {
+    "name": "Menekşe",
+    "care_level": "Orta",
+    "watering_interval_days": 5,
+    "water_amount_ml": 200,
+    "light": "Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": true,
+    "notes": "Yapraklara su değdirilmemelidir."
+  },
+  {
+    "name": "Telgraf Çiçeği",
+    "care_level": "Kolay",
+    "watering_interval_days": 6,
+    "water_amount_ml": 250,
+    "light": "Parlak Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": true,
+    "notes": "Hızlı büyür."
+  },
+  {
+    "name": "Bambu",
+    "care_level": "Kolay",
+    "watering_interval_days": 3,
+    "water_amount_ml": 300,
+    "light": "Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": true,
+    "notes": "Suda yetiştirilebilir."
+  },
+  {
+    "name": "Antoryum",
+    "care_level": "Orta",
+    "watering_interval_days": 5,
+    "water_amount_ml": 300,
+    "light": "Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Toksiktir."
+  },
+
+  {
+    "name": "Keman Yapraklı Kauçuk",
+    "care_level": "Orta",
+    "watering_interval_days": 7,
+    "water_amount_ml": 300,
+    "light": "Parlak Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Geniş yapraklıdır."
+  },
+  {
+    "name": "Kalp Kalbe Karşı",
+    "care_level": "Kolay",
+    "watering_interval_days": 7,
+    "water_amount_ml": 200,
+    "light": "Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": true,
+    "notes": "Sarmaşık yapılıdır."
+  },
+  {
+    "name": "İnci Tanesi Tesbih Çiçeği",
+    "care_level": "Kolay",
+    "watering_interval_days": 10,
+    "water_amount_ml": 150,
+    "light": "Parlak Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Toksiktir."
+  },
+  {
+    "name": "Yuka",
+    "care_level": "Kolay",
+    "watering_interval_days": 12,
+    "water_amount_ml": 250,
+    "light": "Güneşli",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Dayanıklı bir bitkidir."
+  },
+  {
+    "name": "Guzmanya",
+    "care_level": "Orta",
+    "watering_interval_days": 5,
+    "water_amount_ml": 250,
+    "light": "Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": true,
+    "notes": "Yaprak ortası nemli tutulur."
+  },
+
+  {
+    "name": "Madagaskar Dragon Ağacı",
+    "care_level": "Kolay",
+    "watering_interval_days": 10,
+    "water_amount_ml": 250,
+    "light": "Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Evcil hayvanlar için zararlıdır."
+  },
+  {
+    "name": "Begonya",
+    "care_level": "Orta",
+    "watering_interval_days": 5,
+    "water_amount_ml": 200,
+    "light": "Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Nemli ortam sever."
+  },
+  {
+    "name": "Kalanşo",
+    "care_level": "Kolay",
+    "watering_interval_days": 10,
+    "water_amount_ml": 180,
+    "light": "Parlak Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Toksiktir."
+  },
+  {
+    "name": "Çin Herdemyeşili",
+    "care_level": "Kolay",
+    "watering_interval_days": 7,
+    "water_amount_ml": 250,
+    "light": "Düşük Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Dayanıklı bir iç mekan bitkisidir."
+  },
+  {
+    "name": "Areka Palmiyesi",
+    "care_level": "Orta",
+    "watering_interval_days": 5,
+    "water_amount_ml": 300,
+    "light": "Parlak Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": true,
+    "notes": "Havayı temizler."
+  },
+
+  {
+    "name": "Kentia Palmiyesi",
+    "care_level": "Orta",
+    "watering_interval_days": 7,
+    "water_amount_ml": 300,
+    "light": "Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": true,
+    "notes": "Yavaş büyür."
+  },
+  {
+    "name": "Alokazya",
+    "care_level": "Zor",
+    "watering_interval_days": 4,
+    "water_amount_ml": 300,
+    "light": "Parlak Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Yüksek nem ister."
+  },
+  {
+    "name": "Fil Kulağı",
+    "care_level": "Zor",
+    "watering_interval_days": 4,
+    "water_amount_ml": 350,
+    "light": "Parlak Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Toksiktir."
+  },
+  {
+    "name": "Kraliyet Eğreltisi",
+    "care_level": "Orta",
+    "watering_interval_days": 3,
+    "water_amount_ml": 250,
+    "light": "Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": true,
+    "notes": "Nemli ortam sever."
+  },
+  {
+    "name": "Siklamen",
+    "care_level": "Orta",
+    "watering_interval_days": 6,
+    "water_amount_ml": 200,
+    "light": "Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Serin ortamları sever."
+  },
+
+  {
+    "name": "Atatürk Çiçeği",
+    "care_level": "Orta",
+    "watering_interval_days": 6,
+    "water_amount_ml": 250,
+    "light": "Parlak Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Toksiktir."
+  },
+  {
+    "name": "Gardenya",
+    "care_level": "Zor",
+    "watering_interval_days": 4,
+    "water_amount_ml": 250,
+    "light": "Parlak Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Hassas bir bitkidir."
+  },
+  {
+    "name": "Yasemin",
+    "care_level": "Orta",
+    "watering_interval_days": 5,
+    "water_amount_ml": 250,
+    "light": "Güneşli",
+    "environment": "İç / Dış Mekan",
+    "pet_friendly": true,
+    "notes": "Hoş kokuludur."
+  },
+  {
+    "name": "Mum Çiçeği",
+    "care_level": "Kolay",
+    "watering_interval_days": 7,
+    "water_amount_ml": 200,
+    "light": "Parlak Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": true,
+    "notes": "Az su ister."
+  },
+  {
+    "name": "Kuşkonmaz Ferni",
+    "care_level": "Orta",
+    "watering_interval_days": 4,
+    "water_amount_ml": 250,
+    "light": "Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Toksiktir."
+  },
+
+  {
+    "name": "Kırmızı Yapraklı Tavşan Ayağı",
+    "care_level": "Orta",
+    "watering_interval_days": 5,
+    "water_amount_ml": 250,
+    "light": "Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": true,
+    "notes": "Dekoratif yapraklara sahiptir."
+  },
+  {
+    "name": "Fittonia",
+    "care_level": "Orta",
+    "watering_interval_days": 4,
+    "water_amount_ml": 200,
+    "light": "Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": true,
+    "notes": "Nem sever."
+  },
+  {
+    "name": "Dieffenbachia",
+    "care_level": "Orta",
+    "watering_interval_days": 6,
+    "water_amount_ml": 300,
+    "light": "Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Zehirli bir bitkidir."
+  },
+  {
+    "name": "Sardunya",
+    "care_level": "Kolay",
+    "watering_interval_days": 6,
+    "water_amount_ml": 250,
+    "light": "Güneşli",
+    "environment": "İç / Dış Mekan",
+    "pet_friendly": true,
+    "notes": "Dayanıklıdır."
+  },
+  {
+    "name": "Japon Şemsiyesi",
+    "care_level": "Kolay",
+    "watering_interval_days": 5,
+    "water_amount_ml": 300,
+    "light": "Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": true,
+    "notes": "Suda da yetiştirilebilir."
+  },
+
+  {
+    "name": "Çarkıfelek Çiçeği",
+    "care_level": "Orta",
+    "watering_interval_days": 5,
+    "water_amount_ml": 300,
+    "light": "Güneşli",
+    "environment": "İç / Dış Mekan",
+    "pet_friendly": true,
+    "notes": "Sarmaşık türüdür."
+  },
+  {
+    "name": "Kroton",
+    "care_level": "Zor",
+    "watering_interval_days": 4,
+    "water_amount_ml": 250,
+    "light": "Parlak Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Renkli yapraklıdır."
+  },
+  {
+    "name": "Gelin Teli",
+    "care_level": "Kolay",
+    "watering_interval_days": 4,
+    "water_amount_ml": 250,
+    "light": "Dolaylı Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": true,
+    "notes": "Hızlı büyür."
+  },
+  {
+    "name": "Zamia",
+    "care_level": "Kolay",
+    "watering_interval_days": 14,
+    "water_amount_ml": 200,
+    "light": "Parlak Işık",
+    "environment": "İç Mekan",
+    "pet_friendly": false,
+    "notes": "Toksiktir."
+  },
+  {
+    "name": "Cennet Kuşu",
+    "care_level": "Zor",
+    "watering_interval_days": 5,
+    "water_amount_ml": 350,
+    "light": "Parlak Işık",
+    "environment": "İç / Dış Mekan",
+    "pet_friendly": false,
+    "notes": "Geniş alan ister."
+  }
+]
