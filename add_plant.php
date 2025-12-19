@@ -78,11 +78,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </p>
 
     <label for="last_watered_date">Son Sulama Tarihi:</label>
-    <input type="date" id="last_watered_date" name="last_watered_date">
+    <input type="datetime-local" id="last_watered_date" name="last_watered_date">
     
     <!-- YENİ GÜBRELEME TARİHİ ALANI -->
     <label for="last_fertilized_date">Son Gübreleme Tarihi (Opsiyonel):</label>
-    <input type="date" id="last_fertilized_date" name="last_fertilized_date">
+    <input type="datetime-local" id="last_fertilized_date" name="last_fertilized_date">
 
     <label for="image_url">Fotoğraf URL'si (Opsiyonel):</label>
     <input type="text" id="image_url" name="image_url" placeholder="https://ornek.com/resim.jpg">

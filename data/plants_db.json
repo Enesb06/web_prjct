@@ -1,7 +1,7 @@
 [
-    {"species_name": "Deve Tabanı (Monstera Deliciosa)", "watering_interval": 7, "fertilizing_interval": 30, "care_tip": "Doğrudan güneş ışığından koruyun, aydınlık ortamları sever."},
-    {"species_name": "Paşa Kılıcı (Sansevieria Trifasciata)", "watering_interval": 20, "fertilizing_interval": 90, "care_tip": "Çok az su ister, toprağı tamamen kuruduğunda sulayın."},
-    {"species_name": "Kurdele Çiçeği (Chlorophytum Comosum)", "watering_interval": 7, "fertilizing_interval": 45, "care_tip": "Havadaki toksinleri temizler, aydınlık ama dolaylı ışık sever."},
+    {"species_name": "Deve Tabanı (Monstera Deliciosa)", "watering_interval": 1, "fertilizing_interval": 30, "presentation_cooldown_minutes": 1, "care_tip": "Doğrudan güneş ışığından koruyun, aydınlık ortamları sever."},
+    {"species_name": "Paşa Kılıcı (Sansevieria Trifasciata)", "watering_interval": 1, "fertilizing_interval": 90, "presentation_cooldown_minutes": 1, "care_tip": "Çok az su ister, toprağı tamamen kuruduğunda sulayın."},
+    {"species_name": "Kurdele Çiçeği (Chlorophytum Comosum)", "watering_interval": 1, "fertilizing_interval": 45, "presentation_cooldown_minutes": 1, "care_tip": "Havadaki toksinleri temizler, aydınlık ama dolaylı ışık sever."},
     {"species_name": "Kauçuk Çiçeği (Ficus Elastica)", "watering_interval": 10, "fertilizing_interval": 45, "care_tip": "Yapraklarını ara sıra nemli bir bezle silin."},
     {"species_name": "Para Ağacı (Pilea Peperomioides)", "watering_interval": 7, "fertilizing_interval": 30, "care_tip": "Kendi etrafında çevirerek her yerinin ışık almasını sağlayın."},
     {"species_name": "Barış Çiçeği (Spathiphyllum)", "watering_interval": 5, "fertilizing_interval": 40, "care_tip": "Sulamayı unuttuğunuzda yapraklarını aşağı eğer, harika bir hatırlatıcıdır."},

@@ -69,13 +69,13 @@ if ($plants && count($plants) > 0) {
                     
                     <div class="plant-info">
                         <span><strong>💧 Sulama:</strong> <?php echo $plant['watering_interval']; ?> günde bir</span>
-                        <span><strong>📅 Son Sulama:</strong> <?php echo $plant['last_watered_date'] ? date('d M Y', strtotime($plant['last_watered_date'])) : 'Belirtilmemiş'; ?></span>
+                        <span><strong>📅 Son Sulama:</strong> <?php echo $plant['last_watered_date'] ? date('d M Y, H:i', strtotime($plant['last_watered_date'])) : 'Belirtilmemiş'; ?></span>
                         
-                        <!-- YENİ GÜBRELEME BİLGİLERİ -->
+                        <!-- GÜBRELEME BİLGİLERİ -->
                         <?php if (!empty($plant['fertilizing_interval'])): ?>
                             <span><strong>🌱 Gübreleme:</strong> <?php echo $plant['fertilizing_interval']; ?> günde bir</span>
-                            <span><strong>🗓️ Son Gübreleme:</strong> <?php echo $plant['last_fertilized_date'] ? date('d M Y', strtotime($plant['last_fertilized_date'])) : 'Belirtilmemiş'; ?></span>
-                        <?php endif; ?>
+                            <span><strong>🗓️ Son Gübreleme:</strong> <?php echo $plant['last_fertilized_date'] ? date('d M Y, H:i', strtotime($plant['last_fertilized_date'])) : 'Belirtilmemiş'; ?></span>
+                        <?php endif; // --- HATA BURADAYDI, BU SATIR EKLENDİ --- ?> 
 
                         <?php if (!empty($plant['care_tip'])): ?>
                             <span class="care-tip"><strong>💡 İpucu:</strong> <?php echo htmlspecialchars($plant['care_tip']); ?></span>
@@ -105,7 +105,7 @@ if ($plants && count($plants) > 0) {
                         ?>
                     </div>
 
-                    <!-- YENİ GÜBRELEME DURUMU -->
+                    <!-- GÜBRELEME DURUMU -->
                     <div class="fertilizing-status">
                          <?php
                         if (!empty($plant['last_fertilized_date']) && !empty($plant['fertilizing_interval'])) {
@@ -129,15 +129,13 @@ if ($plants && count($plants) > 0) {
                         ?>
                     </div>
 
-                    <div class="plant-actions">
+                   <div class="plant-actions">
                         <?php
-                            // Bitki tür adından parantezli kısımları temizle ve slugify yap
                             $species_name_clean = preg_replace('/\s*\(.*\)/', '', $plant['species']);
                             $plant_encyclopedia_slug = slugify($species_name_clean);
                         ?>
                         <a href="encyclopedia.php?plant=<?php echo $plant_encyclopedia_slug; ?>" class="btn btn-info">Detaylar</a>
-                        <a href="edit_plant.php?id=<?php echo $plant['id']; ?>" class="btn btn-secondary">Düzenle</a>
-                        <a href="delete_plant.php?id=<?php echo $plant['id']; ?>" class="btn btn-danger" onclick="return confirm('Bu bitkiyi silmek istediğinizden emin misiniz?');">Sil</a>
+                        <a href="edit_plant.php?id=<?php echo $plant['id']; ?>" class="btn btn-secondary">Yönet</a>
                     </div>
                 </div>
             </div>

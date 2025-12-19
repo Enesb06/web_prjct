@@ -8,20 +8,19 @@ if (session_status() == PHP_SESSION_NONE) {
 $supabase_url = 'https://qcxfgedwwjfypwtsdzme.supabase.co'; // Proje URL'niz
 $supabase_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFjeGZnZWR3d2pmeXB3dHNkem1lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1NzkzNzAsImV4cCI6MjA4MDE1NTM3MH0.RmxwNeq2_m7fOgrmycaUSfPl38qNf7mfvcZageULwU4'; // Anon (public) Key'iniz
 
-// Genel cURL Fonksiyonu (Tüm API istekleri için)
 function supabase_api_request($method, $path, $data = [], $token = null) {
     global $supabase_url, $supabase_key;
 
     $url = $supabase_url . '/rest/v1/' . $path;
     $headers = [
         'Content-Type: application/json',
+        'Prefer: return=representation', // YENİ: POST ve PATCH sonrası eklenen/güncellenen veriyi geri döndürür.
         'apikey: ' . $supabase_key,
-        'Authorization: Bearer ' . ($token ?? $supabase_key),
-        'Prefer: return=representation' // <--- BU SATIRI EKLEDİK: Başarılı POST işlemlerinde veriyi geri döndürür.
+        'Authorization: Bearer ' . ($token ?? $supabase_key)
     ];
 
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
+    
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
@@ -29,20 +28,35 @@ function supabase_api_request($method, $path, $data = [], $token = null) {
         case 'POST':
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+            curl_setopt($ch, CURLOPT_URL, $url);
             break;
-        // ... (diğer case yapıları aynı kalacak)
+        
+        // YENİ PATCH METODU
+        case 'PATCH':
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+            // Veriyi URL'e ekle (örn: ?id=eq.123)
+            if (!empty($data)) {
+                 $url .= '?' . http_build_query(['id' => 'eq.' . $data['id']]);
+                 unset($data['id']); // id'yi gövdeden kaldır
+                 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+            }
+             curl_setopt($ch, CURLOPT_URL, $url);
+            break;
+
         case 'GET':
             if (!empty($data)) {
                 $url .= '?' . http_build_query($data);
-                curl_setopt($ch, CURLOPT_URL, $url);
             }
+            curl_setopt($ch, CURLOPT_URL, $url);
             break;
+
         case 'DELETE':
              curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
              if (!empty($data)) {
                 $url .= '?' . http_build_query($data);
-                curl_setopt($ch, CURLOPT_URL, $url);
             }
+            curl_setopt($ch, CURLOPT_URL, $url);
             break;
     }
 
@@ -50,12 +64,12 @@ function supabase_api_request($method, $path, $data = [], $token = null) {
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
     
-    // Eğer HTTP kodu 200 veya 201 ise (başarılıysa) veriyi döndür
-    if ($http_code >= 200 && $http_code < 300) {
-        return json_decode($response, true);
+    if ($http_code >= 400) {
+        // echo "Supabase API Hatası: " . $response;
+        return null;
     }
 
-    return null; // Sadece gerçek hata durumlarında (400+) null döndürür
+    return json_decode($response, true);
 }
 include_once 'functions.php'; 
 ?>

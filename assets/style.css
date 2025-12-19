@@ -644,3 +644,77 @@ body:has(.register-page) {
     margin: 5px 0 10px 0; /* Üst, sağ/sol, alt */
     font-size: 0.9em;
 }
+/* ================================== */
+/*        Bitki Yönetim Sayfası       */
+/* ================================== */
+
+.plant-manage-card {
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 25px;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.plant-manage-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+.plant-manage-header img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.plant-manage-header h3 {
+    margin: 0;
+    font-size: 1.8em;
+}
+
+.plant-manage-info p {
+    font-size: 1.1em;
+    color: #555;
+}
+
+.plant-manage-actions, .plant-manage-delete {
+    margin-top: 30px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.plant-manage-actions h4, .plant-manage-delete h4 {
+    margin-top: 0;
+    color: #34495e;
+}
+
+.plant-manage-actions form {
+    display: flex;
+    gap: 15px;
+}
+.plant-manage-actions form button {
+    flex-grow: 1;
+    font-size: 1em;
+    padding: 12px;
+}
+
+.btn-action-water {
+    background-color: #3498db;
+}
+.btn-action-water:hover {
+    background-color: #2980b9;
+}
+.btn-action-fertilize {
+    background-color: #27ae60;
+}
+.btn-action-fertilize:hover {
+    background-color: #2ecc71;
+}
+
+.plant-manage-delete .btn-danger {
+    width: 100%;
+}
