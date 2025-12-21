@@ -317,5 +317,85 @@ if (passwordUpdateForm) {
     });
 }
 
+// ===============================================
+//          FORUM ETKİLEŞİM KODLARI
+// ===============================================
+const forumContainer = document.querySelector('.forum-posts-container');
+
+if (forumContainer) {
+    // Yorumları Göster/Gizle
+    const commentToggleButtons = document.querySelectorAll('.comment-toggle-btn');
+    commentToggleButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const commentsSection = btn.closest('.forum-post').querySelector('.comments-section');
+            if (commentsSection) {
+                commentsSection.style.display = commentsSection.style.display === 'none' ? 'block' : 'none';
+            }
+        });
+    });
+
+    // Gönderi Beğenme (AJAX)
+    const likeButtons = document.querySelectorAll('.like-btn');
+    likeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const postId = btn.dataset.postId;
+            const formData = new FormData();
+            formData.append('action', 'toggle_like');
+            formData.append('post_id', postId);
+
+            fetch('api_handler.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const likeCountSpan = btn.querySelector('.like-count');
+                    likeCountSpan.textContent = data.new_count;
+                    if (data.liked) {
+                        btn.classList.add('liked');
+                    } else {
+                        btn.classList.remove('liked');
+                    }
+                }
+            });
+        });
+    });
+
+    // Yorum Ekleme (AJAX)
+    const commentForms = document.querySelectorAll('.comment-form');
+    commentForms.forEach(form => {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(form);
+            const existingCommentsDiv = form.closest('.comments-section').querySelector('.existing-comments');
+            const commentInput = form.querySelector('input[name="comment_message"]');
+
+            fetch('api_handler.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Yeni yorum için HTML oluştur
+                    const newComment = document.createElement('div');
+                    newComment.classList.add('comment');
+                    newComment.innerHTML = `<strong>${data.comment.username}:</strong> ${data.comment.message}`;
+                    
+                    // Yeni yorumu listeye ekle
+                    existingCommentsDiv.appendChild(newComment);
+                    
+                    // Yorum yazma alanını temizle
+                    commentInput.value = '';
+                } else {
+                    alert(data.error || 'Bir hata oluştu.');
+                }
+            });
+        });
+    });
+}
+
 
 }); // --- TEK BİR DOMContentLoaded OLAY DİNLEYİCİSİNİN KAPANIŞI ---

@@ -19,6 +19,70 @@ $action = $_POST['action'] ?? $_GET['action'] ?? '';
 header('Content-Type: application/json');
 
 switch ($action) {
+
+    case 'toggle_like':
+        $post_id = $_POST['post_id'];
+        if (empty($post_id)) {
+            echo json_encode(['success' => false, 'error' => 'Geçersiz gönderi.']);
+            exit();
+        }
+
+        // Kullanıcı bu gönderiyi daha önce beğenmiş mi?
+        $existing_like = supabase_api_request('GET', 'post_likes', [
+            'post_id' => 'eq.' . $post_id,
+            'user_id' => 'eq.' . $user_id
+        ]);
+
+        if ($existing_like && count($existing_like) > 0) {
+            // Beğeni varsa, sil (unlike)
+            supabase_api_request('DELETE', 'post_likes', [
+                'post_id' => 'eq.' . $post_id,
+                'user_id' => 'eq.' . $user_id
+            ]);
+            $liked = false;
+        } else {
+            // Beğeni yoksa, ekle (like)
+            supabase_api_request('POST', 'post_likes', [
+                'post_id' => $post_id,
+                'user_id' => $user_id
+            ]);
+            $liked = true;
+        }
+
+        // Güncel beğeni sayısını geri döndür
+        $all_likes_for_post = supabase_api_request('GET', 'post_likes', ['post_id' => 'eq.' . $post_id]);
+        $new_count = $all_likes_for_post ? count($all_likes_for_post) : 0;
+
+        echo json_encode(['success' => true, 'liked' => $liked, 'new_count' => $new_count]);
+        break;
+
+    case 'add_comment':
+        $post_id = $_POST['post_id'];
+        $message = trim($_POST['comment_message']);
+
+        if (empty($post_id) || empty($message)) {
+            echo json_encode(['success' => false, 'error' => 'Eksik bilgi.']);
+            exit();
+        }
+
+        $new_comment_data = [
+            'post_id' => $post_id,
+            'user_id' => $user_id,
+            'username' => $_SESSION['username'],
+            'message' => $message
+        ];
+
+        // API'nin "return=representation" özelliği sayesinde eklenen veri geri döner.
+        $result = supabase_api_request('POST', 'forum_comments', $new_comment_data);
+
+        if ($result && isset($result[0])) {
+            echo json_encode(['success' => true, 'comment' => $result[0]]);
+        } else {
+            echo json_encode(['success' => false, 'error' => 'Yorum eklenemedi.']);
+        }
+        break;
+
+        
     case 'get_user_data':
         $user_info = supabase_api_request('GET', 'users', ['id' => 'eq.' . $user_id, 'select' => 'username,email,avatar_url']);
         if ($user_info && !empty($user_info)) {
@@ -60,7 +124,7 @@ switch ($action) {
         }
         break;
 
-        
+
     case 'change_password':
         $current_password = $_POST['current_password'];
         $new_password = $_POST['new_password'];
