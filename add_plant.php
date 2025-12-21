@@ -14,16 +14,57 @@ $plant_data_json = file_get_contents('data/plants_db.json');
 $plant_options = json_decode($plant_data_json, true);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Formdan gelen verileri al
+    // Formdan metin verilerini al
     $plant_name = trim($_POST['plant_name']);
     $selected_plant_key = $_POST['plant_species_key'];
     $last_watered_date = $_POST['last_watered_date'];
-    $last_fertilized_date = $_POST['last_fertilized_date']; // YENİ
-    $image_url = trim($_POST['image_url']);
+    $last_fertilized_date = $_POST['last_fertilized_date']; 
     
+    // YENİ: Varsayılan resim yolu
+    $image_path_for_db = null;
+
+    // YENİ: Dosya yükleme mantığı
+    // Bir dosya seçilmiş mi ve yüklemede hata var mı kontrol et
+    if (isset($_FILES['plant_image']) && $_FILES['plant_image']['error'] === UPLOAD_ERR_OK) {
+        
+        $upload_dir = 'assets/images/user_uploads/';
+        $file = $_FILES['plant_image'];
+        
+        // Güvenlik: Dosya boyutunu kontrol et (örn: max 2MB)
+        if ($file['size'] > 2097152) {
+            $error = 'Hata: Dosya boyutu 2MB\'den büyük olamaz.';
+        } else {
+            // Güvenlik: Dosya tipinin gerçekten bir resim olduğunu doğrula
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime_type = finfo_file($finfo, $file['tmp_name']);
+            $allowed_mime_types = ['image/jpeg', 'image/png', 'image/gif'];
+            finfo_close($finfo);
+
+            if (!in_array($mime_type, $allowed_mime_types)) {
+                $error = 'Hata: Sadece JPG, PNG ve GIF formatında resimler yükleyebilirsiniz.';
+            } else {
+                // Güvenlik: Benzersiz bir dosya adı oluşturarak üzerine yazmaları engelle
+                $file_extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+                $unique_filename = uniqid('plant_', true) . '.' . $file_extension;
+                $destination = $upload_dir . $unique_filename;
+
+                // Dosyayı geçici konumundan hedef klasöre taşı
+                if (move_uploaded_file($file['tmp_name'], $destination)) {
+                    $image_path_for_db = $destination; // Veritabanına kaydedilecek yol
+                } else {
+                    $error = 'Dosya yüklenirken bir hata oluştu.';
+                }
+            }
+        }
+    }
+
+
     if (empty($plant_name) || !isset($plant_options[$selected_plant_key])) {
         $error = "Bitki adı ve türü seçimi zorunludur.";
-    } else {
+    } 
+    
+    // Eğer bir dosya yükleme hatası oluşmadıysa devam et
+    if (empty($error)) {
         $selected_plant_info = $plant_options[$selected_plant_key];
 
         // Veritabanına kaydedilecek yeni bitki dizisini oluştur
@@ -33,10 +74,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'species' => $selected_plant_info['species_name'],
             'watering_interval' => $selected_plant_info['watering_interval'],
             'care_tip' => $selected_plant_info['care_tip'],
-            'fertilizing_interval' => $selected_plant_info['fertilizing_interval'], // YENİ
+            'fertilizing_interval' => $selected_plant_info['fertilizing_interval'],
             'last_watered_date' => !empty($last_watered_date) ? $last_watered_date : null,
-            'last_fertilized_date' => !empty($last_fertilized_date) ? $last_fertilized_date : null, // YENİ
-            'image_url' => $image_url
+            'last_fertilized_date' => !empty($last_fertilized_date) ? $last_fertilized_date : null,
+            'image_url' => $image_path_for_db // DEĞİŞTİRİLDİ: URL yerine sunucudaki dosya yolu
         ];
 
         $result = supabase_api_request('POST', 'plants', $newPlant);
@@ -44,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($result !== null) {
             $success = "Bitkin başarıyla eklendi! <a href='dashboard.php'>Bitkilerimi Gör</a>";
         } else {
-            $error = "Bitki eklenirken bir hata oluştu. Lütfen tekrar deneyin.";
+            $error = "Bitki eklenirken bir veritabanı hatası oluştu. Lütfen tekrar deneyin.";
         }
     }
 }
@@ -59,7 +100,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="message success"><?php echo $success; ?></div>
 <?php endif; ?>
 
-<form action="add_plant.php" method="POST">
+<form action="add_plant.php" method="POST" enctype="multipart/form-data">
+
     <label for="plant_name">Bitkine bir isim ver (Örn: Boncuk, Paşa):</label>
     <input type="text" id="plant_name" name="plant_name" required>
 
@@ -80,12 +122,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <label for="last_watered_date">Son Sulama Tarihi:</label>
     <input type="datetime-local" id="last_watered_date" name="last_watered_date">
     
-    <!-- YENİ GÜBRELEME TARİHİ ALANI -->
     <label for="last_fertilized_date">Son Gübreleme Tarihi (Opsiyonel):</label>
     <input type="datetime-local" id="last_fertilized_date" name="last_fertilized_date">
 
-    <label for="image_url">Fotoğraf URL'si (Opsiyonel):</label>
-    <input type="text" id="image_url" name="image_url" placeholder="https://ornek.com/resim.jpg">
+    <!-- DEĞİŞTİRİLDİ: URL input'u yerine dosya seçme input'u eklendi -->
+    <label for="plant_image">Bitkinin Fotoğrafını Yükle (Opsiyonel):</label>
+    <input type="file" id="plant_image" name="plant_image" accept="image/png, image/jpeg, image/gif">
 
     <button type="submit">Bitkiyi Ekle</button>
 </form>
