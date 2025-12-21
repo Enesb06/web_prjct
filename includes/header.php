@@ -33,7 +33,7 @@ include_once 'db.php';
                 <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
                     <li><a href="admin.php">Admin Paneli</a></li>
                 <?php endif; ?>
-                    <li><a href="profile.php" style="font-weight:bold;">Profilim</a></li>
+                    <li><a href="#" id="showProfileModal">Profilim</a></li> 
             <?php else: ?>
                 <!-- Not: Giriş/Kayıt butonlarının ID'lerini JS ile uyumlu hale getirdim -->
              <li><a href="index.php">Giriş Yap</a></li>

@@ -189,4 +189,131 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+
+    // ===============================================
+//          PROFİL MODAL KODLARI
+// ===============================================
+const profileModal = document.getElementById('profileModal');
+const showProfileModalBtn = document.getElementById('showProfileModal');
+const closeProfileModalBtn = document.getElementById('closeProfileModal');
+
+// Avatar seçimi için değişkenler
+let selectedAvatar = '';
+const avatarOptions = document.querySelectorAll('.avatar-option');
+
+// Formlar
+const profileUpdateForm = document.getElementById('profileUpdateForm');
+const passwordUpdateForm = document.getElementById('passwordUpdateForm');
+
+// Mesaj konteynerleri
+const profileMessageContainer = document.getElementById('profile-message-container');
+const passwordMessageContainer = document.getElementById('password-message-container');
+
+// Profili Göster Butonu
+if (showProfileModalBtn) {
+    showProfileModalBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        fetch('api_handler.php?action=get_user_data')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Mevcut verileri inputlara doldur
+                    document.getElementById('profile_username').value = data.data.username;
+                    document.getElementById('profile_email').value = data.data.email;
+                    
+                    // YENİ: En üstteki avatar resmini güncelle
+                    const avatarDisplay = document.getElementById('profile_avatar_display');
+                    avatarDisplay.src = `assets/images/avatars/${data.data.avatar_url}`;
+
+                    // Mevcut avatarı seçili yap
+                    selectedAvatar = data.data.avatar_url;
+                    avatarOptions.forEach(img => {
+                        if (img.dataset.avatar === selectedAvatar) {
+                            img.classList.add('selected');
+                        } else {
+                            img.classList.remove('selected');
+                        }
+                    });
+
+                    profileModal.classList.add('active');
+                } else {
+                    alert('Kullanıcı bilgileri yüklenemedi: ' + data.error);
+                }
+            });
+    });
+}
+
+// Profil Modalını Kapatma
+if (closeProfileModalBtn) {
+    closeProfileModalBtn.addEventListener('click', () => {
+        profileModal.classList.remove('active');
+    });
+}
+// Dışarı tıklayınca kapatma
+window.addEventListener('click', (e) => {
+    if (e.target == profileModal) {
+        profileModal.classList.remove('active');
+    }
+});
+
+// Avatar Seçim İşlevi
+avatarOptions.forEach(img => {
+    img.addEventListener('click', () => {
+        avatarOptions.forEach(otherImg => otherImg.classList.remove('selected'));
+        img.classList.add('selected');
+        selectedAvatar = img.dataset.avatar;
+    });
+});
+
+// Profil Güncelleme Formu Gönderimi (AJAX)
+if (profileUpdateForm) {
+    profileUpdateForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(profileUpdateForm);
+        formData.append('action', 'update_profile');
+        formData.append('avatar_url', selectedAvatar); // Seçili avatarı ekle
+
+        fetch('api_handler.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                profileMessageContainer.innerHTML = `<div class="message success">${data.message}</div>`;
+                // Navigasyondaki kullanıcı adını da güncelle (opsiyonel ama şık)
+                const usernameDisplay = document.querySelector('.dashboard-header strong'); // Bu seçiciyi kendi yapınıza göre ayarlayın
+                if(usernameDisplay) usernameDisplay.textContent = formData.get('username');
+            } else {
+                profileMessageContainer.innerHTML = `<div class="message error">${data.error}</div>`;
+            }
+        });
+    });
+}
+
+// Şifre Değiştirme Formu Gönderimi (AJAX)
+if (passwordUpdateForm) {
+    passwordUpdateForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(passwordUpdateForm);
+        formData.append('action', 'change_password');
+
+        fetch('api_handler.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                passwordMessageContainer.innerHTML = `<div class="message success">${data.message}</div>`;
+                passwordUpdateForm.reset(); // Formu temizle
+            } else {
+                passwordMessageContainer.innerHTML = `<div class="message error">${data.error}</div>`;
+            }
+        });
+    });
+}
+
+
 }); // --- TEK BİR DOMContentLoaded OLAY DİNLEYİCİSİNİN KAPANIŞI ---

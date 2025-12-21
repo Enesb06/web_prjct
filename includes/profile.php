@@ -23,11 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
             'email' => $new_email
         ];
         
-        // Supabase PATCH isteği (id'ye göre filtreleyerek)
-        $result = supabase_api_request('PATCH', 'users', $updateData, null);
-        // Not: URL'ye filtre eklemek için db.php'deki gibi query string kullanılabilir
-        // Basitlik için db.php'yi yukarıda PATCH destekler hale getirdik.
-        
         // Önemli: PATCH isteği atarken URL'ye filtre eklemeliyiz
         $path = 'users?id=eq.' . $user_id;
         $result = supabase_api_request('PATCH', $path, $updateData);
@@ -43,6 +38,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
 
 // Mevcut kullanıcı bilgilerini çek
 $user_info = supabase_api_request('GET', 'users', ['id' => 'eq.' . $user_id]);
+
+// Kullanıcı bulunamazsa veya bir hata oluşursa işlemi durdur
+if (!$user_info || count($user_info) === 0) {
+    echo "<div class='message error'>Kullanıcı bilgileri alınamadı. Lütfen daha sonra tekrar deneyin.</div>";
+    include_once 'includes/footer.php';
+    exit();
+}
 $user = $user_info[0];
 ?>
 

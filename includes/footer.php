@@ -26,3 +26,66 @@
     <script src="assets/script.js"></script>
 </body>
 </html>
+
+
+<!-- =================================================================== -->
+<!--                  PROFİL MODAL PENCERESİ                             -->
+<!-- =================================================================== -->
+<div class="auth-overlay" id="profileModal">
+    <div class="profile-card">
+        <span class="close-btn" id="closeProfileModal">&times;</span>
+
+        <!-- YENİ: Mevcut Avatar Gösterim Alanı -->
+        <img src="assets/images/avatars/avatar1.png" alt="Profil Resmi" id="profile_avatar_display">
+        
+        <h2>Profil Yönetimi</h2>
+
+        <!-- Profil Formu -->
+        <form id="profileUpdateForm">
+            <h4>Bilgileri Güncelle</h4>
+            <div id="profile-message-container"></div> <!-- Hata/başarı mesajları için -->
+            <label for="profile_username">Kullanıcı Adı:</label>
+            <input type="text" id="profile_username" name="username" required>
+            
+            <!-- DEĞİŞİKLİK: E-posta alanı artık "disabled" -->
+            <label for="profile_email">E-posta Adresi (Değiştirilemez):</label>
+            <input type="email" id="profile_email" name="email" required disabled>
+            
+            <button type="submit">Bilgileri Kaydet</button>
+        </form>
+
+        <hr>
+
+        <!-- Şifre Değiştirme Formu (Aynı kalıyor) -->
+        <form id="passwordUpdateForm">
+            <h4>Şifre Değiştir</h4>
+            <div id="password-message-container"></div>
+            <label for="current_password">Mevcut Şifre:</label>
+            <input type="password" id="current_password" name="current_password" required>
+            <label for="new_password">Yeni Şifre:</label>
+            <input type="password" id="new_password" name="new_password" required>
+            <button type="submit">Şifreyi Değiştir</button>
+        </form>
+
+        <hr>
+
+        <!-- Avatar Seçimi (Aynı kalıyor) -->
+        <div class="avatar-selection">
+             <h4>Avatar Değiştir</h4>
+             <div class="avatar-options">
+                <img src="assets/images/avatars/avatar1.png" data-avatar="avatar1.png" class="avatar-option" alt="Avatar 1">
+                <img src="assets/images/avatars/avatar2.png" data-avatar="avatar2.png" class="avatar-option" alt="Avatar 2">
+                <img src="assets/images/avatars/avatar3.png" data-avatar="avatar3.png" class="avatar-option" alt="Avatar 3">
+                <img src="assets/images/avatars/avatar4.png" data-avatar="avatar4.png" class="avatar-option" alt="Avatar 4">
+                <img src="assets/images/avatars/avatar5.png" data-avatar="avatar5.png" class="avatar-option" alt="Avatar 5">
+             </div>
+        </div>
+
+        <hr>
+
+        <!-- Çıkış Yap Butonu (Aynı kalıyor) -->
+        <div class="logout-section" style="text-align: center;">
+            <a href="logout.php" class="btn btn-danger" style="width: 100%;">Güvenli Çıkış Yap</a>
+        </div>
+    </div>
+</div>

@@ -32,16 +32,12 @@ function supabase_api_request($method, $path, $data = [], $token = null) {
             break;
         
         // YENİ PATCH METODU
-        case 'PATCH':
+         case 'PATCH':
+            // $path değişkeni zaten 'users?id=eq.123' gibi tam yolu içeriyor.
+            // Bu yüzden $url'i doğrudan kullanıyoruz.
+            curl_setopt($ch, CURLOPT_URL, $url); 
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-            // Veriyi URL'e ekle (örn: ?id=eq.123)
-            if (!empty($data)) {
-                 $url .= '?' . http_build_query(['id' => 'eq.' . $data['id']]);
-                 unset($data['id']); // id'yi gövdeden kaldır
-                 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-            }
-             curl_setopt($ch, CURLOPT_URL, $url);
             break;
 
         case 'GET':
