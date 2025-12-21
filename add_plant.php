@@ -1,5 +1,9 @@
 <?php
+// db.php'yi en üste dahil ediyoruz. 
+// Bu dosya hem veritabanı fonksiyonlarını getirir hem de session_start() komutunu çalıştırır.
+
 include_once 'includes/header.php';
+
 $error = '';
 $success = '';
 
@@ -20,10 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $last_watered_date = $_POST['last_watered_date'];
     $last_fertilized_date = $_POST['last_fertilized_date']; 
     
-    // YENİ: Varsayılan resim yolu
+    // Varsayılan resim yolu
     $image_path_for_db = null;
 
-    // YENİ: Dosya yükleme mantığı
+    // Dosya yükleme mantığı
     // Bir dosya seçilmiş mi ve yüklemede hata var mı kontrol et
     if (isset($_FILES['plant_image']) && $_FILES['plant_image']['error'] === UPLOAD_ERR_OK) {
         
@@ -58,7 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-
     if (empty($plant_name) || !isset($plant_options[$selected_plant_key])) {
         $error = "Bitki adı ve türü seçimi zorunludur.";
     } 
@@ -66,6 +69,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Eğer bir dosya yükleme hatası oluşmadıysa devam et
     if (empty($error)) {
         $selected_plant_info = $plant_options[$selected_plant_key];
+
+        // =================================================================== //
+        //                  YENİ EKLENEN KISIM BAŞLANGICI                        //
+        // =================================================================== //
+
+        // Eğer kullanıcı özel bir resim yüklemediyse ($image_path_for_db hala null ise)
+        // ve bir bitki türü seçilmişse, varsayılan ansiklopedi resmini ata.
+        if ($image_path_for_db === null && isset($selected_plant_info['species_name'])) {
+            
+            // 1. Türün adını al ve parantez içindeki bilimsel ismi temizle.
+            // Örnek: "Deve Tabanı (Monstera Deliciosa)" -> "Deve Tabanı"
+            $species_name_clean = preg_replace('/\s*\(.*\)/', '', $selected_plant_info['species_name']);
+            
+            // 2. Temizlenmiş adı dosya ismine uygun hale getir (slugify).
+            // Örnek: "Deve Tabanı" -> "deve-tabani"
+            $plant_slug = slugify(trim($species_name_clean));
+            
+            // 3. Varsayılan resim yolunu oluştur.
+            // Örnek: "assets/images/encyclopedia/deve-tabani.jpg"
+            $image_path_for_db = 'assets/images/encyclopedia/' . $plant_slug . '.jpg';
+        }
+
+        // =================================================================== //
+        //                    YENİ EKLENEN KISIM SONU                          //
+        // =================================================================== //
+
 
         // Veritabanına kaydedilecek yeni bitki dizisini oluştur
         $newPlant = [
@@ -77,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'fertilizing_interval' => $selected_plant_info['fertilizing_interval'],
             'last_watered_date' => !empty($last_watered_date) ? $last_watered_date : null,
             'last_fertilized_date' => !empty($last_fertilized_date) ? $last_fertilized_date : null,
-            'image_url' => $image_path_for_db // DEĞİŞTİRİLDİ: URL yerine sunucudaki dosya yolu
+            'image_url' => $image_path_for_db // Bu değişken artık ya kullanıcının yüklediği resmi ya da varsayılan resmi tutuyor.
         ];
 
         $result = supabase_api_request('POST', 'plants', $newPlant);
@@ -91,45 +120,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<h2>Yeni Bitki Ekle</h2>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <!-- Head içeriğiniz burada -->
+</head>
+<body>
+    <!-- Header'ınız ve navigasyonunuz burada -->
 
-<?php if ($error): ?>
-    <div class="message error"><?php echo $error; ?></div>
-<?php endif; ?>
-<?php if ($success): ?>
-    <div class="message success"><?php echo $success; ?></div>
-<?php endif; ?>
+    <div class="container">
+        <h2>Yeni Bitki Ekle</h2>
 
-<form action="add_plant.php" method="POST" enctype="multipart/form-data">
+        <?php if ($error): ?>
+            <div class="message error"><?php echo $error; ?></div>
+        <?php endif; ?>
+        <?php if ($success): ?>
+            <div class="message success"><?php echo $success; ?></div>
+        <?php endif; ?>
 
-    <label for="plant_name">Bitkine bir isim ver (Örn: Boncuk, Paşa):</label>
-    <input type="text" id="plant_name" name="plant_name" required>
+        <form action="add_plant.php" method="POST" enctype="multipart/form-data">
+            <label for="plant_name">Bitkine bir isim ver (Örn: Boncuk, Paşa):</label>
+            <input type="text" id="plant_name" name="plant_name" required>
 
-    <label for="plant_species_key">Bitkinin Türünü Seç:</label>
-    <select id="plant_species_key" name="plant_species_key" required>
-        <option value="" disabled selected>-- Lütfen bir bitki türü seçin --</option>
-        <?php foreach ($plant_options as $key => $plant): ?>
-            <option value="<?php echo $key; ?>">
-                <?php echo htmlspecialchars($plant['species_name']); ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
-    
-    <p style="font-size:0.9em; color:#777; margin-top: -10px;">
-        Not: Sulama ve gübreleme sıklığı otomatik olarak atanacaktır.
-    </p>
+            <label for="plant_species_key">Bitkinin Türünü Seç:</label>
+            <select id="plant_species_key" name="plant_species_key" required>
+                <option value="" disabled selected>-- Lütfen bir bitki türü seçin --</option>
+                <?php foreach ($plant_options as $key => $plant): ?>
+                    <option value="<?php echo $key; ?>">
+                        <?php echo htmlspecialchars($plant['species_name']); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            
+            <p style="font-size:0.9em; color:#777; margin-top: -10px;">
+                Not: Sulama ve gübreleme sıklığı otomatik olarak atanacaktır.
+            </p>
 
-    <label for="last_watered_date">Son Sulama Tarihi:</label>
-    <input type="datetime-local" id="last_watered_date" name="last_watered_date">
-    
-    <label for="last_fertilized_date">Son Gübreleme Tarihi (Opsiyonel):</label>
-    <input type="datetime-local" id="last_fertilized_date" name="last_fertilized_date">
+            <label for="last_watered_date">Son Sulama Tarihi:</label>
+            <input type="datetime-local" id="last_watered_date" name="last_watered_date">
+            
+            <label for="last_fertilized_date">Son Gübreleme Tarihi (Opsiyonel):</label>
+            <input type="datetime-local" id="last_fertilized_date" name="last_fertilized_date">
 
-    <!-- DEĞİŞTİRİLDİ: URL input'u yerine dosya seçme input'u eklendi -->
-    <label for="plant_image">Bitkinin Fotoğrafını Yükle (Opsiyonel):</label>
-    <input type="file" id="plant_image" name="plant_image" accept="image/png, image/jpeg, image/gif">
+            <label for="plant_image">Bitkinin Fotoğrafını Yükle (Opsiyonel):</label>
+            <input type="file" id="plant_image" name="plant_image" accept="image/png, image/jpeg, image/gif">
 
-    <button type="submit">Bitkiyi Ekle</button>
-</form>
+            <button type="submit">Bitkiyi Ekle</button>
+        </form>
+    </div>
 
-<?php include_once 'includes/footer.php'; ?>
+    <?php include_once 'includes/footer.php'; ?>
+</body>
+</html>
