@@ -40,6 +40,140 @@ if ($plants && count($plants) > 0) {
     <a href="add_plant.php" class="btn-add-plant">Yeni Bitki Ekle</a>
 </div>
 
+<!-- =================================================================== -->
+<!--                  YENİ KARŞILAMA VE TAKVİM KARTI                     -->
+<!-- =================================================================== -->
+
+<?php
+// --- TAKVİM VERİLERİNİ HAZIRLAMA ---
+
+// Mevcut ay ve yıl bilgilerini al
+$current_month = date('m');
+$current_year = date('Y');
+$current_day = date('d');
+
+// Ayın ilk gününün haftanın hangi günü olduğunu (1: Pzt, 7: Paz) ve aydaki gün sayısını al
+$first_day_of_week = date('N', strtotime("{$current_year}-{$current_month}-01"));
+$days_in_month = cal_days_in_month(CAL_GREGORIAN, $current_month, $current_year);
+$month_names = ["", "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
+$current_month_name = $month_names[(int)$current_month];
+
+// Bitkilerin bakım günlerini tutacak bir dizi oluştur
+$care_events = [];
+
+if ($plants && count($plants) > 0) {
+    foreach ($plants as $plant) {
+        // --- Sulama günlerini hesapla ---
+        if (!empty($plant['last_watered_date']) && !empty($plant['watering_interval'])) {
+            $next_watering = new DateTime($plant['last_watered_date']);
+            // Bir sonraki sulama gününü bularak başla
+            $next_watering->modify('+' . $plant['watering_interval'] . ' days');
+
+            // Ay sonuna kadar olan tüm sulama günlerini bul
+            while ($next_watering->format('Y-m') <= $current_year . '-' . $current_month) {
+                if ($next_watering->format('Y-m') == $current_year . '-' . $current_month) {
+                    $day = (int)$next_watering->format('d');
+                    if (!isset($care_events[$day])) $care_events[$day] = [];
+                    // İkonun tekrar etmesini önle
+                    if (!in_array('water', $care_events[$day])) {
+                       $care_events[$day][] = 'water';
+                    }
+                }
+                $next_watering->modify('+' . $plant['watering_interval'] . ' days');
+            }
+        }
+
+        // --- Gübreleme günlerini hesapla ---
+        if (!empty($plant['last_fertilized_date']) && !empty($plant['fertilizing_interval'])) {
+            $next_fertilizing = new DateTime($plant['last_fertilized_date']);
+             // Bir sonraki gübreleme gününü bularak başla
+            $next_fertilizing->modify('+' . $plant['fertilizing_interval'] . ' days');
+
+            // Ay sonuna kadar olan tüm gübreleme günlerini bul
+            while ($next_fertilizing->format('Y-m') <= $current_year . '-' . $current_month) {
+                 if ($next_fertilizing->format('Y-m') == $current_year . '-' . $current_month) {
+                    $day = (int)$next_fertilizing->format('d');
+                    if (!isset($care_events[$day])) $care_events[$day] = [];
+                    // İkonun tekrar etmesini önle
+                    if (!in_array('fertilize', $care_events[$day])) {
+                        $care_events[$day][] = 'fertilize';
+                    }
+                }
+                $next_fertilizing->modify('+' . $plant['fertilizing_interval'] . ' days');
+            }
+        }
+    }
+}
+?>
+
+<div class="welcome-calendar-card">
+    <!-- Sol Taraf: Karşılama Mesajı -->
+    <div class="welcome-text">
+        <h2>Selam, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h2>
+        <p class="welcome-quote">"Bir bitkiyi sevmek, büyümeye inanmaktır."</p>
+    </div>
+
+    <!-- Sağ Taraf: Takvim -->
+    <div class="calendar-container">
+        <table class="calendar-table">
+            <thead>
+                <tr>
+                    <th colspan="7" class="calendar-month-header"><?php echo strtoupper($current_month_name); ?></th>
+                </tr>
+                <tr>
+                    <th>P</th><th>S</th><th>Ç</th><th>P</th><th>C</th><th>C</th><th>P</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <?php
+                    // Ayın ilk gününden önceki boş hücreleri doldur
+                    for ($i = 1; $i < $first_day_of_week; $i++) {
+                        echo "<td></td>";
+                    }
+
+                    // Ayın günlerini döngüye al
+                    for ($day = 1; $day <= $days_in_month; $day++) {
+                        // Eğer haftanın başıysa yeni bir satır (tr) başlat
+                        if (($day + $first_day_of_week - 2) % 7 == 0 && $day != 1) {
+                            echo "</tr><tr>";
+                        }
+                        
+                        // Bugünün tarihini vurgulamak için 'today' sınıfını ekle
+                        $today_class = ($day == $current_day) ? ' today' : '';
+                        
+                        echo "<td class='day-cell{$today_class}'>";
+                        echo "<div class='day-number'>{$day}</div>";
+                        
+                        // O gün için bir bakım etkinliği varsa ikonları göster
+                        if (isset($care_events[$day])) {
+                            echo "<div class='care-icons-container'>";
+                            if (in_array('water', $care_events[$day])) {
+                                echo '<i class="fas fa-tint care-icon water" title="Sulama Günü"></i>';
+                            }
+                            if (in_array('fertilize', $care_events[$day])) {
+                                echo '<i class="fas fa-leaf care-icon fertilize" title="Gübreleme Günü"></i>';
+                            }
+                            echo "</div>";
+                        }
+                        echo "</td>";
+                    }
+                     // Son haftanın kalan boş hücrelerini doldur
+                    $remaining_days = 7 - (($days_in_month + $first_day_of_week - 1) % 7);
+                    if ($remaining_days < 7) {
+                        for ($i = 0; $i < $remaining_days; $i++) {
+                            echo "<td></td>";
+                        }
+                    }
+                ?>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- =================================================================== -->
+
 <p>Merhaba, <strong><?php echo htmlspecialchars($_SESSION['username']); ?></strong>! İşte bitkilerinin güncel durumu.</p>
 
 <div class="summary-panel">

@@ -10,18 +10,22 @@ include_once 'db.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Online Bitki Bakım Takipçisi</title>
     <link rel="stylesheet" href="assets/style.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     
     <!-- LOTTIE PLAYER KÜTÜPHANESİ (ANİMASYON İÇİN GEREKLİ) -->
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 </head>
 <body>
-    <header>
-        <h1>Bitki Bakım Takipçisi</h1>
-    </header>
+    
     <!-- Sarmaşık Efektleri -->
     <div class="ivy-overlay ivy-left"></div>
     <div class="ivy-overlay ivy-right"></div>
     <nav>
+        <!-- YENİ: Site Logosu Eklendi -->
+        <a href="dashboard.php" class="nav-logo">PlantCare.com</a>
+
         <ul>
             <?php if (isset($_SESSION['user_id'])): ?>
                 <li><a href="dashboard.php">Ana Sayfa</a></li>

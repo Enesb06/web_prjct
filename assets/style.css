@@ -934,3 +934,180 @@ input:disabled {
     padding: 10px 15px;
     flex-shrink: 0;
 }
+
+
+/* =================================================================== /
+/                 11. KARŞILAMA VE TAKVİM KARTI                       /
+/ =================================================================== */
+.welcome-calendar-card {
+    display: flex;
+    gap: 30px;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 40px;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.welcome-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.welcome-text h2 {
+    font-size: 2.2em;
+    color: #34495e;
+    margin: 0 0 10px 0;
+    transform: rotate(-2deg); /* Sola yatık görünüm */
+    font-family: 'Georgia', serif;
+}
+
+.welcome-quote {
+    font-size: 1.1em;
+    color: #7f8c8d;
+    font-style: italic;
+    border-left: 3px solid #1abc9c;
+    padding-left: 15px;
+}
+
+.calendar-container {
+    flex: 1;
+    max-width: 400px;
+}
+
+.calendar-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+}
+
+.calendar-month-header {
+    font-size: 1.4em;
+    color: #e74c3c; /* Resimdeki gibi kırmızı */
+    padding-bottom: 15px;
+    font-weight: bold;
+}
+
+.calendar-table th {
+    padding-bottom: 10px;
+    color: #95a5a6;
+    font-weight: normal;
+}
+
+.calendar-table td {
+    text-align: center;
+    padding: 5px;
+    height: 45px;
+    vertical-align: top;
+}
+
+.day-cell .day-number {
+    font-weight: bold;
+}
+
+.day-cell.today .day-number {
+    background-color: #e74c3c; /* Resimdeki gibi kırmızı daire */
+    color: white;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    margin: 0 auto;
+    display: inline-block;
+}
+
+.care-icons-container {
+    margin-top: 2px;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.care-icon {
+    font-size: 1.1em;
+}
+
+.care-icon.water {
+    color: #3498db; /* Mavi sulama ikonu */
+}
+
+.care-icon.fertilize {
+    color: #27ae60; /* Yeşil gübreleme ikonu */
+}
+
+/* Mobil uyumluluk */
+@media (max-width: 800px) {
+    .welcome-calendar-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    .welcome-text h2 {
+        transform: rotate(0); /* Mobilde düz dursun */
+    }
+    .welcome-quote {
+        margin: 0 auto;
+    }
+    .calendar-container {
+        max-width: 100%;
+        margin-top: 20px;
+    }
+}
+
+/* =================================================================== /
+/              2. ANA BAŞLIK (HEADER) VE NAVİGASYON (Giriş Yapınca)     /
+/ =================================================================== */
+
+/* YENİ: Navigasyon barının ana kapsayıcısı için stiller */
+nav {
+    display: flex; /* Logo ve menüyü yan yana getirmek için */
+    justify-content: space-between; /* Aralarına boşluk koyarak iki uca yaslamak için */
+    align-items: center; /* Dikey olarak ortalamak için */
+    background-color: #34495e;
+    width: 105%;
+    max-width: 1300px;
+    margin: 40px auto 20px auto; /* Üstten 40px, sağdan/soldan otomatik, alttan 20px boşluk */
+    border-radius: 12px; /* Köşeleri softlaştırdık */
+    padding: 0 25px; /* İçeriden sağdan ve soldan boşluk */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* YENİ: Navigasyon logosu için stil */
+.nav-logo {
+    color: #ecf0f1;
+    font-weight: bold;
+    font-size: 1.5em;
+    text-decoration: none;
+    font-family: 'Arial Black', sans-serif;
+    letter-spacing: -1px;
+}
+
+/* DEĞİŞTİRİLDİ: nav ul stilinden gereksiz özellikler kaldırıldı */
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0; /* Tarayıcı varsayılan margin'ini sıfırla */
+    overflow: hidden;
+}
+
+/* Bu kısım aynı kalabilir */
+nav ul li {
+    display: inline;
+}
+
+/* Bu kısım da aynı kalabilir */
+nav ul li a {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+/* Bu kısım da aynı kalabilir */
+nav ul li a:hover {
+    background-color: #1abc9c;
+}
