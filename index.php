@@ -68,11 +68,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_form'])) {
 </div>
 
 
-<!-- =================================================================== -->
-<!--                  POP-UP (MODAL) PENCERELERİ                         -->
-<!-- =================================================================== -->
+<!-- POP-UP (MODAL) PENCERELERİ -->
 
-<!-- GİRİŞ MODALI (BAŞLANGIÇTA GİZLİ) -->
+<!-- GİRİŞ MODALI -->
 <div class="auth-overlay <?php if (!empty($error) || !empty($success)) echo 'active'; ?>" id="loginModal">
     <div class="login-card">
         <span class="close-btn">&times;</span>
@@ -106,14 +104,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_form'])) {
 </div>
 
 
-<!-- KAYIT OL MODALI (BAŞLANGIÇTA GİZLİ) -->
+<!-- KAYIT OL MODALI -->
 <div class="auth-overlay" id="registerModal">
     <div class="register-card">
         <span class="close-btn">&times;</span>
         <h2>Kayıt Ol</h2>
         <p>Bitkilerinizi takip etmeye başlamak için bir hesap oluşturun.</p>
         
-        <!-- Kayıt hataları için bir alan (JS ile doldurulabilir veya sayfa yenilenirse PHP ile) -->
         <div id="register-error-container"></div>
 
         <form action="register.php" method="POST">
@@ -136,6 +133,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_form'])) {
         </p>
     </div>
 </div>
-
 
 <?php include_once 'includes/footer.php'; ?>

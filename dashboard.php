@@ -11,7 +11,6 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 $plants = supabase_api_request('GET', 'plants', ['user_id' => 'eq.' . $user_id, 'order' => 'created_at.desc']);
 
-
 // ÖZET HESAPLAMALARI
 $total_plants = 0;
 $plants_to_water_today = 0;
@@ -71,11 +70,10 @@ if ($plants && count($plants) > 0) {
                         <span><strong>💧 Sulama:</strong> <?php echo $plant['watering_interval']; ?> günde bir</span>
                         <span><strong>📅 Son Sulama:</strong> <?php echo $plant['last_watered_date'] ? date('d M Y, H:i', strtotime($plant['last_watered_date'])) : 'Belirtilmemiş'; ?></span>
                         
-                        <!-- GÜBRELEME BİLGİLERİ -->
                         <?php if (!empty($plant['fertilizing_interval'])): ?>
                             <span><strong>🌱 Gübreleme:</strong> <?php echo $plant['fertilizing_interval']; ?> günde bir</span>
                             <span><strong>🗓️ Son Gübreleme:</strong> <?php echo $plant['last_fertilized_date'] ? date('d M Y, H:i', strtotime($plant['last_fertilized_date'])) : 'Belirtilmemiş'; ?></span>
-                        <?php endif; // --- HATA BURADAYDI, BU SATIR EKLENDİ --- ?> 
+                        <?php endif; ?> 
 
                         <?php if (!empty($plant['care_tip'])): ?>
                             <span class="care-tip"><strong>💡 İpucu:</strong> <?php echo htmlspecialchars($plant['care_tip']); ?></span>
