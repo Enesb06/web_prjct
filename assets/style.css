@@ -1111,3 +1111,18 @@ nav ul li a {
 nav ul li a:hover {
     background-color: #1abc9c;
 }
+
+/* =================================================================== /
+/                       12. FORUM RESİM STİLLERİ                       /
+/ =================================================================== */
+
+.post-image-container {
+    margin: 15px 0; /* Resmin üstü ve altında boşluk bırak */
+}
+
+.forum-post-image {
+    max-width: 100%; /* Resmin karttan taşmasını engelle */
+    height: auto; /* Genişliğe göre yüksekliği otomatik ayarla */
+    border-radius: 8px; /* Resim köşelerini yumuşat */
+    display: block; /* Altında fazladan boşluk kalmasını engelle */
+}
