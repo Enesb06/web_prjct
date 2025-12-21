@@ -263,6 +263,8 @@ avatarOptions.forEach(img => {
         avatarOptions.forEach(otherImg => otherImg.classList.remove('selected'));
         img.classList.add('selected');
         selectedAvatar = img.dataset.avatar;
+
+        document.getElementById('profile_avatar_display').src = img.src;
     });
 });
 
