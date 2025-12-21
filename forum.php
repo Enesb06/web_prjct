@@ -1,5 +1,5 @@
 <?php
-include_once 'includes/header.php';
+include_once 'includes/header.php'; // Bu satır db.php'yi ve session_start'ı zaten çağırıyor
 $error = '';
 
 // Giriş yapmamış kullanıcıyı engelle
@@ -9,36 +9,28 @@ if (!isset($_SESSION['user_id'])) {
 }
 $current_user_id = $_SESSION['user_id'];
 
-// Yeni mesaj gönderildiyse (DOSYA YÜKLEME MANTIĞI EKLENDİ)
+// Yeni mesaj gönderildiyse
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message']) && !empty(trim($_POST['message']))) {
     
-    $image_path_for_db = null; // Varsayılan resim yolu
+    $image_path_for_db = null;
 
-    // YENİ: Dosya yükleme mantığı
     if (isset($_FILES['post_image']) && $_FILES['post_image']['error'] === UPLOAD_ERR_OK) {
-        
         $upload_dir = 'assets/images/forum_uploads/';
-        // Eğer bu klasör yoksa oluşturmayı deneyebiliriz (opsiyonel ama önerilir)
         if (!is_dir($upload_dir)) {
             mkdir($upload_dir, 0755, true);
         }
-
         $file = $_FILES['post_image'];
-        
-        // Güvenlik kontrolleri (boyut, tip, benzersiz isim)
-        if ($file['size'] <= 4194304) { // Max 4MB
+        if ($file['size'] <= 4194304) {
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $mime_type = finfo_file($finfo, $file['tmp_name']);
             $allowed_mime_types = ['image/jpeg', 'image/png', 'image/gif'];
             finfo_close($finfo);
-
             if (in_array($mime_type, $allowed_mime_types)) {
                 $file_extension = pathinfo($file['name'], PATHINFO_EXTENSION);
                 $unique_filename = 'post_' . uniqid('', true) . '.' . $file_extension;
                 $destination = $upload_dir . $unique_filename;
-
-                if (move_uploaded_file($file['tmp_name'], $destination)) {
-                    $image_path_for_db = $destination; // Başarılı olursa yolu değişkene ata
+                if (move_uploaded_file($tmp_name, $destination)) {
+                    $image_path_for_db = $destination;
                 }
             }
         }
@@ -48,35 +40,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message']) && !empty(
         'user_id' => $_SESSION['user_id'],
         'username' => $_SESSION['username'],
         'message' => trim($_POST['message']),
-        'image_url' => $image_path_for_db // YENİ: Resim yolunu veritabanına ekle
+        'image_url' => $image_path_for_db
     ];
     
     supabase_api_request('POST', 'forum_posts', $newMessage);
-    header('Location: forum.php'); // Sayfayı yenile ve yeni gönderiyi gör
+    header('Location: forum.php'); 
     exit();
 }
 
 
-// =========================================================
-// YENİ VE DOĞRU VERİ ÇEKME KODU (Bu kısım aynı kalıyor)
-// =========================================================
-
-// 1. Tüm gönderileri çek
+// Veri çekme kodları (değişiklik yok)
 $posts = supabase_api_request('GET', 'forum_posts', ['order' => 'created_at.desc']);
-
-// 2. Tüm beğenileri, yorumları VE KULLANICILARI (avatar için) tek seferde çek
 $all_likes = supabase_api_request('GET', 'post_likes');
 $all_comments = supabase_api_request('GET', 'forum_comments', ['order' => 'created_at.asc']);
-$all_users = supabase_api_request('GET', 'users', ['select' => 'id,avatar_url']); // Sadece id ve avatar_url al
+$all_users = supabase_api_request('GET', 'users', ['select' => 'id,avatar_url']);
 
-// 3. Verileri daha hızlı erişim için grupla/haritala
 $avatars_by_user_id = [];
 if ($all_users) {
     foreach ($all_users as $user) {
         $avatars_by_user_id[$user['id']] = $user['avatar_url'];
     }
 }
-
 $likes_by_post = [];
 $user_likes = [];
 if ($all_likes) {
@@ -87,7 +71,6 @@ if ($all_likes) {
         }
     }
 }
-
 $comments_by_post = [];
 if ($all_comments) {
     foreach ($all_comments as $comment) {
@@ -96,49 +79,57 @@ if ($all_comments) {
 }
 ?>
 
+<!-- ========================================================= -->
+<!--        YENİ EKLENEN KÜTÜPHANE DOSYALARI (ÖNEMLİ!)         -->
+<!-- ========================================================= -->
+<!-- Font Awesome (Kalem ikonu için) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<!-- Swiper.js CSS (Slider'ın görünümü için) -->
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+
+<!-- YENİ SLIDER KISMI -->
+<div class="swiper-container forum-header-slider">
+    <div class="swiper-wrapper">
+        <!-- Slide 1 -->
+        <div class="swiper-slide" style="background-image:url('assets/images/slider/slider1.jpg');">
+            <!-- İçindeki yazılar silindi -->
+        </div>
+        <!-- Slide 2 -->
+        <div class="swiper-slide" style="background-image:url('assets/images/slider/slider2.png');">
+            <!-- İçindeki yazılar silindi -->
+        </div>
+        <!-- Slide 3 -->
+        <div class="swiper-slide" style="background-image:url('assets/images/slider/slider3.png');">
+            <!-- İçindeki yazılar silindi -->
+        </div>
+    </div>
+    <!-- Navigasyon Okları -->
+    <div class="swiper-button-next" style="color: #fff;"></div>
+    <div class="swiper-button-prev" style="color: #fff;"></div>
+</div>
+
+
 <h2>Topluluk Forumu</h2>
 <p>Diğer bitki severlerle tecrübelerinizi paylaşın!</p>
-
-<!-- ============================================= -->
-<!--       DEĞİŞTİRİLEN MESAJ GÖNDERME FORMU       -->
-<!-- ============================================= -->
-
-<!-- Dosya yükleme için enctype eklendi -->
-<form action="forum.php" method="POST" enctype="multipart/form-data">
-    <label for="message">Yeni Mesaj:</label>
-    <textarea name="message" id="message" rows="4" required placeholder="Buraya yazın..."></textarea>
-    
-    <!-- YENİ: Resim Yükleme Alanı Eklendi -->
-    <label for="post_image" style="margin-top: 10px;">Resim Ekle (Opsiyonel):</label>
-    <input type="file" id="post_image" name="post_image" accept="image/png, image/jpeg, image/gif">
-    
-    <button type="submit">Gönder</button>
-</form>
-
 <hr style="margin: 30px 0;">
+
 
 <!-- Mevcut mesajlar -->
 <div class="forum-posts-container">
     <h3>Son Mesajlar</h3>
     <?php if ($posts && count($posts) > 0): ?>
         <?php foreach ($posts as $post):
-            // Değişkenleri burada tanımlayalım
+            // Değişken tanımlamaları...
             $post_id = $post['id'];
             $post_author_id = $post['user_id'];
-            
-            // Beğeni ve yorum sayılarını alalım
             $like_count = isset($likes_by_post[$post_id]) ? count($likes_by_post[$post_id]) : 0;
             $comments = $comments_by_post[$post_id] ?? [];
             $comment_count = count($comments);
-            
-            // Mevcut kullanıcı bu gönderiyi beğenmiş mi?
             $is_liked_by_user = in_array($post_id, $user_likes);
-            
-            // Gönderiyi yazan kullanıcının avatarını bulalım
-            $author_avatar = $avatars_by_user_id[$post_author_id] ?? 'avatar1.png'; // Bulamazsa varsayılan
+            $author_avatar = $avatars_by_user_id[$post_author_id] ?? 'avatar1.png';
         ?>
             <div class="forum-post" id="post-<?php echo $post_id; ?>">
-                <!-- KULLANICI BİLGİLERİNİN GÖSTERİLDİĞİ YER -->
                 <div class="post-meta">
                     <img src="assets/images/avatars/<?php echo htmlspecialchars($author_avatar); ?>" alt="Avatar" class="avatar">
                     <div class="author-info">
@@ -148,13 +139,11 @@ if ($all_comments) {
                     <span class="post-date"><?php echo date('d M Y, H:i', strtotime($post['created_at'])); ?></span>
                 </div>
 
-                <!-- YENİ: GÖNDERİ RESMİNİ GÖSTERME KODU -->
                 <?php if (!empty($post['image_url'])): ?>
                     <div class="post-image-container">
                         <img src="<?php echo htmlspecialchars($post['image_url']); ?>" alt="Forum Gönderi Resmi" class="forum-post-image">
                     </div>
                 <?php endif; ?>
-                <!-- YENİ KOD SONU -->
 
                 <p class="post-content"><?php echo nl2br(htmlspecialchars($post['message'])); ?></p>
                 
@@ -190,4 +179,74 @@ if ($all_comments) {
     <?php endif; ?>
 </div>
 
+
+<!-- YENİ PAYLAŞIM YAP BUTONU (FAB) -->
+<a href="#" id="fab-share-button" class="fab-share-post">
+    <i class="fas fa-pencil-alt"></i>
+    Sen de Görüşlerini Paylaş
+</a>
+
+
+<!-- YENİ POP-UP GÖNDERİ FORMU (MODAL) -->
+<div class="post-modal-overlay" id="post-modal">
+    <div class="post-modal-card">
+        <span class="close-btn" id="close-modal-btn">&times;</span>
+        <h2>Yeni Gönderi Oluştur</h2>
+        <form action="forum.php" method="POST" enctype="multipart/form-data">
+            <label for="message_modal">Mesajın:</label>
+            <textarea name="message" id="message_modal" rows="5" required placeholder="Buraya yazın..."></textarea>
+            
+            <label for="post_image_modal" style="margin-top: 15px;">Resim Ekle (Opsiyonel):</label>
+            <input type="file" id="post_image_modal" name="post_image" accept="image/png, image/jpeg, image/gif">
+            
+            <button type="submit" style="margin-top: 20px; width: 100%;">Gönder</button>
+        </form>
+    </div>
+</div>
+
+
 <?php include_once 'includes/footer.php'; ?>
+
+
+<!-- ========================================================= -->
+<!--        YENİ EKLENEN KÜTÜPHANE VE KODLAR (ÖNEMLİ!)         -->
+<!-- ========================================================= -->
+<!-- Swiper.js JS (Slider'ın çalışması için) -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // 1. Swiper Slider'ı Başlatma
+    const swiper = new Swiper('.forum-header-slider', {
+        loop: true,
+        autoplay: {
+            delay: 4000,
+            disableOnInteraction: false,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+    });
+
+    // 2. Modal (Pop-up) İşlevselliği
+    const fabButton = document.getElementById('fab-share-button');
+    const postModal = document.getElementById('post-modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+
+    fabButton.addEventListener('click', function (e) {
+        e.preventDefault();
+        postModal.classList.add('active');
+    });
+
+    closeModalBtn.addEventListener('click', function () {
+        postModal.classList.remove('active');
+    });
+
+    postModal.addEventListener('click', function (e) {
+        if (e.target === postModal) {
+            postModal.classList.remove('active');
+        }
+    });
+});
+</script>

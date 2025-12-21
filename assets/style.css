@@ -1179,3 +1179,135 @@ nav ul li a:hover {
     border-left: 5px solid #e74c3c;
 }
 
+
+/* =================================================================== */
+/*                     FORUM SAYFASI YENİ STİLLER                      */
+/* =================================================================== */
+
+/* --- Slider Stilleri --- */
+.forum-header-slider {
+    width: 100%;
+    height: 550px;
+    margin-bottom: 30px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+
+
+/* --- Paylaşım Yap Butonu (FAB) Stilleri --- */
+.fab-share-post {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: auto;
+    height: 60px;
+    background-color: #f1c40f; /* Sarı renk */
+    color: #333;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    cursor: pointer;
+    z-index: 1000;
+    text-decoration: none;
+    padding: 0 25px;
+    font-weight: bold;
+    font-size: 1.1em;
+    transition: all 0.3s ease;
+}
+
+.fab-share-post:hover {
+    background-color: #f39c12;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    transform: translateY(-3px);
+}
+
+.fab-share-post i {
+    margin-right: 10px;
+    font-size: 1.2em;
+}
+
+/* --- Pop-up Gönderi Formu (Modal) Stilleri --- */
+.post-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    z-index: 1040;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.post-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.post-modal-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+    transform: scale(0.9);
+    transition: all 0.3s ease;
+}
+
+.post-modal-overlay.active .post-modal-card {
+    transform: scale(1);
+}
+
+.post-modal-card .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 2em;
+    color: #888;
+    cursor: pointer;
+}
+.post-modal-card .close-btn:hover {
+    color: #333;
+}
+
+.post-modal-card h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Modal içindeki form elementlerini güzelleştirme */
+.post-modal-card form textarea {
+    min-height: 120px;
+}
+.post-modal-card form input[type="file"] {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* =================================================================== */
+/*             FORUM SLIDER RESİM SIĞDIRMA DÜZELTMESİ                  */
+/* =================================================================== */
+
+.swiper-slide {
+    /* Bu özellik, resmin en-boy oranını koruyarak
+       tüm alanı kaplamasını sağlar. Sorununuzu bu satır çözecek. */
+    background-size: cover;
+
+    /* Bu, resmin her zaman ortalanmasını sağlar,
+       böylece kesilme olursa kenarlardan olur. */
+    background-position: center center;
+
+    /* Resmin tekrarlanmasını engeller. */
+    background-repeat: no-repeat;
+}
