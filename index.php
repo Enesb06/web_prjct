@@ -29,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_form'])) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['user_role'] = $user['role'];
+                $_SESSION['avatar_url'] = $user['avatar_url'];
                 header('Location: dashboard.php');
                 exit();
             } else {
