@@ -16,19 +16,74 @@ $total_plants = 0;
 $plants_to_water_today = 0;
 $plants_overdue = 0;
 
+// =================================================================== //
+//          GÜNLÜK BİLDİRİM HESAPLAMA KODU                             //
+// =================================================================== //
+$daily_notification_data = null; 
+
+$today_date = date('Y-m-d');
+
+if (!isset($_SESSION['last_login_greeting']) || $_SESSION['last_login_greeting'] !== $today_date) {
+    
+    $soonest_plant = null;
+    $min_days_diff = PHP_INT_MAX; 
+
+    if ($plants && count($plants) > 0) {
+        $today = new DateTime();
+        foreach ($plants as $plant) {
+            if (!empty($plant['last_watered_date'])) {
+                try {
+                    $last_watered = new DateTime($plant['last_watered_date']);
+                    $next_watering = (clone $last_watered)->modify('+' . $plant['watering_interval'] . ' days');
+                    $interval = $today->diff($next_watering);
+                    $days_diff = (int)$interval->format('%r%a');
+
+                    if ($days_diff >= 0 && $days_diff < $min_days_diff) {
+                        $min_days_diff = $days_diff;
+                        $soonest_plant = $plant;
+                    }
+                } catch (Exception $e) {
+                    // Geçersiz tarih formatını yoksay
+                }
+            }
+        }
+    }
+    
+    if ($soonest_plant) {
+        $message = '';
+        if ($min_days_diff == 0) {
+            $message = "<strong>" . htmlspecialchars($soonest_plant['plant_name']) . "</strong> için bugün sulama günü!";
+        } else {
+            $message = "En yakın sulama: <strong>" . htmlspecialchars($soonest_plant['plant_name']) . "</strong> bitkisine " . $min_days_diff . " gün kaldı.";
+        }
+        
+        $daily_notification_data = [
+            'type' => 'info',
+            'message' => $message
+        ];
+    }
+    
+    $_SESSION['last_login_greeting'] = $today_date;
+}
+
+
 if ($plants && count($plants) > 0) {
     $total_plants = count($plants);
     $today = new DateTime();
     foreach ($plants as $plant) {
         if (!empty($plant['last_watered_date'])) {
-            $last_watered = new DateTime($plant['last_watered_date']);
-            $next_watering = (clone $last_watered)->modify('+' . $plant['watering_interval'] . ' days');
-            $interval = $today->diff($next_watering);
-            $days_diff = (int)$interval->format('%r%a');
-            if ($days_diff < 0) {
-                $plants_overdue++;
-            } elseif ($days_diff == 0) {
-                $plants_to_water_today++;
+            try {
+                $last_watered = new DateTime($plant['last_watered_date']);
+                $next_watering = (clone $last_watered)->modify('+' . $plant['watering_interval'] . ' days');
+                $interval = $today->diff($next_watering);
+                $days_diff = (int)$interval->format('%r%a');
+                if ($days_diff < 0) {
+                    $plants_overdue++;
+                } elseif ($days_diff == 0) {
+                    $plants_to_water_today++;
+                }
+            } catch (Exception $e) {
+                 // Geçersiz tarih formatını yoksay
             }
         }
     }
@@ -40,80 +95,76 @@ if ($plants && count($plants) > 0) {
     <a href="add_plant.php" class="btn-add-plant">Yeni Bitki Ekle</a>
 </div>
 
-<!-- =================================================================== -->
-<!--                  YENİ KARŞILAMA VE TAKVİM KARTI                     -->
-<!-- =================================================================== -->
-
 <?php
 // --- TAKVİM VERİLERİNİ HAZIRLAMA ---
-
-// Mevcut ay ve yıl bilgilerini al
 $current_month = date('m');
 $current_year = date('Y');
 $current_day = date('d');
-
-// Ayın ilk gününün haftanın hangi günü olduğunu (1: Pzt, 7: Paz) ve aydaki gün sayısını al
 $first_day_of_week = date('N', strtotime("{$current_year}-{$current_month}-01"));
 $days_in_month = cal_days_in_month(CAL_GREGORIAN, $current_month, $current_year);
 $month_names = ["", "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
 $current_month_name = $month_names[(int)$current_month];
-
-// Bitkilerin bakım günlerini tutacak bir dizi oluştur
 $care_events = [];
 
 if ($plants && count($plants) > 0) {
     foreach ($plants as $plant) {
         // --- Sulama günlerini hesapla ---
         if (!empty($plant['last_watered_date']) && !empty($plant['watering_interval'])) {
-            $next_watering = new DateTime($plant['last_watered_date']);
-            // Bir sonraki sulama gününü bularak başla
-            $next_watering->modify('+' . $plant['watering_interval'] . ' days');
-
-            // Ay sonuna kadar olan tüm sulama günlerini bul
-            while ($next_watering->format('Y-m') <= $current_year . '-' . $current_month) {
-                if ($next_watering->format('Y-m') == $current_year . '-' . $current_month) {
-                    $day = (int)$next_watering->format('d');
-                    if (!isset($care_events[$day])) $care_events[$day] = [];
-                    // İkonun tekrar etmesini önle
-                    if (!in_array('water', $care_events[$day])) {
-                       $care_events[$day][] = 'water';
-                    }
-                }
+            try {
+                $next_watering = new DateTime($plant['last_watered_date']);
                 $next_watering->modify('+' . $plant['watering_interval'] . ' days');
+                while ($next_watering->format('Y-m') <= $current_year . '-' . $current_month) {
+                    if ($next_watering->format('Y-m') == $current_year . '-' . $current_month) {
+                        $day = (int)$next_watering->format('d');
+                        if (!isset($care_events[$day])) $care_events[$day] = [];
+                        if (!in_array('water', $care_events[$day])) {
+                           $care_events[$day][] = 'water';
+                        }
+                    }
+                    $next_watering->modify('+' . $plant['watering_interval'] . ' days');
+                }
+            } catch (Exception $e) {
+                // Geçersiz tarih formatını yoksay
             }
         }
 
         // --- Gübreleme günlerini hesapla ---
         if (!empty($plant['last_fertilized_date']) && !empty($plant['fertilizing_interval'])) {
-            $next_fertilizing = new DateTime($plant['last_fertilized_date']);
-             // Bir sonraki gübreleme gününü bularak başla
-            $next_fertilizing->modify('+' . $plant['fertilizing_interval'] . ' days');
-
-            // Ay sonuna kadar olan tüm gübreleme günlerini bul
-            while ($next_fertilizing->format('Y-m') <= $current_year . '-' . $current_month) {
-                 if ($next_fertilizing->format('Y-m') == $current_year . '-' . $current_month) {
-                    $day = (int)$next_fertilizing->format('d');
-                    if (!isset($care_events[$day])) $care_events[$day] = [];
-                    // İkonun tekrar etmesini önle
-                    if (!in_array('fertilize', $care_events[$day])) {
-                        $care_events[$day][] = 'fertilize';
-                    }
-                }
+            // =================================================================== //
+            //             DEĞİŞİKLİK BAŞLANGICI (BURASI HATAYI ÖNLER)               //
+            // =================================================================== //
+            try {
+                $next_fertilizing = new DateTime($plant['last_fertilized_date']);
                 $next_fertilizing->modify('+' . $plant['fertilizing_interval'] . ' days');
+
+                while ($next_fertilizing->format('Y-m') <= $current_year . '-' . $current_month) {
+                     if ($next_fertilizing->format('Y-m') == $current_year . '-' . $current_month) {
+                        $day = (int)$next_fertilizing->format('d');
+                        if (!isset($care_events[$day])) $care_events[$day] = [];
+                        if (!in_array('fertilize', $care_events[$day])) {
+                            $care_events[$day][] = 'fertilize';
+                        }
+                    }
+                    $next_fertilizing->modify('+' . $plant['fertilizing_interval'] . ' days');
+                }
+            } catch (Exception $e) {
+                // Tarih formatı bozuksa bu bitkiyi takvim hesaplamasında atla.
+                // İsteğe bağlı: error_log("Invalid date format for plant ID " . $plant['id']);
             }
+            // =================================================================== //
+            //                          DEĞİŞİKLİK SONU                            //
+            // =================================================================== //
         }
     }
 }
 ?>
 
 <div class="welcome-calendar-card">
-    <!-- Sol Taraf: Karşılama Mesajı -->
     <div class="welcome-text">
         <h2>Selam, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h2>
         <p class="welcome-quote">"Bir bitkiyi sevmek, büyümeye inanmaktır."</p>
     </div>
 
-    <!-- Sağ Taraf: Takvim -->
     <div class="calendar-container">
         <table class="calendar-table">
             <thead>
@@ -139,13 +190,11 @@ if ($plants && count($plants) > 0) {
                             echo "</tr><tr>";
                         }
                         
-                        // Bugünün tarihini vurgulamak için 'today' sınıfını ekle
                         $today_class = ($day == $current_day) ? ' today' : '';
                         
                         echo "<td class='day-cell{$today_class}'>";
                         echo "<div class='day-number'>{$day}</div>";
                         
-                        // O gün için bir bakım etkinliği varsa ikonları göster
                         if (isset($care_events[$day])) {
                             echo "<div class='care-icons-container'>";
                             if (in_array('water', $care_events[$day])) {
@@ -158,7 +207,6 @@ if ($plants && count($plants) > 0) {
                         }
                         echo "</td>";
                     }
-                     // Son haftanın kalan boş hücrelerini doldur
                     $remaining_days = 7 - (($days_in_month + $first_day_of_week - 1) % 7);
                     if ($remaining_days < 7) {
                         for ($i = 0; $i < $remaining_days; $i++) {
@@ -171,8 +219,6 @@ if ($plants && count($plants) > 0) {
         </table>
     </div>
 </div>
-
-<!-- =================================================================== -->
 
 <p>Merhaba, <strong><?php echo htmlspecialchars($_SESSION['username']); ?></strong>! İşte bitkilerinin güncel durumu.</p>
 
@@ -214,22 +260,25 @@ if ($plants && count($plants) > 0) {
                         <?php endif; ?>
                     </div>
 
-                    <!-- SULAMA DURUMU -->
                     <div class="watering-status">
                         <?php
                         if ($plant['last_watered_date']) {
-                            $today = new DateTime();
-                            $last_watered = new DateTime($plant['last_watered_date']);
-                            $next_watering = (clone $last_watered)->modify('+' . $plant['watering_interval'] . ' days');
-                            $interval = $today->diff($next_watering);
-                            $days_diff = (int)$interval->format('%r%a');
+                            try {
+                                $today = new DateTime();
+                                $last_watered = new DateTime($plant['last_watered_date']);
+                                $next_watering = (clone $last_watered)->modify('+' . $plant['watering_interval'] . ' days');
+                                $interval = $today->diff($next_watering);
+                                $days_diff = (int)$interval->format('%r%a');
 
-                            if ($days_diff < 0) {
-                                echo '<p class="status-overdue">Sulama ' . abs($days_diff) . ' gün gecikti!</p>';
-                            } elseif ($days_diff == 0) {
-                                echo '<p class="status-today">Bugün sulama günü!</p>';
-                            } else {
-                                echo '<p class="status-ok">Sonraki sulamaya ' . $days_diff . ' gün kaldı.</p>';
+                                if ($days_diff < 0) {
+                                    echo '<p class="status-overdue">Sulama ' . abs($days_diff) . ' gün gecikti!</p>';
+                                } elseif ($days_diff == 0) {
+                                    echo '<p class="status-today">Bugün sulama günü!</p>';
+                                } else {
+                                    echo '<p class="status-ok">Sonraki sulamaya ' . $days_diff . ' gün kaldı.</p>';
+                                }
+                            } catch(Exception $e) {
+                                echo '<p class="status-unknown">Sulama tarihi geçersiz.</p>';
                             }
                         } else {
                             echo '<p class="status-unknown">Sulama durumu için son sulama tarihini girin.</p>';
@@ -237,24 +286,33 @@ if ($plants && count($plants) > 0) {
                         ?>
                     </div>
 
-                    <!-- GÜBRELEME DURUMU -->
                     <div class="fertilizing-status">
                          <?php
                         if (!empty($plant['last_fertilized_date']) && !empty($plant['fertilizing_interval'])) {
-                            $today = new DateTime();
-                            $last_fertilized = new DateTime($plant['last_fertilized_date']);
-                            $next_fertilizing = (clone $last_fertilized)->modify('+' . $plant['fertilizing_interval'] . ' days');
-                            
-                            $interval = $today->diff($next_fertilizing);
-                            $days_diff = (int)$interval->format('%r%a');
+                            // =================================================================== //
+                            //         DEĞİŞİKLİK BAŞLANGICI (BURASI DA HATAYI ÖNLER)                //
+                            // =================================================================== //
+                            try {
+                                $today = new DateTime();
+                                $last_fertilized = new DateTime($plant['last_fertilized_date']);
+                                $next_fertilizing = (clone $last_fertilized)->modify('+' . $plant['fertilizing_interval'] . ' days');
+                                
+                                $interval = $today->diff($next_fertilizing);
+                                $days_diff = (int)$interval->format('%r%a');
 
-                            if ($days_diff < 0) {
-                                echo '<p class="status-overdue">Gübreleme ' . abs($days_diff) . ' gün gecikti!</p>';
-                            } elseif ($days_diff == 0) {
-                                echo '<p class="status-today">Bugün gübreleme günü!</p>';
-                            } else {
-                                echo '<p class="status-ok">Sonraki gübrelemeye ' . $days_diff . ' gün kaldı.</p>';
+                                if ($days_diff < 0) {
+                                    echo '<p class="status-overdue">Gübreleme ' . abs($days_diff) . ' gün gecikti!</p>';
+                                } elseif ($days_diff == 0) {
+                                    echo '<p class="status-today">Bugün gübreleme günü!</p>';
+                                } else {
+                                    echo '<p class="status-ok">Sonraki gübrelemeye ' . $days_diff . ' gün kaldı.</p>';
+                                }
+                            } catch (Exception $e) {
+                                echo '<p class="status-unknown">Gübreleme tarihi geçersiz.</p>';
                             }
+                            // =================================================================== //
+                            //                          DEĞİŞİKLİK SONU                            //
+                            // =================================================================== //
                         } else if (!empty($plant['fertilizing_interval'])) {
                             echo '<p class="status-unknown">Gübreleme durumu için son gübreleme tarihini girin.</p>';
                         }

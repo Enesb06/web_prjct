@@ -111,11 +111,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $result = supabase_api_request('POST', 'plants', $newPlant);
         
+        // =================================================================== //
+        //             *** DEĞİŞTİRİLEN BLOK BAŞLANGICI ***                      //
+        // =================================================================== //
         if ($result !== null) {
-            $success = "Bitkin başarıyla eklendi! <a href='dashboard.php'>Bitkilerimi Gör</a>";
+            // Session'a bildirim mesajını ve türünü kaydet
+            $_SESSION['notification'] = [
+                'type' => 'success',
+                'message' => 'Yeni bitkin eklendi: <strong>' . htmlspecialchars($plant_name) . '</strong>'
+            ];
+            // Kullanıcıyı ana panele yönlendir. Oradaki footer bu bildirimi gösterecek.
+            header('Location: dashboard.php');
+            exit();
         } else {
             $error = "Bitki eklenirken bir veritabanı hatası oluştu. Lütfen tekrar deneyin.";
         }
+        // =================================================================== //
+        //              *** DEĞİŞTİRİLEN BLOK SONU ***                         //
+        // =================================================================== //
     }
 }
 ?>

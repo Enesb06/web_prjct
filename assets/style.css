@@ -1126,3 +1126,56 @@ nav ul li a:hover {
     border-radius: 8px; /* Resim köşelerini yumuşat */
     display: block; /* Altında fazladan boşluk kalmasını engelle */
 }
+
+/* =================================================================== */
+/*                     BİLDİRİM (TOAST) STİLLERİ                       */
+/* =================================================================== */
+
+#notification-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notification {
+    min-width: 300px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1em;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.notification.hide {
+    opacity: 0;
+    transform: translateX(100%);
+}
+
+/* Bildirim Türleri */
+.notification.success {
+    background-color: #27ae60;
+    border-left: 5px solid #2ecc71;
+}
+
+.notification.info {
+    background-color: #2980b9;
+    border-left: 5px solid #3498db;
+}
+
+.notification.error {
+    background-color: #c0392b;
+    border-left: 5px solid #e74c3c;
+}
+

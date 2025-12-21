@@ -24,9 +24,6 @@
 
 </div> <!-- .container kapanışı -->
     <script src="assets/script.js"></script>
-</body>
-</html>
-
 
 <!-- =================================================================== -->
 <!--                  PROFİL MODAL PENCERESİ                             -->
@@ -89,3 +86,69 @@
         </div>
     </div>
 </div>
+
+<!-- =================================================================== -->
+<!--                  BİLDİRİM SİSTEMİ İÇİN GEREKLİ KODLAR               -->
+<!-- =================================================================== -->
+
+<!-- Bildirimlerin Ekleneceği Alan -->
+<div id="notification-container"></div>
+
+<script>
+/**
+ * Ekranda bir bildirim gösterir.
+ * @param {string} message Gösterilecek mesaj.
+ * @param {string} type Bildirim türü ('success', 'info', 'error').
+ */
+function showNotification(message, type = 'info') {
+    const container = document.getElementById('notification-container');
+    
+    // Yeni bildirim elementini oluştur
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`; // Örn: 'notification success'
+    notification.innerHTML = message;
+    
+    // Ekrana ekle
+    container.appendChild(notification);
+    
+    // Görünür yap (animasyon için)
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 100); // Küçük bir gecikme animasyonun düzgün çalışmasını sağlar
+
+    // 5 saniye sonra gizle
+    setTimeout(() => {
+        notification.classList.remove('show');
+        notification.classList.add('hide');
+    }, 5000);
+    
+    // Animasyon bittikten sonra DOM'dan tamamen kaldır
+    setTimeout(() => {
+        notification.remove();
+    }, 5500);
+}
+
+// =================================================================== //
+//          PHP'DEN GELEN BİLDİRİMLERİ OTOMATİK TETİKLEME              //
+// =================================================================== //
+<?php
+// Session'da bir bildirim ayarlanmışsa, onu göster ve sonra temizle.
+// Bu, sayfalar arası yönlendirmelerde mesaj taşımak için kullanılır.
+if (isset($_SESSION['notification'])) {
+    $notification = $_SESSION['notification'];
+    // JavaScript kodunu echo ile basıyoruz
+    echo "showNotification('" . addslashes($notification['message']) . "', '" . addslashes($notification['type']) . "');";
+    // Bildirimi gösterdikten sonra session'dan siliyoruz ki tekrar görünmesin.
+    unset($_SESSION['notification']);
+}
+
+// Sadece dashboard.php'de hesaplanan günlük karşılama bildirimini göster
+if (isset($daily_notification_data)) {
+     echo "showNotification('" . addslashes($daily_notification_data['message']) . "', '" . addslashes($daily_notification_data['type']) . "');";
+}
+?>
+
+</script>
+
+</body>
+</html>
