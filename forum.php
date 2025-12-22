@@ -1,52 +1,65 @@
 <?php
-include_once 'includes/header.php'; // Bu satır db.php'yi ve session_start'ı zaten çağırıyor
+include_once 'includes/header.php';
 $error = '';
 
-// Giriş yapmamış kullanıcıyı engelle
 if (!isset($_SESSION['user_id'])) {
     header('Location: index.php');
     exit();
 }
 $current_user_id = $_SESSION['user_id'];
 
-// Yeni mesaj gönderildiyse
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message']) && !empty(trim($_POST['message']))) {
     
     $image_path_for_db = null;
 
+    // =============== DEĞİŞTİRİLEN DOSYA YÜKLEME BLOĞU BAŞLANGICI ===============
     if (isset($_FILES['post_image']) && $_FILES['post_image']['error'] === UPLOAD_ERR_OK) {
-        $upload_dir = 'assets/images/forum_uploads/';
-        if (!is_dir($upload_dir)) {
-            mkdir($upload_dir, 0755, true);
-        }
         $file = $_FILES['post_image'];
-        if ($file['size'] <= 4194304) {
+
+        if ($file['size'] > 4194304) { // Max 4MB
+            $error = 'Hata: Dosya boyutu 4MB\'den büyük olamaz.';
+        } else {
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $mime_type = finfo_file($finfo, $file['tmp_name']);
             $allowed_mime_types = ['image/jpeg', 'image/png', 'image/gif'];
             finfo_close($finfo);
+
             if (in_array($mime_type, $allowed_mime_types)) {
                 $file_extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+                // Benzersiz dosya adı: user_123/post_asdasd123.jpg
                 $unique_filename = 'post_' . uniqid('', true) . '.' . $file_extension;
-                $destination = $upload_dir . $unique_filename;
-                if (move_uploaded_file($tmp_name, $destination)) {
-                    $image_path_for_db = $destination;
+                $storage_path = 'forum_uploads/' . $_SESSION['user_id'] . '/' . $unique_filename;
+
+                // Yeni fonksiyonu kullanarak Supabase'e yükle. DİKKAT: $file['tmp_name'] olarak düzeltildi!
+                $image_path_for_db = upload_to_supabase_storage($file['tmp_name'], $storage_path, $mime_type);
+                
+                if ($image_path_for_db === null) {
+                    $error = 'Resim Supabase\'e yüklenirken bir hata oluştu.';
+                    // Hata oluşursa işlemi durdurabilir veya loglayabiliriz, şimdilik devam etsin.
                 }
+            } else {
+                 // Hata mesajını kullanıcıya göstermek daha iyi olabilir. Şimdilik atlıyoruz.
             }
         }
     }
+    // =============== DEĞİŞTİRİLEN DOSYA YÜKLEME BLOĞU SONU ===============
 
+    // Hata oluşsa bile gönderinin metin kısmı eklensin.
+    // Eğer resim yükleme hatasında gönderinin hiç eklenmemesini istersen bu bloğu bir if içine alabilirsin.
     $newMessage = [
         'user_id' => $_SESSION['user_id'],
         'username' => $_SESSION['username'],
         'message' => trim($_POST['message']),
-        'image_url' => $image_path_for_db
+        'image_url' => $image_path_for_db // Başarılıysa URL, değilse null olacak
     ];
     
     supabase_api_request('POST', 'forum_posts', $newMessage);
     header('Location: forum.php'); 
     exit();
 }
+
+// ... Veri çekme kodları ve HTML kısmı aynı kalacak ...
+
 
 
 // Veri çekme kodları (değişiklik yok)

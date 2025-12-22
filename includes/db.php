@@ -4,9 +4,16 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-// Supabase API Bilgileri (Kendi Supabase projenizden alın)
+// Supabase API Bilgileri
 $supabase_url = 'https://qcxfgedwwjfypwtsdzme.supabase.co'; // Proje URL'niz
 $supabase_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFjeGZnZWR3d2pmeXB3dHNkem1lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1NzkzNzAsImV4cCI6MjA4MDE1NTM3MH0.RmxwNeq2_m7fOgrmycaUSfPl38qNf7mfvcZageULwU4'; // Anon (public) Key'iniz
+
+// =================== YENİ EKLENEN ANAHTAR ===================
+// BU ANAHTARI Supabase Proje Ayarları > API > Project API keys altındaki "service_role" anahtarından al.
+// BU ANAHTARI ASLA DIŞARIYA GÖSTERME! SADECE PHP KODUNDA GÜVENLİ BİR ŞEKİLDE KULLANILACAK.
+$supabase_service_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFjeGZnZWR3d2pmeXB3dHNkem1lIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NDU3OTM3MCwiZXhwIjoyMDgwMTU1MzcwfQ.1lhCxW1_lHCMQTPoLuHcHDxrsLR6caklTEOVSyG31cE'; 
+// ==========================================================
+
 
 function supabase_api_request($method, $path, $data = [], $token = null) {
     global $supabase_url, $supabase_key;
@@ -14,7 +21,7 @@ function supabase_api_request($method, $path, $data = [], $token = null) {
     $url = $supabase_url . '/rest/v1/' . $path;
     $headers = [
         'Content-Type: application/json',
-        'Prefer: return=representation', // YENİ: POST ve PATCH sonrası eklenen/güncellenen veriyi geri döndürür.
+        'Prefer: return=representation',
         'apikey: ' . $supabase_key,
         'Authorization: Bearer ' . ($token ?? $supabase_key)
     ];
@@ -31,10 +38,7 @@ function supabase_api_request($method, $path, $data = [], $token = null) {
             curl_setopt($ch, CURLOPT_URL, $url);
             break;
         
-        // YENİ PATCH METODU
          case 'PATCH':
-            // $path değişkeni zaten 'users?id=eq.123' gibi tam yolu içeriyor.
-            // Bu yüzden $url'i doğrudan kullanıyoruz.
             curl_setopt($ch, CURLOPT_URL, $url); 
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
@@ -61,11 +65,66 @@ function supabase_api_request($method, $path, $data = [], $token = null) {
     curl_close($ch);
     
     if ($http_code >= 400) {
-        // echo "Supabase API Hatası: " . $response;
         return null;
     }
 
     return json_decode($response, true);
 }
+
+
+// ===================================================================
+//        YENİ: SUPABASE STORAGE'A DOSYA YÜKLEME FONKSİYONU
+// ===================================================================
+/**
+ * Bir dosyayı Supabase Storage'a yükler.
+ *
+ * @param string $tmp_path Yüklenecek dosyanın geçici yolu (örn: $_FILES['image']['tmp_name']).
+ * @param string $storage_path Dosyanın Supabase Storage'daki hedef yolu (örn: 'forum_uploads/resim.jpg').
+ * @param string $mime_type Dosyanın MIME türü (örn: 'image/jpeg').
+ * @return string|null Başarılı olursa dosyanın public URL'sini, başarısız olursa null döndürür.
+ */
+function upload_to_supabase_storage($tmp_path, $storage_path, $mime_type) {
+    global $supabase_url, $supabase_key, $supabase_service_key;
+
+    // Supabase Storage API endpoint'ini oluştur. 'plant_images' senin bucket adın.
+    $url = $supabase_url . '/storage/v1/object/plant_images/' . $storage_path;
+
+    // Gerekli header'ları ayarla. Yükleme için Service Role Key kullanılır.
+    $headers = [
+        'Content-Type: ' . $mime_type,
+        'apikey: ' . $supabase_key,
+        'Authorization: Bearer ' . $supabase_service_key
+    ];
+
+    // Dosyanın içeriğini oku
+    $file_content = file_get_contents($tmp_path);
+    if ($file_content === false) {
+        return null; // Dosya okunamadı hatası
+    }
+
+    // cURL ile POST isteği gönder
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $file_content);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    curl_exec($ch);
+    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    // İstek başarılıysa (HTTP 200 OK), resmin genel (public) URL'sini oluştur ve döndür.
+    if ($http_code === 200) {
+        $public_url = $supabase_url . '/storage/v1/object/public/plant_images/' . $storage_path;
+        return $public_url;
+    }
+
+    // Başarısız olursa null döndür.
+    return null;
+}
+// ===================================================================
+
+
 include_once 'functions.php'; 
 ?>

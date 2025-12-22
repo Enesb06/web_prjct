@@ -1,102 +1,69 @@
 <?php
-// db.php'yi en üste dahil ediyoruz. 
-// Bu dosya hem veritabanı fonksiyonlarını getirir hem de session_start() komutunu çalıştırır.
-
 include_once 'includes/header.php';
 
 $error = '';
 $success = '';
 
-// Giriş yapmamış kullanıcıyı engelle
 if (!isset($_SESSION['user_id'])) {
     header('Location: index.php');
     exit();
 }
 
-// JSON dosyasından bitki verilerini oku
 $plant_data_json = file_get_contents('data/plants_db.json');
 $plant_options = json_decode($plant_data_json, true);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Formdan metin verilerini al
     $plant_name = trim($_POST['plant_name']);
     $selected_plant_key = $_POST['plant_species_key'];
     $last_watered_date = $_POST['last_watered_date'];
     $last_fertilized_date = $_POST['last_fertilized_date']; 
     
-    // Varsayılan resim yolu
     $image_path_for_db = null;
 
-    // Dosya yükleme mantığı
-    // Bir dosya seçilmiş mi ve yüklemede hata var mı kontrol et
+    // =============== DEĞİŞTİRİLEN DOSYA YÜKLEME BLOĞU BAŞLANGICI ===============
     if (isset($_FILES['plant_image']) && $_FILES['plant_image']['error'] === UPLOAD_ERR_OK) {
-        
-        $upload_dir = 'assets/images/user_uploads/';
         $file = $_FILES['plant_image'];
         
-        // Güvenlik: Dosya boyutunu kontrol et (örn: max 2MB)
-        if ($file['size'] > 2097152) {
-            $error = 'Hata: Dosya boyutu 2MB\'den büyük olamaz.';
+        if ($file['size'] > 4194304) { // Max 4MB
+            $error = 'Hata: Dosya boyutu 4MB\'den büyük olamaz.';
         } else {
-            // Güvenlik: Dosya tipinin gerçekten bir resim olduğunu doğrula
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $mime_type = finfo_file($finfo, $file['tmp_name']);
             $allowed_mime_types = ['image/jpeg', 'image/png', 'image/gif'];
             finfo_close($finfo);
 
-            if (!in_array($mime_type, $allowed_mime_types)) {
-                $error = 'Hata: Sadece JPG, PNG ve GIF formatında resimler yükleyebilirsiniz.';
-            } else {
-                // Güvenlik: Benzersiz bir dosya adı oluşturarak üzerine yazmaları engelle
+            if (in_array($mime_type, $allowed_mime_types)) {
                 $file_extension = pathinfo($file['name'], PATHINFO_EXTENSION);
-                $unique_filename = uniqid('plant_', true) . '.' . $file_extension;
-                $destination = $upload_dir . $unique_filename;
+                // Benzersiz dosya adı: user_123/plant_asdasd123.jpg
+                $unique_filename = 'plant_' . uniqid('', true) . '.' . $file_extension;
+                $storage_path = 'user_uploads/' . $_SESSION['user_id'] . '/' . $unique_filename;
 
-                // Dosyayı geçici konumundan hedef klasöre taşı
-                if (move_uploaded_file($file['tmp_name'], $destination)) {
-                    $image_path_for_db = $destination; // Veritabanına kaydedilecek yol
-                } else {
-                    $error = 'Dosya yüklenirken bir hata oluştu.';
+                // Yeni fonksiyonu kullanarak Supabase'e yükle
+                $image_path_for_db = upload_to_supabase_storage($file['tmp_name'], $storage_path, $mime_type);
+                
+                if ($image_path_for_db === null) {
+                    $error = 'Resim Supabase\'e yüklenirken bir hata oluştu.';
                 }
+            } else {
+                $error = 'Hata: Sadece JPG, PNG ve GIF formatında resimler yükleyebilirsiniz.';
             }
         }
     }
+    // =============== DEĞİŞTİRİLEN DOSYA YÜKLEME BLOĞU SONU ===============
 
     if (empty($plant_name) || !isset($plant_options[$selected_plant_key])) {
         $error = "Bitki adı ve türü seçimi zorunludur.";
     } 
     
-    // Eğer bir dosya yükleme hatası oluşmadıysa devam et
     if (empty($error)) {
         $selected_plant_info = $plant_options[$selected_plant_key];
 
-        // =================================================================== //
-        //                  YENİ EKLENEN KISIM BAŞLANGICI                        //
-        // =================================================================== //
-
-        // Eğer kullanıcı özel bir resim yüklemediyse ($image_path_for_db hala null ise)
-        // ve bir bitki türü seçilmişse, varsayılan ansiklopedi resmini ata.
         if ($image_path_for_db === null && isset($selected_plant_info['species_name'])) {
-            
-            // 1. Türün adını al ve parantez içindeki bilimsel ismi temizle.
-            // Örnek: "Deve Tabanı (Monstera Deliciosa)" -> "Deve Tabanı"
             $species_name_clean = preg_replace('/\s*\(.*\)/', '', $selected_plant_info['species_name']);
-            
-            // 2. Temizlenmiş adı dosya ismine uygun hale getir (slugify).
-            // Örnek: "Deve Tabanı" -> "deve-tabani"
             $plant_slug = slugify(trim($species_name_clean));
-            
-            // 3. Varsayılan resim yolunu oluştur.
-            // Örnek: "assets/images/encyclopedia/deve-tabani.jpg"
             $image_path_for_db = 'assets/images/encyclopedia/' . $plant_slug . '.jpg';
         }
 
-        // =================================================================== //
-        //                    YENİ EKLENEN KISIM SONU                          //
-        // =================================================================== //
-
-
-        // Veritabanına kaydedilecek yeni bitki dizisini oluştur
         $newPlant = [
             'user_id' => $_SESSION['user_id'],
             'plant_name' => $plant_name,
@@ -106,32 +73,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'fertilizing_interval' => $selected_plant_info['fertilizing_interval'],
             'last_watered_date' => !empty($last_watered_date) ? $last_watered_date : null,
             'last_fertilized_date' => !empty($last_fertilized_date) ? $last_fertilized_date : null,
-            'image_url' => $image_path_for_db // Bu değişken artık ya kullanıcının yüklediği resmi ya da varsayılan resmi tutuyor.
+            'image_url' => $image_path_for_db
         ];
 
         $result = supabase_api_request('POST', 'plants', $newPlant);
         
-        // =================================================================== //
-        //             *** DEĞİŞTİRİLEN BLOK BAŞLANGICI ***                      //
-        // =================================================================== //
         if ($result !== null) {
-            // Session'a bildirim mesajını ve türünü kaydet
             $_SESSION['notification'] = [
                 'type' => 'success',
                 'message' => 'Yeni bitkin eklendi: <strong>' . htmlspecialchars($plant_name) . '</strong>'
             ];
-            // Kullanıcıyı ana panele yönlendir. Oradaki footer bu bildirimi gösterecek.
             header('Location: dashboard.php');
             exit();
         } else {
             $error = "Bitki eklenirken bir veritabanı hatası oluştu. Lütfen tekrar deneyin.";
         }
-        // =================================================================== //
-        //              *** DEĞİŞTİRİLEN BLOK SONU ***                         //
-        // =================================================================== //
     }
 }
 ?>
+
+<!-- ... HTML kısmı aynı kalacak ... -->
 
 <!DOCTYPE html>
 <html lang="tr">
