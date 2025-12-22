@@ -22,6 +22,12 @@ include_once 'db.php';
     <!-- Sarmaşık Efektleri -->
     <div class="ivy-overlay ivy-left"></div>
     <div class="ivy-overlay ivy-right"></div>
+
+    <?php 
+    // EĞER BU GİRİŞ/LANDING SAYFASI DEĞİLSE, NAVİGASYONU VE CONTAINER'I GÖSTER
+    if (!isset($is_landing_page)): 
+    ?>
+    
     <nav>
         <!-- YENİ: Site Logosu Eklendi -->
         <a href="dashboard.php" class="nav-logo">PlantCare.com</a>
@@ -43,3 +49,7 @@ include_once 'db.php';
         </ul>
     </nav>
     <div class="container">
+
+    <?php 
+    endif; // if bloğunun sonu
+    ?>

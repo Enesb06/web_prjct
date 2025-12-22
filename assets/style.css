@@ -76,7 +76,22 @@ nav ul li a:hover {
 /* =================================================================== */
 
 /* 3.1. Arka Plan ve Genel Düzen */
-.login-page, .register-page {
+/* 3.1. Arka Plan ve Genel Düzen */
+.login-page { /* ARTIK SADECE İNİŞ SAYFASININ HERO BÖLÜMÜ */
+    width: 100%;
+    min-height: 100vh; /* EKRANI KAPLAMASI İÇİN */
+    display: flex;
+    flex-direction: column; /* İÇERİĞİ DÜZGÜN SIRALAMAK İÇİN */
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), /* FİLTREYİ KOYULAŞTIRDIK */
+                url('images/arkaplan.png') no-repeat center center; /* fixed'i kaldırdık */
+    background-size: cover;
+    position: relative; /* Navigasyonun düzgün durması için */
+    z-index: 10;
+}
+
+.register-page { /* KAYIT SAYFASI AYNI KALDI */
     position: fixed;
     top: 0;
     left: 0;
@@ -90,7 +105,6 @@ nav ul li a:hover {
     background-size: cover;
     z-index: 10;
 }
-
 /* Giriş/Kayıt sayfalarındayken ana .container'ı şeffaf yap */
 body:has(.login-page) .container,
 body:has(.register-page) .container {
@@ -1310,4 +1324,261 @@ nav ul li a:hover {
 
     /* Resmin tekrarlanmasını engeller. */
     background-repeat: no-repeat;
+}
+/* =================================================================== */
+/*                     YENİ LANDING PAGE BÖLÜMLERİ                     */
+/* =================================================================== */
+
+.features-section {
+    padding: 80px 20px;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.features-section h2, .about-us-section h2 {
+    font-size: 2.5em;
+    color: #1b4332;
+    margin-bottom: 50px;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.feature-card {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.feature-card i {
+    font-size: 3em;
+    color: #6db788;
+    margin-bottom: 20px;
+}
+
+.feature-card h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.about-us-section {
+    padding: 80px 20px;
+    background-color: #fff;
+}
+
+.about-us-content {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.about-text {
+    flex: 1;
+    text-align: left;
+}
+
+.about-text p {
+    font-size: 1.1em;
+    line-height: 1.7;
+    color: #555;
+}
+
+.about-image {
+    flex: 1;
+}
+
+.about-image img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+/* Mobil uyumluluk */
+@media (max-width: 768px) {
+    .about-us-content {
+        flex-direction: column;
+    }
+    
+    .about-text {
+        text-align: center;
+    }
+}
+/* =================================================================== */
+/*                YENİ KULLANICI YORUMLARI (SLIDER) STİLLERİ           */
+/* =================================================================== */
+
+.testimonials-section {
+    padding: 80px 20px;
+    background-color: #fff; /* Features bölümünden ayırmak için beyaz */
+    text-align: center;
+}
+
+.testimonials-section h2 {
+    font-size: 2.5em;
+    color: #1b4332;
+    margin-bottom: 50px;
+}
+
+.testimonial-slider {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding-bottom: 40px; /* Alttaki noktalara yer açar */
+}
+
+.testimonial-card {
+    background: #f9f9f9;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: left;
+    height: 100%; /* Slaytların aynı yükseklikte olmasını sağlar */
+    display: flex;
+    flex-direction: column;
+}
+
+.testimonial-card .quote {
+    font-style: italic;
+    color: #555;
+    flex-grow: 1; /* Metnin alanı doldurmasını sağlar */
+    margin-bottom: 20px;
+}
+
+.testimonial-card .quote::before {
+    content: '“';
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #6db788;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-top: auto; /* Kullanıcı bilgisini kartın en altına iter */
+}
+
+.user-info img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+}
+
+.user-info strong {
+    display: block;
+    color: #1b4332;
+}
+
+.user-info span {
+    font-size: 0.9em;
+    color: #777;
+}
+
+/* Swiper navigasyon noktalarının rengini değiştirme */
+.swiper-pagination-bullet-active {
+    background-color: #1b4332 !important;
+}
+/* =================================================================== */
+/*                 SON ÇAĞRI VE FOOTER BÖLÜMÜ STİLLERİ                 */
+/* =================================================================== */
+.final-cta-section {
+    padding: 60px 20px;
+    background-color: #1b4332;
+    color: #fff;
+    text-align: center;
+}
+.final-cta-section h2 {
+    font-size: 2.2em;
+    margin: 0 0 10px 0;
+}
+.final-cta-section p {
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+.final-cta-section .auth-btn-register {
+    background-color: #f1c40f; /* Dikkat çekici sarı renk */
+    color: #1b4332;
+    padding: 15px 35px;
+    font-size: 1.1em;
+}
+.final-cta-section .auth-btn-register:hover {
+    background-color: #f39c12;
+}
+
+.site-footer {
+    padding: 20px;
+    background-color: #34495e;
+    color: #ecf0f1;
+    text-align: center;
+    font-size: 0.9em;
+}
+.site-footer p {
+    margin: 0;
+}
+/* =================================================================== */
+/*                     NASIL ÇALIŞIR? BÖLÜMÜ STİLLERİ                  */
+/* =================================================================== */
+.how-it-works-section {
+    padding: 80px 20px;
+    background-color: #f8f9fa; /* Diğer bölümlerden ayırmak için */
+    text-align: center;
+}
+
+.how-it-works-section h2 {
+    font-size: 2.5em;
+    color: #1b4332;
+    margin-bottom: 50px;
+}
+
+.steps-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap; /* Mobil için */
+}
+
+.step-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    width: 300px;
+    position: relative;
+    border-top: 4px solid #6db788;
+}
+
+.step-card .step-number {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #1b4332;
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.step-card i {
+    font-size: 3em;
+    color: #6db788;
+    margin-top: 20px;
+    margin-bottom: 15px;
 }

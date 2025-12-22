@@ -293,6 +293,14 @@ if (profileUpdateForm) {
         });
     });
 }
+// ... script.js dosyasının içinde bir yere ekle ...
+const showRegisterFooter = document.getElementById('showRegisterFooter');
+if (showRegisterFooter && registerModal) {
+    showRegisterFooter.addEventListener('click', (e) => {
+        e.preventDefault();
+        registerModal.classList.add('active');
+    });
+}
 
 // Şifre Değiştirme Formu Gönderimi (AJAX)
 if (passwordUpdateForm) {
@@ -396,6 +404,7 @@ if (forumContainer) {
         });
     });
 }
+
 
 
 }); // --- TEK BİR DOMContentLoaded OLAY DİNLEYİCİSİNİN KAPANIŞI ---

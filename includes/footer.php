@@ -1,3 +1,12 @@
+<?php 
+    // EĞER BU GİRİŞ/LANDING SAYFASI DEĞİLSE, CONTAINER'I KAPATAN DIV'İ GÖSTER
+    if (!isset($is_landing_page)): 
+    ?>
+</div> <!-- .container kapanışı -->
+    <?php 
+    endif; // if bloğunun sonu
+    ?>
+
 <!-- YENİ LOTTIE ANİMASYON KATMANI (İKİ ANİMASYONLU) -->
 <div class="lottie-overlay" id="animation-overlay">
     <!-- Sulama Animasyonu (Başlangıçta gizli) -->
@@ -21,9 +30,7 @@
     </lottie-player>
 </div>
 
-
-</div> <!-- .container kapanışı -->
-    <script src="assets/script.js"></script>
+<script src="assets/script.js"></script>
 
 <!-- =================================================================== -->
 <!--                  PROFİL MODAL PENCERESİ                             -->
