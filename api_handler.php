@@ -154,7 +154,7 @@ switch ($action) {
         break;
         
     // ==========================================================
-    //        YENİ EKLENEN ADMİN SİLME İŞLEVLERİ
+    //        ADMİN FORUM İÇERİĞİ SİLME İŞLEVLERİ
     // ==========================================================
     case 'delete_post_admin':
         // Güvenlik: Sadece adminler bu işlemi yapabilir
@@ -176,8 +176,6 @@ switch ($action) {
         // Sonra ana gönderiyi sil
         $result = supabase_admin_api_request('DELETE', 'forum_posts', ['id' => 'eq.' . $post_id]);
         
-        // DELETE işlemi başarılı olduğunda genellikle null veya boş bir array döner,
-        // bu yüzden sonucu kontrol etmek yerine doğrudan başarı mesajı gönderiyoruz.
         echo json_encode(['success' => true]);
         break;
 
@@ -200,6 +198,65 @@ switch ($action) {
         echo json_encode(['success' => true]);
         break;
 
+    // ==========================================================
+    //        YENİ EKLENEN ADMİN BİTKİ YÖNETİM İŞLEVLERİ
+    // ==========================================================
+    case 'delete_plant_admin':
+        // Güvenlik: Sadece adminler
+        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
+            echo json_encode(['success' => false, 'error' => 'Yetkisiz işlem.']);
+            exit();
+        }
+
+        $plant_id = $_POST['plant_id'];
+        if (empty($plant_id)) {
+            echo json_encode(['success' => false, 'error' => 'Geçersiz bitki ID.']);
+            exit();
+        }
+        
+        // Admin API'sini kullanarak bitkiyi sil
+        supabase_admin_api_request('DELETE', 'plants', ['id' => 'eq.' . $plant_id]);
+        
+        echo json_encode(['success' => true]);
+        break;
+
+ // ... api_handler.php dosyasındaki diğer case'ler ...
+
+    case 'update_plant_dates_admin':
+        // Güvenlik: Sadece adminler
+        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
+            echo json_encode(['success' => false, 'error' => 'Yetkisiz işlem.']);
+            exit();
+        }
+
+        $plant_id = $_POST['plant_id'];
+        $new_watered_date = $_POST['last_watered'];
+        $new_fertilized_date = $_POST['last_fertilized'];
+
+        if (empty($plant_id) || empty($new_watered_date) || empty($new_fertilized_date)) {
+            echo json_encode(['success' => false, 'error' => 'Tüm alanlar zorunludur.']);
+            exit();
+        }
+
+        // =================== DÜZELTME: Veritabanı sütun adları doğru yazıldı ===================
+        $updateData = [
+            'last_watered_date' => $new_watered_date,
+            'last_fertilized_date' => $new_fertilized_date
+        ];
+        
+        $path = 'plants?id=eq.' . $plant_id;
+        
+        $result = supabase_admin_api_request('PATCH', $path, $updateData);
+
+        if ($result && isset($result[0])) {
+            // Başarılı olursa güncellenmiş veriyi geri döndür
+            echo json_encode(['success' => true, 'updated_plant' => $result[0]]);
+        } else {
+            echo json_encode(['success' => false, 'error' => 'Bitki güncellenirken bir hata oluştu.']);
+        }
+        break;
+
+// ... default case'i ve diğerleri ...
 
     default:
         echo json_encode(['success' => false, 'error' => 'Geçersiz işlem.']);
