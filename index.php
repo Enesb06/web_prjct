@@ -295,7 +295,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_form'])) {
     <div class="testimonial-card">
         <p class="quote">“Fotoğraf yükleyip sorumu sordum, kısa sürede çok faydalı cevaplar aldım.”</p>
         <div class="user-info">
-            <img src="assets/images/avatars/avatar4.png" alt="Kullanıcı Avatarı">
+            <img src="assets/images/avatars/avatar2.png" alt="Kullanıcı Avatarı">
             <div>
                 <strong>Ayşe Y.</strong>
                 <span>Ev Bitkileri Sahibi</span>
@@ -308,7 +308,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_form'])) {
     <div class="testimonial-card">
         <p class="quote">“Hediye gelen bitkinin adını bile bilmiyordum. Şimdi bakımını gönül rahatlığıyla yapıyorum.”</p>
         <div class="user-info">
-            <img src="assets/images/avatars/avatar5.png" alt="Kullanıcı Avatarı">
+            <img src="assets/images/avatars/avatar1.png" alt="Kullanıcı Avatarı">
             <div>
                 <strong>Burcu Y.</strong>
                 <span>Yeni Başlayan</span>
@@ -321,7 +321,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_form'])) {
     <div class="testimonial-card">
         <p class="quote">“Topluluk kısmı çok aktif. Her soruma mutlaka biri yardımcı oldu.”</p>
         <div class="user-info">
-            <img src="assets/images/avatars/avatar6.png" alt="Kullanıcı Avatarı">
+            <img src="assets/images/avatars/avatar4.png" alt="Kullanıcı Avatarı">
             <div>
                 <strong>Emre C.</strong>
                 <span>Bitki Koleksiyoncusu</span>
@@ -334,7 +334,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_form'])) {
     <div class="testimonial-card">
         <p class="quote">“Orkidelerim hiç bu kadar sağlıklı görünmemişti. Öneriler gerçekten işe yarıyor.”</p>
         <div class="user-info">
-            <img src="assets/images/avatars/avatar7.png" alt="Kullanıcı Avatarı">
+            <img src="assets/images/avatars/avatar1.png" alt="Kullanıcı Avatarı">
             <div>
                 <strong>Selma T.</strong>
                 <span>Orkide Sever</span>
@@ -347,7 +347,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_form'])) {
     <div class="testimonial-card">
         <p class="quote">“Bitki türlerini öğrenmek ve doğru bakım yapmak artık çok daha kolay.”</p>
         <div class="user-info">
-            <img src="assets/images/avatars/avatar8.png" alt="Kullanıcı Avatarı">
+            <img src="assets/images/avatars/avatar3.png" alt="Kullanıcı Avatarı">
             <div>
                 <strong>Okan A.</strong>
                 <span>Ev Bitkileri Kullanıcısı</span>
@@ -360,7 +360,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_form'])) {
     <div class="testimonial-card">
         <p class="quote">“Basit arayüzü sayesinde annem bile rahatça kullanabiliyor.”</p>
         <div class="user-info">
-            <img src="assets/images/avatars/avatar9.png" alt="Kullanıcı Avatarı">
+            <img src="assets/images/avatars/avatar2.png" alt="Kullanıcı Avatarı">
             <div>
                 <strong>Gizem D.</strong>
                 <span>Kullanıcı</span>
@@ -373,7 +373,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_form'])) {
     <div class="testimonial-card">
         <p class="quote">“Bitkilerim artık ne zaman su ister biliyorum. Unutma derdi tamamen bitti.”</p>
         <div class="user-info">
-            <img src="assets/images/avatars/avatar10.png" alt="Kullanıcı Avatarı">
+            <img src="assets/images/avatars/avatar1.png" alt="Kullanıcı Avatarı">
             <div>
                 <strong>Murat E.</strong>
                 <span>Yoğun Çalışan</span>
