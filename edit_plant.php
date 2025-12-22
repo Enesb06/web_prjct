@@ -26,22 +26,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_POST['action'])) {
             $action = $_POST['action'];
 
+            // =================== DÜZELTME BAŞLANGICI ===================
+
+            // DEĞİŞİKLİK 1: Güncellenecek bitkinin yolunu (path) belirliyoruz.
+            $path = 'plants?id=eq.' . $plant_id;
+
             if ($action === 'water') {
-                $updateData = ['id' => $plant_id, 'last_watered_date' => date('c')];
-                supabase_api_request('PATCH', 'plants', $updateData);
+                // DEĞİŞİKLİK 2: Veri (payload) sadece güncellenecek kolonu içermeli.
+                $updateData = ['last_watered_date' => date('c')];
+                supabase_api_request('PATCH', $path, $updateData);
                 $success = "Bitki sulandı olarak işaretlendi!";
             }
 
             if ($action === 'fertilize') {
-                $updateData = ['id' => $plant_id, 'last_fertilized_date' => date('c')];
-                supabase_api_request('PATCH', 'plants', $updateData);
+                // DEĞİŞİKLİK 2: Veri (payload) sadece güncellenecek kolonu içermeli.
+                $updateData = ['last_fertilized_date' => date('c')];
+                supabase_api_request('PATCH', $path, $updateData);
                 $success = "Bitki gübrelendi olarak işaretlendi!";
             }
+            
+            // =================== DÜZELTME SONU ===================
 
             if ($action === 'delete') {
                 supabase_api_request('DELETE', 'plants', ['id' => 'eq.' . $plant_id]);
                 // Başarı mesajı ile ana sayfaya yönlendir
-                $_SESSION['message'] = ['type' => 'success', 'text' => 'Bitki başarıyla silindi.'];
+                $_SESSION['notification'] = [
+                    'type' => 'success',
+                    'message' => 'Bitki başarıyla silindi.'
+                ];
                 header('Location: dashboard.php');
                 exit();
             }

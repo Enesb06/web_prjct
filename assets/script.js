@@ -138,56 +138,66 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // =========================================================
-    //          BAKIM İŞLEMİ SONRASI LOTTIE ANİMASYONU
-    // =========================================================
-    const manageForm = document.querySelector('.plant-manage-actions form');
-    const animationOverlay = document.getElementById('animation-overlay');
-    const waterPlayer = document.getElementById('lottie-water-player');
-    const fertilizePlayer = document.getElementById('lottie-fertilize-player');
-    const allAnimations = document.querySelectorAll('.lottie-animation');
+//          BAKIM İŞLEMİ SONRASI LOTTIE ANİMASYONU
+// =========================================================
+const manageForm = document.querySelector('.plant-manage-actions form');
+const animationOverlay = document.getElementById('animation-overlay');
+const waterPlayer = document.getElementById('lottie-water-player');
+const fertilizePlayer = document.getElementById('lottie-fertilize-player');
+const allAnimations = document.querySelectorAll('.lottie-animation');
 
-    if (manageForm && animationOverlay && waterPlayer && fertilizePlayer) {
-        manageForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+if (manageForm && animationOverlay && waterPlayer && fertilizePlayer) {
+    manageForm.addEventListener('submit', function(e) {
+        e.preventDefault();
 
-            const action = document.activeElement.value;
-            let activePlayer = null;
+        const action = document.activeElement.value; // Hangi butona basıldığını alıyoruz
+        let activePlayer = null;
 
-            allAnimations.forEach(anim => anim.style.display = 'none');
+        allAnimations.forEach(anim => anim.style.display = 'none');
 
-            if (action === 'water') {
-                activePlayer = waterPlayer;
-            } else if (action === 'fertilize') {
-                activePlayer = fertilizePlayer;
-            }
+        if (action === 'water') {
+            activePlayer = waterPlayer;
+        } else if (action === 'fertilize') {
+            activePlayer = fertilizePlayer;
+        }
 
-            if (activePlayer) {
-                activePlayer.style.display = 'block';
-                animationOverlay.classList.add('active');
-                activePlayer.seek(0);
-                activePlayer.play();
+        if (activePlayer) {
+            activePlayer.style.display = 'block';
+            animationOverlay.classList.add('active');
+            activePlayer.seek(0);
+            activePlayer.play();
 
-                const animationDuration = 2000; // Animasyon süresi (ms)
+            const animationDuration = 2000; // Animasyon süresi (ms)
 
-                // Geri sayım mantığını Lottie animasyonuna entegre et
-                const plantId = manageCard.dataset.plantId;
-                const cooldownMinutes = parseFloat(manageCard.dataset.cooldownMinutes);
-                if (cooldownMinutes && cooldownMinutes > 0) {
-                    if (action === 'water') {
-                        localStorage.setItem(`plant_${plantId}_water_lockout`, new Date().getTime());
-                    } else if (action === 'fertilize') {
-                        localStorage.setItem(`plant_${plantId}_fertilize_lockout`, new Date().getTime());
-                    }
+            // Geri sayım mantığını Lottie animasyonuna entegre et
+            const plantId = manageCard.dataset.plantId;
+            const cooldownMinutes = parseFloat(manageCard.dataset.cooldownMinutes);
+            if (cooldownMinutes && cooldownMinutes > 0) {
+                if (action === 'water') {
+                    localStorage.setItem(`plant_${plantId}_water_lockout`, new Date().getTime());
+                } else if (action === 'fertilize') {
+                    localStorage.setItem(`plant_${plantId}_fertilize_lockout`, new Date().getTime());
                 }
-
-                setTimeout(() => {
-                    e.target.submit();
-                }, animationDuration);
-            } else {
-                e.target.submit();
             }
-        });
-    }
+
+            setTimeout(() => {
+                // ================== ÇÖZÜM İÇİN EKLENEN KOD ==================
+                // PHP'nin hangi eylemin yapıldığını bilmesi için forma gizli bir input ekliyoruz.
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'action';
+                hiddenInput.value = action; // Değeri 'water' veya 'fertilize' olacak
+                e.target.appendChild(hiddenInput);
+                // ============================================================
+
+                e.target.submit(); // Şimdi formu gönderiyoruz
+            }, animationDuration);
+        } else {
+            // Animasyon bulunamazsa bile formu gönder
+            e.target.submit();
+        }
+    });
+}
 
 
     // ===============================================
