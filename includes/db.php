@@ -70,6 +70,67 @@ function supabase_api_request($method, $path, $data = [], $token = null) {
 
     return json_decode($response, true);
 }
+// =================== YENİ EKLENEN ADMIN FONKSİYONU ===================
+// Bu fonksiyon, service_role anahtarını kullanarak RLS'yi atlar.
+// Sadece admin yetkisi gerektiren silme, güncelleme gibi işlemler için kullanılmalıdır.
+// =====================================================================
+function supabase_admin_api_request($method, $path, $data = []) {
+    global $supabase_url, $supabase_service_key; // DİKKAT: $supabase_key yerine $supabase_service_key kullanılıyor
+
+    $url = $supabase_url . '/rest/v1/' . $path;
+    $headers = [
+        'Content-Type: application/json',
+        'Prefer: return=representation',
+        'apikey: ' . $supabase_service_key, // DİKKAT: Service key burada kullanılıyor
+        'Authorization: Bearer ' . $supabase_service_key
+    ];
+
+    $ch = curl_init();
+    
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    switch ($method) {
+        case 'POST':
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+            curl_setopt($ch, CURLOPT_URL, $url);
+            break;
+        
+         case 'PATCH':
+            curl_setopt($ch, CURLOPT_URL, $url); 
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+            break;
+
+        case 'GET':
+            if (!empty($data)) {
+                $url .= '?' . http_build_query($data);
+            }
+            curl_setopt($ch, CURLOPT_URL, $url);
+            break;
+
+        case 'DELETE':
+             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+             if (!empty($data)) {
+                $url .= '?' . http_build_query($data);
+            }
+            curl_setopt($ch, CURLOPT_URL, $url);
+            break;
+    }
+
+    $response = curl_exec($ch);
+    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    
+    // HTTP kodu 204 (No Content) genellikle başarılı bir DELETE işlemi için döner
+    if ($http_code >= 400) {
+        // Hata ayıklama için: error_log("Supabase Admin Error: " . $response);
+        return null;
+    }
+
+    return json_decode($response, true);
+}
 
 
 // ===================================================================
