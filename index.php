@@ -381,6 +381,136 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_form'])) {
         </div>
     </div>
 </div>
+<div class="swiper-slide">
+    <div class="testimonial-card">
+        <p class="quote">“Bitkim yaprak döküyordu, bakım önerilerini uyguladıktan sonra fark gözle görülür oldu.”</p>
+        <div class="user-info">
+            <img src="assets/images/avatars/avatar2.png" alt="Kullanıcı Avatarı">
+            <div>
+                <strong>Hakan M.</strong>
+                <span>Ev Bitkileri Meraklısı</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="swiper-slide">
+    <div class="testimonial-card">
+        <p class="quote">“Hangi bitki ne kadar ışık ister sorusu artık sorun değil. Her şey çok net anlatılmış.”</p>
+        <div class="user-info">
+            <img src="assets/images/avatars/avatar3.png" alt="Kullanıcı Avatarı">
+            <div>
+                <strong>Derya K.</strong>
+                <span>Yeni Başlayan</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="swiper-slide">
+    <div class="testimonial-card">
+        <p class="quote">“Takvim hatırlatmaları sayesinde bir kez bile fazla sulama yapmadım.”</p>
+        <div class="user-info">
+            <img src="assets/images/avatars/avatar5.png" alt="Kullanıcı Avatarı">
+            <div>
+                <strong>Serkan A.</strong>
+                <span>Yoğun Çalışan</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="swiper-slide">
+    <div class="testimonial-card">
+        <p class="quote">“Fotoğraflı anlatımlar sayesinde bitki bakımı gözümde büyümüyor artık.”</p>
+        <div class="user-info">
+            <img src="assets/images/avatars/avatar4.png" alt="Kullanıcı Avatarı">
+            <div>
+                <strong>Nisa Y.</strong>
+                <span>Öğrenci</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="swiper-slide">
+    <div class="testimonial-card">
+        <p class="quote">“Evdeki tüm bitkileri tek yerden takip etmek büyük kolaylık.”</p>
+        <div class="user-info">
+            <img src="assets/images/avatars/avatar1.png" alt="Kullanıcı Avatarı">
+            <div>
+                <strong>Levent T.</strong>
+                <span>Ev Sahibi</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="swiper-slide">
+    <div class="testimonial-card">
+        <p class="quote">“Forumda sorulan sorular ve verilen cevaplar gerçekten çok öğretici.”</p>
+        <div class="user-info">
+            <img src="assets/images/avatars/avatar2.png" alt="Kullanıcı Avatarı">
+            <div>
+                <strong>Şule A.</strong>
+                <span>Bitki Sever</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="swiper-slide">
+    <div class="testimonial-card">
+        <p class="quote">“Ofisteki bitkiler için kullanıyorum, ekipçe farkı hissettik.”</p>
+        <div class="user-info">
+            <img src="assets/images/avatars/avatar5.png" alt="Kullanıcı Avatarı">
+            <div>
+                <strong>Onur P.</strong>
+                <span>Ofis Kullanıcısı</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="swiper-slide">
+    <div class="testimonial-card">
+        <p class="quote">“Bitkilerin dilinden anlayan bir uygulama gibi, neye ihtiyaçları varsa söylüyor.”</p>
+        <div class="user-info">
+            <img src="assets/images/avatars/avatar2.png" alt="Kullanıcı Avatarı">
+            <div>
+                <strong>Melis S.</strong>
+                <span>Hobi Bahçıvanı</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="swiper-slide">
+    <div class="testimonial-card">
+        <p class="quote">“Yeni aldığım bitkinin bakımını daha ilk günden doğru yapmamı sağladı.”</p>
+        <div class="user-info">
+            <img src="assets/images/avatars/avatar1.png" alt="Kullanıcı Avatarı">
+            <div>
+                <strong>Kaan E.</strong>
+                <span>Yeni Kullanıcı</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="swiper-slide">
+    <div class="testimonial-card">
+        <p class="quote">“Bitki bakımı stres değil keyif olmaya başladı.”</p>
+        <div class="user-info">
+            <img src="assets/images/avatars/avatar2.png" alt="Kullanıcı Avatarı">
+            <div>
+                <strong>Yasemin C.</strong>
+                <span>Bitki Tutkunu</span>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
                     
