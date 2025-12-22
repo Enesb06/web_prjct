@@ -444,62 +444,137 @@ textarea {
 }
 
 button, .btn {
-    padding: 12px 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* İkon ve metin arası boşluk */
+    padding: 12px 24px;
     border: none;
-    border-radius: 4px;
+    border-radius: 12px; /* Daha modern, yumuşak köşeler */
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    text-decoration: none;
-    text-align: center;
-    transition: background-color 0.3s, transform 0.2s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Üzerine gelince yükselme efekti */
 button:hover, .btn:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* 6.2. Özel Buton Stilleri */
-button { /* Form içindeki ana buton */
-    background-color: #1abc9c;
+/* Tıklayınca hafifçe küçülme efekti */
+button:active, .btn:active {
+    transform: translateY(-1px) scale(0.98);
+}
+
+/* Üzerine gelince buton hafifçe aşağı iner */
+button:hover, .btbuttonn:hover {
+    top: 2px;
+    box-shadow: 0 4px 0px #1b4332;
+    background-color: #40916c;
+}
+
+/* Tıklandığında buton tamamen zemine oturur (Gerçek basma hissi) */
+button:active, .btn:active {
+    top: 6px;
+    box-shadow: 0 0px 0px #1b4332;
+}
+/* Sulama Butonu (Mavi Parlama) */
+.btn-action-water {
+    background: linear-gradient(135deg, #3498db, #2980b9);
     color: white;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+}
+.btn-action-water:hover {
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.6);
 }
 
-button:hover {
-    background-color: #16a085;
+/* Gübreleme Butonu (Yeşil Parlama) */
+.btn-action-fertilize {
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    color: white;
+    box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
+}
+.btn-action-fertilize:hover {
+    box-shadow: 0 8px 25px rgba(39, 174, 96, 0.6);
 }
 
-.btn {
-    flex-grow: 1; /* plant-actions içinde eşit dağılım için */
+/* Silme Butonu (Kırmızı Cam Efekti) */
+.btn-danger {
+    background: rgba(231, 76, 60, 0.2) !important;
+    border: 1px solid rgba(231, 76, 60, 0.5) !important;
+    backdrop-filter: blur(5px);
+    color: #ff7675 !important;
 }
-.btn-secondary { background-color: #3498db; color: white; }
-.btn-secondary:hover { background-color: #2980b9; }
-
-.btn-danger { background-color: #e74c3c; color: white; }
-.btn-danger:hover { background-color: #c0392b; }
+.btn-danger:hover {
+    background: rgba(231, 76, 60, 0.8) !important;
+    color: white !important;
+}
 
 .btn-add-plant {
-    background-color: #27ae60;
-    color: white;
-    padding: 10px 15px;
-    border-radius: 5px;
-}
-.btn-add-plant:hover {
-    background-color: #2ecc71;
+    background-color: #27ae60 !important; /* Canlı Yeşil */
+    box-shadow: 0 5px 0px #1e8449 !important; /* Derinlik */
+    color: white !important;
+    padding: 10px 20px !important;
+    font-size: 14px !important;
+    border-radius: 12px !important;
 }
 
+/* 2. Hiç Bitki Yokken Çıkan Büyük Buton */
 .btn-add-plant-big {
-    display: inline-block;
-    background-color: #27ae60;
-    color: white;
-    padding: 15px 30px;
-    font-size: 1.2em;
-    margin-top: 20px;
-}
-.btn-add-plant-big:hover {
-    background-color: #2ecc71;
+    background-color: #27ae60 !important;
+    box-shadow: 0 8px 0px #1e8449 !important; /* Daha büyük olduğu için gölgesi de kalın */
+    color: white !important;
+    padding: 18px 35px !important;
+    font-size: 1.3em !important;
+    border-radius: 20px !important;
+    display: inline-block !important;
+    margin-top: 30px !important;
+    text-decoration: none !important;
 }
 
+/* 3. Bitki Ekleme Formunun En Altındaki "Bitkiyi Ekle" Butonu */
+.add-plant-card button[type="submit"] {
+    background-color: #27ae60 !important;
+    box-shadow: 0 6px 0px #1e8449 !important;
+    width: 100% !important; /* Formda tam genişlik */
+    padding: 16px !important;
+    margin-top: 10px !important;
+    border-radius: 16px !important;
+}
+
+/* =================================================================== */
+/*                HOVER VE ACTIVE (BASMA) EFEKTLERİ                    */
+/* =================================================================== */
+
+/* Üzerine gelince (Hover) */
+.btn-add-plant:hover, 
+.btn-add-plant-big:hover, 
+.add-plant-card button[type="submit"]:hover {
+    top: 2px;
+    box-shadow: 0 3px 0px #1e8449 !important;
+    background-color: #2ecc71 !important; /* Hafif açılır */
+}
+
+/* Tıklayınca/Basınca (Active) */
+.btn-add-plant:active, 
+.btn-add-plant-big:active, 
+.add-plant-card button[type="submit"]:active {
+    top: 5px; /* Dashboard butonu için */
+    box-shadow: 0 0px 0px #1e8449 !important;
+}
+
+.btn-add-plant-big:active {
+    top: 8px !important; /* Büyük buton daha çok çöker */
+    box-shadow: 0 0px 0px #1e8449 !important;
+}
 
 /* =================================================================== */
 /*                 7. YARDIMCI SINIFLAR (Mesajlar vb.)                 */
@@ -1835,4 +1910,130 @@ nav ul li a:hover {
     object-fit: cover; 
     
     display: block;       /* Resmin altındaki olası istenmeyen boşlukları kaldırır */
+}
+
+
+/* 1. Tüm butonlardaki alt çizgiyi (underline) kaldırır */
+.btn, .plant-actions a, .btn-secondary {
+    text-decoration: none !important;
+    border-bottom: none !important;
+}
+
+/* 2. "Yönet" butonunu (btn-secondary) Mavi ve Solid Modern yapar */
+.btn-secondary {
+    background-color: #3498db !important; /* Canlı Mavi */
+    color: white !important;               /* Yazı rengi beyaz */
+    box-shadow: 0 6px 0px #2980b9 !important; /* Altındaki 3D gölge */
+    border-radius: 12px !important;
+    font-weight: bold !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    top: 0;
+    transition: all 0.2s ease;
+}
+
+/* Yönet butonu Hover (Üstüne gelince) */
+.btn-secondary:hover {
+    top: 2px;
+    box-shadow: 0 4px 0px #2980b9 !important;
+    background-color: #2980b9 !important;
+    color: white !important;
+}
+
+/* Yönet butonu Active (Tıklayınca çökme efekti) */
+.btn-secondary:active {
+    top: 6px;
+    box-shadow: 0 0px 0px #2980b9 !important;
+}
+
+/* 3. "Detaylar" butonu (Mavi olan) için alt çizgiyi kaldırma garantisi */
+.btn-info, .btn-primary, [class*="btn-"] {
+    text-decoration: none !important;
+}
+
+/* 1. Tüm butonlardaki alt çizgiyi (underline) kaldırır */
+.btn, .plant-actions a, .btn-secondary {
+    text-decoration: none !important;
+    border-bottom: none !important;
+}
+
+/* 2. "Yönet" butonunu (btn-secondary) Mavi ve Solid Modern yapar */
+.btn-secondary {
+    background-color: #3498db !important; /* Canlı Mavi */
+    color: white !important;               /* Yazı rengi beyaz */
+    box-shadow: 0 6px 0px #2980b9 !important; /* Altındaki 3D gölge */
+    border-radius: 12px !important;
+    font-weight: bold !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    top: 0;
+    transition: all 0.2s ease;
+}
+
+/* Yönet butonu Hover (Üstüne gelince) */
+.btn-secondary:hover {
+    top: 2px;
+    box-shadow: 0 4px 0px #2980b9 !important;
+    background-color: #2980b9 !important;
+    color: white !important;
+}
+
+/* Yönet butonu Active (Tıklayınca çökme efekti) */
+.btn-secondary:active {
+    top: 6px;
+    box-shadow: 0 0px 0px #2980b9 !important;
+}
+
+/* 3. "Detaylar" butonu (Mavi olan) için alt çizgiyi kaldırma garantisi */
+.btn-info, .btn-primary, [class*="btn-"] {
+    text-decoration: none !important;
+}
+
+/* 1. TÜM TUŞLARDAKİ ALT ÇİZGİYİ KALDIR */
+.plant-actions a, .btn, .btn-secondary, .btn-info {
+    text-decoration: none !important; /* Alt çizgiyi siler */
+    border-bottom: none !important;   /* Eğer border varsa siler */
+    outline: none !important;
+}
+
+/* 2. DETAYLAR VE YÖNET TUŞLARINI AYNI MAVİ STİLE GETİR */
+.plant-actions a, .btn-secondary {
+    background-color: #3498db !important; /* Modern Mavi */
+    color: white !important;               /* Yazı rengi beyaz */
+    padding: 12px 20px !important;
+    border-radius: 12px !important;
+    font-weight: bold !important;
+    font-size: 14px !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    position: relative;                    /* 3D efekti için gerekli */
+    top: 0;
+    box-shadow: 0 6px 0px #2980b9 !important; /* Altındaki 3D kalınlık */
+    transition: all 0.2s ease;
+    flex-grow: 1;                          /* Yan yana eşit durmaları için */
+}
+
+/* 3. ÜZERİNE GELİNCE (HOVER) EFEKTİ */
+.plant-actions a:hover, .btn-secondary:hover {
+    top: 2px;                              /* Hafifçe aşağı iner */
+    box-shadow: 0 4px 0px #2980b9 !important;
+    background-color: #2980b9 !important;
+}
+
+/* 4. TIKLAYINCA (BASMA) EFEKTİ */
+.plant-actions a:active, .btn-secondary:active {
+    top: 6px;                              /* Tamamen zemine oturur */
+    box-shadow: 0 0px 0px #2980b9 !important;
+}
+
+/* Kartın içindeki buton alanını hizalamak için (Opsiyonel) */
+.plant-actions {
+    display: flex;
+    gap: 15px;
+    padding-top: 15px;
 }
