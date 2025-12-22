@@ -404,6 +404,87 @@ if (forumContainer) {
         });
     });
 }
+  const dropArea = document.getElementById('drop-area');
+    const fileInput = document.getElementById('plant_image');
+    const imagePreview = document.getElementById('image-preview');
+
+    if (dropArea && fileInput && imagePreview) {
+        
+        // Sürükle-bırak olayları
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => dropArea.classList.add('dragover'), false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => dropArea.classList.remove('dragover'), false);
+        });
+
+        dropArea.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            let dt = e.dataTransfer;
+            let files = dt.files;
+            fileInput.files = files; // Dosyaları gizli input'a ata
+            handleFiles(files);
+        }
+
+        // Dosya seçildiğinde (tıklayarak)
+        fileInput.addEventListener('change', function() {
+            handleFiles(this.files);
+        });
+
+        function handleFiles(files) {
+            if (files.length > 0) {
+                const file = files[0];
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        imagePreview.innerHTML = `<img src="${e.target.result}" alt="Seçilen Resim Önizlemesi">`;
+                    }
+                    reader.readAsDataURL(file);
+                } else {
+                    imagePreview.innerHTML = `<p style="color: #e74c3c;">Lütfen bir resim dosyası seçin.</p>`;
+                }
+            }
+        }
+    }
+    // ... Diğer JS kodlarınızın altına ...
+
+// ===============================================
+//          BİTKİ EKLE BUTONU ANİMASYONU
+// ===============================================
+const addPlantForm = document.querySelector('.add-plant-card form');
+const loadingOverlay = document.getElementById('loading-overlay');
+const addPlantPlayer = document.getElementById('lottie-add-plant-player');
+
+// Sadece Bitki Ekle sayfasında çalıştığından emin olmak için kontrol ediyoruz
+if (addPlantForm && loadingOverlay && addPlantPlayer) {
+    addPlantForm.addEventListener('submit', function(e) {
+        // Formun normal şekilde gönderilmesini anında engelle
+        e.preventDefault();
+
+        // Animasyon katmanını göster
+        loadingOverlay.classList.add('active');
+
+        // Lottie animasyonunu sıfırla ve başlat
+        addPlantPlayer.seek(0);
+        addPlantPlayer.play();
+
+        // Animasyonun biraz görünmesi için 2.5 saniye bekle, sonra formu gönder
+        setTimeout(() => {
+            this.submit(); // Engellediğimiz formu şimdi programatik olarak gönderiyoruz
+        }, 2500); // 2.5 saniye gecikme. Süreyi isteğinize göre ayarlayabilirsiniz.
+    });
+}
 
 
 

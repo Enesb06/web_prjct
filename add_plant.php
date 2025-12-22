@@ -91,58 +91,99 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-
-<!-- ... HTML kısmı aynı kalacak ... -->
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <!-- Head içeriğiniz burada -->
+    <!-- Head içeriğiniz header.php dosyasından gelecek -->
 </head>
 <body>
-    <!-- Header'ınız ve navigasyonunuz burada -->
+    <!-- Header'ınız ve navigasyonunuz header.php dosyasından gelecek -->
 
-    <div class="container">
-        <h2>Yeni Bitki Ekle</h2>
+    <!-- =================================================================== -->
+    <!--                     YENİ TASARIM BURADA BAŞLIYOR                      -->
+    <!-- =================================================================== -->
+    <div class="add-plant-page-container">
+        <div class="add-plant-card">
+            <h2>Yeni Bitki Ekle</h2>
 
-        <?php if ($error): ?>
-            <div class="message error"><?php echo $error; ?></div>
-        <?php endif; ?>
-        <?php if ($success): ?>
-            <div class="message success"><?php echo $success; ?></div>
-        <?php endif; ?>
+            <?php if ($error): ?>
+                <div class="message error" style="background-color: #f8d7da; color: #721c24;"><?php echo $error; ?></div>
+            <?php endif; ?>
+            <?php if ($success): ?>
+                <div class="message success" style="background-color: #d4edda; color: #155724;"><?php echo $success; ?></div>
+            <?php endif; ?>
 
-        <form action="add_plant.php" method="POST" enctype="multipart/form-data">
-            <label for="plant_name">Bitkine bir isim ver (Örn: Boncuk, Paşa):</label>
-            <input type="text" id="plant_name" name="plant_name" required>
+            <form action="add_plant.php" method="POST" enctype="multipart/form-data">
+                <label for="plant_name">Bitkine bir isim ver (Örn: Boncuk, Paşa):</label>
+                <input type="text" id="plant_name" name="plant_name" required>
 
-            <label for="plant_species_key">Bitkinin Türünü Seç:</label>
-            <select id="plant_species_key" name="plant_species_key" required>
-                <option value="" disabled selected>-- Lütfen bir bitki türü seçin --</option>
-                <?php foreach ($plant_options as $key => $plant): ?>
-                    <option value="<?php echo $key; ?>">
-                        <?php echo htmlspecialchars($plant['species_name']); ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-            
-            <p style="font-size:0.9em; color:#777; margin-top: -10px;">
-                Not: Sulama ve gübreleme sıklığı otomatik olarak atanacaktır.
-            </p>
+                <label for="plant_species_key">Bitkinin Türünü Seç:</label>
+                <select id="plant_species_key" name="plant_species_key" required>
+                    <option value="" disabled selected>-- Lütfen bir bitki türü seçin --</option>
+                    <?php foreach ($plant_options as $key => $plant): ?>
+                        <option value="<?php echo $key; ?>">
+                            <?php echo htmlspecialchars($plant['species_name']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                
+                <p class="form-note">
+                    Not: Sulama ve gübreleme sıklığı otomatik olarak atanacaktır.
+                </p>
 
-            <label for="last_watered_date">Son Sulama Tarihi:</label>
-            <input type="datetime-local" id="last_watered_date" name="last_watered_date">
-            
-            <label for="last_fertilized_date">Son Gübreleme Tarihi (Opsiyonel):</label>
-            <input type="datetime-local" id="last_fertilized_date" name="last_fertilized_date">
+                <label for="last_watered_date">Son Sulama Tarihi:</label>
+                <input type="datetime-local" id="last_watered_date" name="last_watered_date">
+                
+                <label for="last_fertilized_date">Son Gübreleme Tarihi:</label>
+                <input type="datetime-local" id="last_fertilized_date" name="last_fertilized_date">
 
-            <label for="plant_image">Bitkinin Fotoğrafını Yükle (Opsiyonel):</label>
-            <input type="file" id="plant_image" name="plant_image" accept="image/png, image/jpeg, image/gif">
+                <!-- YENİ DOSYA YÜKLEME ALANI -->
+                <label for="plant_image">Bitkinin Fotoğrafını Yükle (Opsiyonel):</label>
+                <input type="file" id="plant_image" name="plant_image" accept="image/png, image/jpeg, image/gif">
+                
+                <label for="plant_image" class="custom-file-upload" id="drop-area">
+                    <div class="upload-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-cloud-arrow-up-fill" viewBox="0 0 16 16">
+                          <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 5.146a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2z"/>
+                        </svg>
+                    </div>
+                    <div class="upload-text">
+                        Resmi buraya sürükleyin veya <strong>seçmek için tıklayın</strong>
+                    </div>
+                </label>
+                <div id="image-preview"></div>
+                <!-- YENİ DOSYA YÜKLEME ALANI SONU -->
 
-            <button type="submit">Bitkiyi Ekle</button>
-        </form>
+                <button type="submit">Bitkiyi Ekle</button>
+            </form>
+        </div>
     </div>
+    <!-- =================================================================== -->
+    <!--                       YENİ TASARIM BURADA BİTİYOR                     -->
+    <!-- =================================================================== -->
 
+    
+    <!-- =================================================================== -->
+    <!--          YENİ: BİTKİ EKLEME YÜKLENİYOR ANİMASYON KATMANI            -->
+    <!-- =================================================================== -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-content">
+            <lottie-player
+                id="lottie-add-plant-player"
+                src="assets/animations/plant_add_animations.json"
+                background="transparent"
+                speed="1"
+                style="width: 250px; height: 250px;"
+                loop>
+            </lottie-player>
+            <p class="loading-text">Yeni bitkiniz ekleniyor...</p>
+        </div>
+    </div>
+    <!-- =================================================================== -->
+
+    
     <?php include_once 'includes/footer.php'; ?>
+    
+    <!-- Script dosyaları footer.php dosyasından gelecek -->
 </body>
 </html>
