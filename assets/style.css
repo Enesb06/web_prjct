@@ -2036,4 +2036,97 @@ nav ul li a:hover {
     display: flex;
     gap: 15px;
     padding-top: 15px;
+
+}
+
+/* 1. TÜM TUŞLARDAKİ ALT ÇİZGİYİ KALDIR */
+.plant-actions a, .btn, .btn-secondary, .btn-info {
+    text-decoration: none !important;
+    border-bottom: none !important;
+    outline: none !important;
+}
+
+/* 2. DETAYLAR VE YÖNET TUŞLARINI GÜZEL BİR YEŞİL YAP */
+.plant-actions a, .btn-secondary {
+    background-color: #27ae60 !important; /* Canlı Orman Yeşili */
+    color: white !important;               /* Yazı rengi saf beyaz */
+    padding: 12px 20px !important;
+    border-radius: 12px !important;
+    font-weight: bold !important;
+    font-size: 14px !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    position: relative;                    /* 3D efekti için */
+    top: 0;
+    box-shadow: 0 6px 0px #1e8449 !important; /* Altındaki koyu yeşil derinlik */
+    transition: all 0.2s ease;
+    flex-grow: 1;                          /* Yan yana eşit genişlikte dururlar */
+}
+
+/* 3. ÜZERİNE GELİNCE (HOVER) */
+.plant-actions a:hover, .btn-secondary:hover {
+    top: 2px;                              /* Hafifçe aşağı iner */
+    box-shadow: 0 4px 0px #1e8449 !important;
+    background-color: #2ecc71 !important; /* Daha taze bir yeşile döner */
+}
+
+/* 4. TIKLAYINCA (BASMA ANI) */
+.plant-actions a:active, .btn-secondary:active {
+    top: 6px;                              /* Tamamen zemine oturur */
+    box-shadow: 0 0px 0px #1e8449 !important;
+}
+
+/* Kapsayıcıyı düzenleme (Eğer yan yana gelmiyorsa) */
+.plant-actions {
+    display: flex;
+    gap: 12px;
+    padding-top: 15px;
+    justify-content: space-between;
+}
+
+/* 1. TÜM TUŞLARDAKİ ALT ÇİZGİYİ KALDIR */
+.plant-actions a, .btn, .btn-secondary, .btn-info {
+    text-decoration: none !important;
+    border-bottom: none !important;
+    outline: none !important;
+}
+
+/* 2. DETAYLAR VE YÖNET TUŞLARINI KOYU MODERN YEŞİL YAP */
+.plant-actions a, .btn-secondary {
+    background-color: #1b4332 !important; /* Çok Koyu Derin Yeşil */
+    color: white !important;
+    padding: 12px 20px !important;
+    border-radius: 14px !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    top: 0;
+    box-shadow: 0 6px 0px #0d281a !important; /* Butonun altındaki çok koyu derinlik */
+    transition: all 0.2s ease;
+    flex-grow: 1;
+}
+
+/* 3. ÜZERİNE GELİNCE (HOVER) */
+.plant-actions a:hover, .btn-secondary:hover {
+    top: 2px;
+    box-shadow: 0 4px 0px #0d281a !important;
+    background-color: #2d6a4f !important; /* Üzerine gelince biraz açılan yeşil */
+}
+
+/* 4. TIKLAYINCA (BASMA ANI) */
+.plant-actions a:active, .btn-secondary:active {
+    top: 6px;
+    box-shadow: 0 0px 0px #0d281a !important;
+}
+
+/* Düzenleme: Kapsayıcı alanı */
+.plant-actions {
+    display: flex;
+    gap: 12px;
+    padding-top: 15px;
+    justify-content: space-between;
 }
