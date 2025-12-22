@@ -1810,3 +1810,29 @@ nav ul li a:hover {
     background-color: #2c3e50; /* Koyu mavi-gri, temayla uyumlu */
     color: #ecf0f1; /* Açık renk yazı */
 }
+
+
+/* =================================================================== */
+/*             GÜÇLENDİRİLMİŞ FORUM RESİM STİLLERİ                     */
+/* =================================================================== */
+
+.post-image-container {
+    margin-top: 15px;     /* Resim ile üstündeki meta bilgisi arasına boşluk koyar */
+    margin-bottom: 15px;  /* Resim ile altındaki yazı arasına boşluk koyar */
+    max-height: 200px;    /* ÖNEMLİ: Resim alanının maksimum yüksekliğini 500 piksel ile sınırlar */
+    max-width: 200px;
+    overflow: hidden;     /* Kapsayıcıdan taşan kısımları gizler */
+    border-radius: 12px;  /* Resmin köşelerini gönderi kartı gibi yumuşatır */
+    background-color: #f0f2f5; /* Resim yüklenirken görünecek hafif bir arka plan rengi */
+}
+
+.forum-post-image {
+    width: 100%;          /* Resmin, kapsayıcısının genişliğini tamamen doldurmasını sağlar */
+    height: 100%;         /* Resmin, kapsayıcısının yüksekliğini tamamen doldurmasını sağlar */
+    
+    /* SİHİRLİ KOD: Bu özellik, resmin en-boy oranını koruyarak
+       kapsayıcıyı doldurmasını sağlar. Gerekirse resmi kırpar ama ASLA bozmaz. */
+    object-fit: cover; 
+    
+    display: block;       /* Resmin altındaki olası istenmeyen boşlukları kaldırır */
+}
