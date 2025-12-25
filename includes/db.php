@@ -175,16 +175,16 @@ function upload_to_supabase_storage($tmp_path, $storage_path, $mime_type) {
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    // İstek başarılıysa (HTTP 200 OK), resmin genel (public) URL'sini oluştur ve döndür.
+    
     if ($http_code === 200) {
         $public_url = $supabase_url . '/storage/v1/object/public/plant_images/' . $storage_path;
         return $public_url;
     }
 
-    // Başarısız olursa null döndür.
+    
     return null;
 }
-// ===================================================================
+
 
 
 include_once 'functions.php'; 
