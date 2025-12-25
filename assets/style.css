@@ -71,13 +71,9 @@ nav ul li a:hover {
     background-color: #1abc9c;
 }
 
-/* =================================================================== */
-/*           3. KİMLİK DOĞRULAMA (Giriş/Kayıt) SAYFASI STİLLERİ         */
-/* =================================================================== */
 
-/* 3.1. Arka Plan ve Genel Düzen */
-/* 3.1. Arka Plan ve Genel Düzen */
-.login-page { /* ARTIK SADECE İNİŞ SAYFASININ HERO BÖLÜMÜ */
+
+.login-page { 
     width: 100%;
     min-height: 100vh; /* EKRANI KAPLAMASI İÇİN */
     display: flex;
@@ -105,7 +101,7 @@ nav ul li a:hover {
     background-size: cover;
     z-index: 10;
 }
-/* Giriş/Kayıt sayfalarındayken ana .container'ı şeffaf yap */
+
 body:has(.login-page) .container,
 body:has(.register-page) .container {
     background-color: transparent;
@@ -258,9 +254,7 @@ body:has(.register-page) .container {
     max-width: 380px;
 }
 
-/* =================================================================== */
-/*                 4. DASHBOARD VE ÖZET PANELİ                         */
-/* =================================================================== */
+
 .dashboard-header {
     display: flex;
     justify-content: space-between;
@@ -321,9 +315,7 @@ body:has(.register-page) .container {
 }
 
 
-/* =================================================================== */
-/*                          5. BİTKİ KARTLARI                          */
-/* =================================================================== */
+
 .plant-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -416,11 +408,7 @@ body:has(.register-page) .container {
     grid-column: 1 / -1; /* Grid'in tamamını kapla */
 }
 
-/* =================================================================== */
-/*                   6. FORM ELEMANLARI VE BUTONLAR                    */
-/* =================================================================== */
 
-/* 6.1. Genel Form Stilleri */
 form {
     display: flex;
     flex-direction: column;
@@ -481,7 +469,7 @@ button:hover, .btbuttonn:hover {
     background-color: #40916c;
 }
 
-/* Tıklandığında buton tamamen zemine oturur (Gerçek basma hissi) */
+
 button:active, .btn:active {
     top: 6px;
     box-shadow: 0 0px 0px #1b4332;
@@ -550,9 +538,7 @@ button:active, .btn:active {
     border-radius: 16px !important;
 }
 
-/* =================================================================== */
-/*                HOVER VE ACTIVE (BASMA) EFEKTLERİ                    */
-/* =================================================================== */
+
 
 /* Üzerine gelince (Hover) */
 .btn-add-plant:hover, 
@@ -576,9 +562,7 @@ button:active, .btn:active {
     box-shadow: 0 0px 0px #1e8449 !important;
 }
 
-/* =================================================================== */
-/*                 7. YARDIMCI SINIFLAR (Mesajlar vb.)                 */
-/* =================================================================== */
+
 .message {
     padding: 15px;
     margin-bottom: 20px;
@@ -594,9 +578,7 @@ button:active, .btn:active {
 .status-unknown { background-color: #e2e3e5; color: #383d41; }
 
 
-/* =================================================================== */
-/*                       8. MOBİL UYUMLULUK                            */
-/* =================================================================== */
+
 @media (max-width: 600px) {
     .auth-nav-card {
         height: 70px;
@@ -612,9 +594,7 @@ button:active, .btn:active {
         flex-direction: column; /* Özet kartlarını alt alta sırala */
     }
 }
-/* ================================== */
-/*      Bitki Ansiklopedisi Sayfası   */
-/* ================================== */
+
 
 .encyclopedia-header {
     text-align: center;
@@ -733,9 +713,7 @@ body:has(.register-page) {
     margin: 5px 0 10px 0; /* Üst, sağ/sol, alt */
     font-size: 0.9em;
 }
-/* ================================== */
-/*        Bitki Yönetim Sayfası       */
-/* ================================== */
+
 
 .plant-manage-card {
     background-color: #f9f9f9;
@@ -807,9 +785,7 @@ body:has(.register-page) {
 .plant-manage-delete .btn-danger {
     width: 100%;
 }
-/* ================================== */
-/*      Lottie Animasyon Katmanı      */
-/* ================================== */
+
 
 .lottie-overlay {
     position: fixed;
@@ -834,9 +810,7 @@ body:has(.register-page) {
 }
 
 
-/* =================================================================== /
-/                       9. PROFİL MODAL STİLLERİ                      /
-/ =================================================================== */
+
 .profile-card {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(5px);
@@ -914,9 +888,7 @@ input:disabled {
     opacity: 0.8;
 }
 
-/* =================================================================== */
-/*                       10. GELİŞMİŞ FORUM STİLLERİ                    */
-/* =================================================================== */
+
 
 .forum-post {
     background-color: #ffffff;
@@ -1025,9 +997,7 @@ input:disabled {
 }
 
 
-/* =================================================================== /
-/                 11. KARŞILAMA VE TAKVİM KARTI                       /
-/ =================================================================== */
+
 .welcome-calendar-card {
     display: flex;
     gap: 30px;
@@ -1145,21 +1115,19 @@ input:disabled {
     }
 }
 
-/* =================================================================== /
-/              2. ANA BAŞLIK (HEADER) VE NAVİGASYON (Giriş Yapınca)     /
-/ =================================================================== */
 
-/* YENİ: Navigasyon barının ana kapsayıcısı için stiller */
+
+
 nav {
-    display: flex; /* Logo ve menüyü yan yana getirmek için */
-    justify-content: space-between; /* Aralarına boşluk koyarak iki uca yaslamak için */
-    align-items: center; /* Dikey olarak ortalamak için */
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
     background-color: #34495e;
     width: 105%;
     max-width: 1300px;
-    margin: 40px auto 20px auto; /* Üstten 40px, sağdan/soldan otomatik, alttan 20px boşluk */
-    border-radius: 12px; /* Köşeleri softlaştırdık */
-    padding: 0 25px; /* İçeriden sağdan ve soldan boşluk */
+    margin: 40px auto 20px auto; 
+    border-radius: 12px; 
+    padding: 0 25px; 
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
@@ -1173,7 +1141,7 @@ nav {
     letter-spacing: -1px;
 }
 
-/* DEĞİŞTİRİLDİ: nav ul stilinden gereksiz özellikler kaldırıldı */
+
 nav ul {
     list-style-type: none;
     padding: 0;
@@ -1201,13 +1169,8 @@ nav ul li a:hover {
     background-color: #1abc9c;
 }
 
-/* =================================================================== /
-/                       12. FORUM RESİM STİLLERİ                       /
-/ =================================================================== */
 
-/* =================================================================== */
-/*             GÜÇLENDİRİLMİŞ FORUM RESİM STİLLERİ                     */
-/* =================================================================== */
+
 .post-image-container {
     margin: 15px 0;
     overflow: hidden; /* Taşan kısımları gizle (ekstra güvenlik) */
@@ -1215,16 +1178,14 @@ nav ul li a:hover {
 
 .forum-post-image {
     max-width: 100% !important; /* Diğer tüm kuralları ezmesi için !important eklendi */
-    width: 100% !important;     /* Genişliğin %100 olmasını zorla */
+    width: 100% !important;     /* Genişliğin %/100 olmasını zorla */
     height: auto !important;     /* Yüksekliği otomatik ayarla */
-    object-fit: cover;          /* Resmin en-boy oranını koruyarak kabı doldurmasını sağla */
+    object-fit: cover;          
     display: block;
     border-radius: 8px;
 }
 
-/* =================================================================== */
-/*                     BİLDİRİM (TOAST) STİLLERİ                       */
-/* =================================================================== */
+
 
 #notification-container {
     position: fixed;
@@ -1825,20 +1786,15 @@ nav ul li a:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(26, 188, 156, 0.3);
 }
-/* =================================================================== */
-/*             14. BİTKİ EKLE SAYFASI UYUMLULUK DÜZELTMESİ              */
-/* =================================================================== */
 
-/* Eğer .container içinde .add-plant-page-container varsa,
-   .container'ı şeffaf yap ve gölgesini kaldır. */
+
+
 .container:has(.add-plant-page-container) {
     background-color: transparent;
     box-shadow: none;
     border: none;
 }
-/* =================================================================== */
-/*             15. BİTKİ EKLEME YÜKLENİYOR ANİMASYONU              */
-/* =================================================================== */
+
 .loading-overlay {
     position: fixed;
     top: 0;
@@ -1876,20 +1832,16 @@ nav ul li a:hover {
     font-weight: 500;
     letter-spacing: 0.5px;
 }
-/* =================================================================== */
-/*             16. BİTKİ EKLE SAYFASI DROPDOWN DÜZELTMESİ              */
-/* =================================================================== */
+
 
 .add-plant-card select option {
-    /* Koyu bir arka plan rengi atayarak okunurluğu sağlıyoruz */
+    
     background-color: #2c3e50; /* Koyu mavi-gri, temayla uyumlu */
     color: #ecf0f1; /* Açık renk yazı */
 }
 
 
-/* =================================================================== */
-/*             GÜÇLENDİRİLMİŞ FORUM RESİM STİLLERİ                     */
-/* =================================================================== */
+
 
 .post-image-container {
     margin-top: 15px;     /* Resim ile üstündeki meta bilgisi arasına boşluk koyar */
@@ -1905,8 +1857,8 @@ nav ul li a:hover {
     width: 100%;          /* Resmin, kapsayıcısının genişliğini tamamen doldurmasını sağlar */
     height: 100%;         /* Resmin, kapsayıcısının yüksekliğini tamamen doldurmasını sağlar */
     
-    /* SİHİRLİ KOD: Bu özellik, resmin en-boy oranını koruyarak
-       kapsayıcıyı doldurmasını sağlar. Gerekirse resmi kırpar ama ASLA bozmaz. */
+    
+       
     object-fit: cover; 
     
     display: block;       /* Resmin altındaki olası istenmeyen boşlukları kaldırır */

@@ -5,8 +5,6 @@ include_once 'includes/header.php';
 $encyclopedia_json = file_get_contents('data/encyclopedia_data.json');
 $plants = json_decode($encyclopedia_json, true);
 
-
-
 ?>
 
 <div class="encyclopedia-header">
