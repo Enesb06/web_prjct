@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = "Geçersiz e-posta adresi.";
     } else {
-        // Şifreyi hash'le
+        
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         // Supabase'e kullanıcıyı ekle
@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'username' => $username,
             'email' => $email,
             'password' => $hashed_password,
-            'role' => 'user' // Varsayılan rol
+            'role' => 'user' 
         ];
 
         $result = supabase_api_request('POST', 'users', $newUser);
