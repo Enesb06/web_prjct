@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
             'email' => $new_email
         ];
         
-        // Önemli: PATCH isteği atarken URL'ye filtre eklemeliyiz
+        // PATCH isteği atarken URL'ye filtre eklemeliyiz
         $path = 'users?id=eq.' . $user_id;
         $result = supabase_api_request('PATCH', $path, $updateData);
 
