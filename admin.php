@@ -54,7 +54,7 @@ $all_plants = supabase_api_request('GET', 'plants', ['order' => 'id.asc']); // Y
 <h2>Admin Paneli</h2>
 <p>Sistemdeki tüm verileri buradan yönetebilirsiniz.</p>
 
-<!-- BİTKİLER TABLOSU - YENİ EKLENDİ -->
+<!-- BİTKİLER TABLOSU  -->
 <h3 id="plants">Tüm Bitkiler (<?php echo $all_plants ? count($all_plants) : 0; ?>)</h3>
 <table>
     <thead>
@@ -74,18 +74,18 @@ $all_plants = supabase_api_request('GET', 'plants', ['order' => 'id.asc']); // Y
             <td class="plant-name"><?php echo htmlspecialchars($plant['plant_name']); ?></td>
             <td><?php echo $plant['user_id']; ?></td>
 
-            <!-- =================== DÜZELTME: Sütun adı "_date" olarak değiştirildi =================== -->
+            
             <td class="last-watered">
                 <?php echo !empty($plant['last_watered_date']) ? date('d M Y', strtotime($plant['last_watered_date'])) : 'Tarih Yok'; ?>
             </td>
             
-            <!-- =================== DÜZELTME: Sütun adı "_date" olarak değiştirildi =================== -->
+            
             <td class="last-fertilized">
                 <?php echo !empty($plant['last_fertilized_date']) ? date('d M Y', strtotime($plant['last_fertilized_date'])) : 'Tarih Yok'; ?>
             </td>
 
             <td class="actions">
-                <!-- =================== DÜZELTME: Sütun adı "_date" olarak değiştirildi =================== -->
+                
                 <button class="btn edit-btn" 
                         data-plant-id="<?php echo $plant['id']; ?>"
                         data-last-watered="<?php echo !empty($plant['last_watered_date']) ? date('Y-m-d', strtotime($plant['last_watered_date'])) : date('Y-m-d'); ?>"
@@ -104,7 +104,7 @@ $all_plants = supabase_api_request('GET', 'plants', ['order' => 'id.asc']); // Y
 
 <!-- KULLANICILAR TABLOSU -->
 <h3>Kullanıcılar (<?php echo $all_users ? count($all_users) : 0; ?>)</h3>
-<!-- ... Kullanıcılar tablosu HTML'i burada (değişiklik yok) ... -->
+
 <table>
     <thead><tr><th>ID</th><th>Kullanıcı Adı</th><th>Email</th><th>Rol</th><th>Kayıt Tarihi</th></tr></thead>
     <tbody>
@@ -124,7 +124,7 @@ $all_plants = supabase_api_request('GET', 'plants', ['order' => 'id.asc']); // Y
 
 <!-- GÖNDERİLER TABLOSU -->
 <h3 id="posts">Tüm Forum Gönderileri (<?php echo $all_posts ? count($all_posts) : 0; ?>)</h3>
-<!-- ... Gönderiler tablosu HTML'i burada (değişiklik yok) ... -->
+
 <table>
     <thead><tr><th>ID</th><th>Kullanıcı Adı</th><th>Mesaj</th><th>Tarih</th><th>İşlemler</th></tr></thead>
     <tbody>
@@ -144,7 +144,7 @@ $all_plants = supabase_api_request('GET', 'plants', ['order' => 'id.asc']); // Y
 
 <!-- YORUMLAR TABLOSU -->
 <h3 id="comments">Tüm Yorumlar (<?php echo $all_comments ? count($all_comments) : 0; ?>)</h3>
-<!-- ... Yorumlar tablosu HTML'i burada (değişiklik yok) ... -->
+
 <table>
     <thead><tr><th>ID</th><th>Gönderi ID</th><th>Kullanıcı Adı</th><th>Yorum</th><th>Tarih</th><th>İşlemler</th></tr></thead>
     <tbody>
@@ -163,7 +163,7 @@ $all_plants = supabase_api_request('GET', 'plants', ['order' => 'id.asc']); // Y
 </table>
 
 
-<!-- BİTKİ DÜZENLEME MODAL'I - YENİ EKLENDİ -->
+<!-- BİTKİ DÜZENLEME MODAL'I -->
 <div id="editPlantModal" class="modal-overlay">
     <div class="modal-content">
         <h4>Bitki Bakım Tarihlerini Düzenle</h4>

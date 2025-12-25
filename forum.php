@@ -26,26 +26,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message']) && !empty(
 
             if (in_array($mime_type, $allowed_mime_types)) {
                 $file_extension = pathinfo($file['name'], PATHINFO_EXTENSION);
-                // Benzersiz dosya adı: user_123/post_asdasd123.jpg
+                
                 $unique_filename = 'post_' . uniqid('', true) . '.' . $file_extension;
                 $storage_path = 'forum_uploads/' . $_SESSION['user_id'] . '/' . $unique_filename;
 
-                // Yeni fonksiyonu kullanarak Supabase'e yükle. DİKKAT: $file['tmp_name'] olarak düzeltildi!
+                
                 $image_path_for_db = upload_to_supabase_storage($file['tmp_name'], $storage_path, $mime_type);
                 
                 if ($image_path_for_db === null) {
                     $error = 'Resim Supabase\'e yüklenirken bir hata oluştu.';
-                    // Hata oluşursa işlemi durdurabilir veya loglayabiliriz, şimdilik devam etsin.
+                    
                 }
             } else {
-                 // Hata mesajını kullanıcıya göstermek daha iyi olabilir. Şimdilik atlıyoruz.
+                 
             }
         }
     }
-    // =============== DEĞİŞTİRİLEN DOSYA YÜKLEME BLOĞU SONU ===============
+    
 
-    // Hata oluşsa bile gönderinin metin kısmı eklensin.
-    // Eğer resim yükleme hatasında gönderinin hiç eklenmemesini istersen bu bloğu bir if içine alabilirsin.
+
     $newMessage = [
         'user_id' => $_SESSION['user_id'],
         'username' => $_SESSION['username'],
@@ -58,11 +57,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message']) && !empty(
     exit();
 }
 
-// ... Veri çekme kodları ve HTML kısmı aynı kalacak ...
 
 
 
-// Veri çekme kodları (değişiklik yok)
+
+// Veri çekme kodları 
 $posts = supabase_api_request('GET', 'forum_posts', ['order' => 'created_at.desc']);
 $all_likes = supabase_api_request('GET', 'post_likes');
 $all_comments = supabase_api_request('GET', 'forum_comments', ['order' => 'created_at.asc']);
@@ -93,7 +92,7 @@ if ($all_comments) {
 ?>
 
 <!-- ========================================================= -->
-<!--        YENİ EKLENEN KÜTÜPHANE DOSYALARI (ÖNEMLİ!)         -->
+<!--          YENİ EKLENEN KÜTÜPHANE DOSYALARI                 -->
 <!-- ========================================================= -->
 <!-- Font Awesome (Kalem ikonu için) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -106,15 +105,15 @@ if ($all_comments) {
     <div class="swiper-wrapper">
         <!-- Slide 1 -->
         <div class="swiper-slide" style="background-image:url('assets/images/slider/slider1.jpg');">
-            <!-- İçindeki yazılar silindi -->
+            
         </div>
         <!-- Slide 2 -->
         <div class="swiper-slide" style="background-image:url('assets/images/slider/slider2.png');">
-            <!-- İçindeki yazılar silindi -->
+           
         </div>
         <!-- Slide 3 -->
         <div class="swiper-slide" style="background-image:url('assets/images/slider/slider3.png');">
-            <!-- İçindeki yazılar silindi -->
+            
         </div>
     </div>
     <!-- Navigasyon Okları -->
@@ -133,7 +132,7 @@ if ($all_comments) {
     <h3>Son Mesajlar</h3>
     <?php if ($posts && count($posts) > 0): ?>
         <?php foreach ($posts as $post):
-            // Değişken tanımlamaları...
+            
             $post_id = $post['id'];
             $post_author_id = $post['user_id'];
             $like_count = isset($likes_by_post[$post_id]) ? count($likes_by_post[$post_id]) : 0;
@@ -193,14 +192,14 @@ if ($all_comments) {
 </div>
 
 
-<!-- YENİ PAYLAŞIM YAP BUTONU (FAB) -->
+<!-- YENİ PAYLAŞIM YAP BUTONU -->
 <a href="#" id="fab-share-button" class="fab-share-post">
     <i class="fas fa-pencil-alt"></i>
     Sen de Görüşlerini Paylaş
 </a>
 
 
-<!-- YENİ POP-UP GÖNDERİ FORMU (MODAL) -->
+<!-- YENİ POP-UP GÖNDERİ FORMU  -->
 <div class="post-modal-overlay" id="post-modal">
     <div class="post-modal-card">
         <span class="close-btn" id="close-modal-btn">&times;</span>
@@ -222,7 +221,7 @@ if ($all_comments) {
 
 
 <!-- ========================================================= -->
-<!--        YENİ EKLENEN KÜTÜPHANE VE KODLAR (ÖNEMLİ!)         -->
+<!--        YENİ EKLENEN KÜTÜPHANE VE KODLAR                   -->
 <!-- ========================================================= -->
 <!-- Swiper.js JS (Slider'ın çalışması için) -->
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
@@ -242,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function () {
         },
     });
 
-    // 2. Modal (Pop-up) İşlevselliği
+    
     const fabButton = document.getElementById('fab-share-button');
     const postModal = document.getElementById('post-modal');
     const closeModalBtn = document.getElementById('close-modal-btn');

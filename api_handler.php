@@ -220,7 +220,7 @@ switch ($action) {
         echo json_encode(['success' => true]);
         break;
 
- // ... api_handler.php dosyasındaki diğer case'ler ...
+ 
 
     case 'update_plant_dates_admin':
         // Güvenlik: Sadece adminler
@@ -256,7 +256,7 @@ switch ($action) {
         }
         break;
 
-// ... default case'i ve diğerleri ...
+
 
     default:
         echo json_encode(['success' => false, 'error' => 'Geçersiz işlem.']);
