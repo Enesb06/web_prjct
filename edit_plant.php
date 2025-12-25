@@ -15,7 +15,7 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     exit();
 }
 $plant_id = $_GET['id'];
-$user_id = $_SESSION['user_id']; // <-- HATA BURADAYDI, BU SATIR EKSİKTİ VEYA YANLIŞ YERDEYDİ.
+$user_id = $_SESSION['user_id']; 
 
 // 3. AKSİYONLARI YÖNET (Form gönderildiğinde)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -26,26 +26,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_POST['action'])) {
             $action = $_POST['action'];
 
-            // =================== DÜZELTME BAŞLANGICI ===================
+           
 
-            // DEĞİŞİKLİK 1: Güncellenecek bitkinin yolunu (path) belirliyoruz.
+            // Güncellenecek bitkinin yolunu (path) belirliyoruz.
             $path = 'plants?id=eq.' . $plant_id;
 
             if ($action === 'water') {
-                // DEĞİŞİKLİK 2: Veri (payload) sadece güncellenecek kolonu içermeli.
+                
                 $updateData = ['last_watered_date' => date('c')];
                 supabase_api_request('PATCH', $path, $updateData);
                 $success = "Bitki sulandı olarak işaretlendi!";
             }
 
             if ($action === 'fertilize') {
-                // DEĞİŞİKLİK 2: Veri (payload) sadece güncellenecek kolonu içermeli.
+              
                 $updateData = ['last_fertilized_date' => date('c')];
                 supabase_api_request('PATCH', $path, $updateData);
                 $success = "Bitki gübrelendi olarak işaretlendi!";
             }
             
-            // =================== DÜZELTME SONU ===================
 
             if ($action === 'delete') {
                 supabase_api_request('DELETE', 'plants', ['id' => 'eq.' . $plant_id]);
