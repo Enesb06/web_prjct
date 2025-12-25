@@ -1,6 +1,5 @@
 <?php
-// db.php'yi en üste dahil ediyoruz. 
-// Bu dosya hem veritabanı fonksiyonlarını getirir hem de session_start() komutunu çalıştırır.
+
 include_once 'db.php';
 ?>
 <!DOCTYPE html>
@@ -14,22 +13,22 @@ include_once 'db.php';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     
-    <!-- LOTTIE PLAYER KÜTÜPHANESİ (ANİMASYON İÇİN GEREKLİ) -->
+    
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 </head>
 <body>
     
-    <!-- Sarmaşık Efektleri -->
+    
     <div class="ivy-overlay ivy-left"></div>
     <div class="ivy-overlay ivy-right"></div>
 
     <?php 
-    // EĞER BU GİRİŞ/LANDING SAYFASI DEĞİLSE, NAVİGASYONU VE CONTAINER'I GÖSTER
+    
     if (!isset($is_landing_page)): 
     ?>
     
     <nav>
-        <!-- YENİ: Site Logosu Eklendi -->
+       
         <a href="dashboard.php" class="nav-logo">PlantCare.com</a>
 
         <ul>
@@ -51,5 +50,5 @@ include_once 'db.php';
     <div class="container">
 
     <?php 
-    endif; // if bloğunun sonu
+    endif; 
     ?>

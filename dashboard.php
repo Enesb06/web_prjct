@@ -124,15 +124,13 @@ if ($plants && count($plants) > 0) {
                     $next_watering->modify('+' . $plant['watering_interval'] . ' days');
                 }
             } catch (Exception $e) {
-                // Geçersiz tarih formatını yoksay
+               
             }
         }
 
         // --- Gübreleme günlerini hesapla ---
         if (!empty($plant['last_fertilized_date']) && !empty($plant['fertilizing_interval'])) {
-            // =================================================================== //
-            //             DEĞİŞİKLİK BAŞLANGICI (BURASI HATAYI ÖNLER)               //
-            // =================================================================== //
+           
             try {
                 $next_fertilizing = new DateTime($plant['last_fertilized_date']);
                 $next_fertilizing->modify('+' . $plant['fertilizing_interval'] . ' days');
@@ -148,12 +146,10 @@ if ($plants && count($plants) > 0) {
                     $next_fertilizing->modify('+' . $plant['fertilizing_interval'] . ' days');
                 }
             } catch (Exception $e) {
-                // Tarih formatı bozuksa bu bitkiyi takvim hesaplamasında atla.
-                // İsteğe bağlı: error_log("Invalid date format for plant ID " . $plant['id']);
+                
             }
-            // =================================================================== //
-            //                          DEĞİŞİKLİK SONU                            //
-            // =================================================================== //
+            
+            
         }
     }
 }
@@ -289,9 +285,7 @@ if ($plants && count($plants) > 0) {
                     <div class="fertilizing-status">
                          <?php
                         if (!empty($plant['last_fertilized_date']) && !empty($plant['fertilizing_interval'])) {
-                            // =================================================================== //
-                            //         DEĞİŞİKLİK BAŞLANGICI (BURASI DA HATAYI ÖNLER)                //
-                            // =================================================================== //
+                        
                             try {
                                 $today = new DateTime();
                                 $last_fertilized = new DateTime($plant['last_fertilized_date']);
@@ -310,9 +304,7 @@ if ($plants && count($plants) > 0) {
                             } catch (Exception $e) {
                                 echo '<p class="status-unknown">Gübreleme tarihi geçersiz.</p>';
                             }
-                            // =================================================================== //
-                            //                          DEĞİŞİKLİK SONU                            //
-                            // =================================================================== //
+                            
                         } else if (!empty($plant['fertilizing_interval'])) {
                             echo '<p class="status-unknown">Gübreleme durumu için son gübreleme tarihini girin.</p>';
                         }

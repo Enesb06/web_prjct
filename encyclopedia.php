@@ -1,12 +1,11 @@
 <?php
 include_once 'includes/header.php';
 
-// Ansiklopedi verilerini JSON dosyasından oku
+
 $encyclopedia_json = file_get_contents('data/encyclopedia_data.json');
 $plants = json_decode($encyclopedia_json, true);
 
-// URL ve dosya isimleri için güvenli bir string oluşturan yardımcı fonksiyon
-// URL ve dosya isimleri için güvenli bir string oluşturan yardımcı fonksiyon
+
 
 ?>
 
@@ -38,7 +37,7 @@ $plants = json_decode($encyclopedia_json, true);
                    <div class="plant-details-list">
     <div><strong>💧 Sulama:</strong> <span><?php echo $plant['watering_interval_days']; ?> günde ~<?php echo $plant['water_amount_ml']; ?>ml</span></div>
     
-    <!-- YENİ GÜBRELEME SATIRI -->
+    
     <?php if (isset($plant['fertilizing_interval_days'])): ?>
         <div><strong>🌱 Gübreleme:</strong> <span><?php echo $plant['fertilizing_interval_days']; ?> günde bir</span></div>
     <?php endif; ?>
