@@ -2075,10 +2075,14 @@ nav ul li a:hover {
     box-shadow: 0 0px 0px #0d281a !important;
 }
 
-/* Düzenleme: Kapsayıcı alanı */
+
 .plant-actions {
     display: flex;
     gap: 12px;
     padding-top: 15px;
     justify-content: space-between;
 }
+
+
+
+
